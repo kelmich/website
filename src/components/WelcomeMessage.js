@@ -8,7 +8,7 @@ const WelcomeMessage = () => {
 
     // set fade animation
     const durationCursor = 150;
-    const durationTagline = 500;
+    const durationTagline = 1000;
     const cursorStyle = {
         transition: `opacity ${durationCursor}ms ease-in-out`,
         opacity: 1,

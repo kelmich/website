@@ -1,6 +1,5 @@
 import * as React from "react"
 import * as styles from "../styles/styles";
-import "../../public/index.css";
 
 import WelcomeMessage from "../components/WelcomeMessage";
 
