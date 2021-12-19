@@ -7,7 +7,6 @@ import {
   Title,
 } from "@mantine/core";
 import AboutMe from "./Components/AboutMe";
-// import ThemeSwitch from "./Components/ThemeSwitch";
 import MyPlan from "./Components/MyPlan";
 import Socials from "./Components/Socials";
 
@@ -38,7 +37,6 @@ function App() {
             justifyContent: "center",
           }}
         >
-          {/* <ThemeSwitch /> */}
           <div>
             <Title order={1} style={{ fontFamily: "HindMadurai, serif" }}>
               Michael Keller

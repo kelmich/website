@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bafc99aa.css",
+    "main.js": "/static/js/main.f5bba7cc.js",
+    "static/media/me.jpg": "/static/media/me.f16a68002c0ca26ced0f.jpg",
+    "static/media/HindMadurai-Bold.ttf": "/static/media/HindMadurai-Bold.9807a82c4b70e3a5a06b.ttf",
+    "index.html": "/index.html",
+    "main.bafc99aa.css.map": "/static/css/main.bafc99aa.css.map",
+    "main.f5bba7cc.js.map": "/static/js/main.f5bba7cc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bafc99aa.css",
+    "static/js/main.f5bba7cc.js"
+  ]
+}
