@@ -3,7 +3,7 @@ import { Timeline, Text } from "@mantine/core";
 
 function MyPlan() {
   return (
-    <div style={{ width: 340 }}>
+    <div style={{ width: 300 }}>
       <Timeline active={1} bulletSize={20} lineWidth={5}>
         <Timeline.Item title="Kantonsschule Frauenfeld">
           <Text color="dimmed" size="sm">

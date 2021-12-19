@@ -53,7 +53,7 @@ function App() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
+                alignItems: "left",
                 justifyContent: "space-between",
                 height: "auto",
                 margin: 20,
