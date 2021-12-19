@@ -3,7 +3,6 @@ import {
   Card,
   Image,
   Text,
-  Badge,
   Button,
   Group,
   useMantineTheme,
@@ -31,9 +30,6 @@ function AboutMe() {
           style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
         >
           <Text weight={500}>That's me</Text>
-          <Badge color="green" variant="dot">
-            Available
-          </Badge>
         </Group>
 
         <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>

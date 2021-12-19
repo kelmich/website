@@ -51,11 +51,14 @@ function App() {
               Michael Keller
             </Title>
           </div>
-          <Grid>
+          <Grid style={{ margin: 0 }}>
             <Col
               span={12}
               md={6}
-              style={{ display: "flex", justifyContent: "center" }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+              }}
             >
               <AboutMe />
             </Col>
@@ -74,8 +77,8 @@ function App() {
                   flexDirection: "column",
                   alignItems: "left",
                   justifyContent: "space-between",
-                  margin: 20,
-                  marginTop: 40,
+                  padding: 20,
+                  paddingTop: 40,
                 }}
               >
                 <MyPlan />
