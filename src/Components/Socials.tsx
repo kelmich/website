@@ -16,7 +16,10 @@ function Socials() {
 
   return (
     <div style={{ width: 300 }}>
-      <Group position="apart" style={{ marginTop: theme.spacing.sm }}>
+      <Group
+        position="apart"
+        style={{ marginBottom: 20, marginTop: theme.spacing.sm }}
+      >
         <Button
           variant="light"
           color="gray"

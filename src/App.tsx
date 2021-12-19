@@ -57,7 +57,7 @@ function App() {
                 justifyContent: "space-between",
                 height: "auto",
                 margin: 20,
-                marginTop: 60,
+                marginTop: 50,
               }}
             >
               <MyPlan />
