@@ -31,7 +31,7 @@ function AboutMe() {
           style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
         >
           <Text weight={500}>That's me</Text>
-          <Badge color="green" variant="light">
+          <Badge color="green" variant="dot">
             Available
           </Badge>
         </Group>
@@ -42,11 +42,12 @@ function AboutMe() {
         </Text>
 
         <Button
-          variant="light"
-          color="blue"
+          component="a"
+          variant="gradient"
+          gradient={{ from: "teal", to: "blue", deg: 60 }}
           fullWidth
           style={{ marginTop: 14 }}
-          onClick={() => window.open("mailto:mail@kellermichael.com")}
+          href="mailto:mail@kellermichael.com"
         >
           Get In Touch
         </Button>
