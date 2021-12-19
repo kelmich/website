@@ -1,6 +1,6 @@
 import React from "react";
 import CSS from "csstype";
-import { Text, Button, Group, useMantineTheme } from "@mantine/core";
+import { Button, Group, useMantineTheme } from "@mantine/core";
 import { FiGithub, FiGitlab, FiLinkedin } from "react-icons/fi";
 
 function Socials() {

@@ -5,6 +5,7 @@
   "dependencies": {
     "@mantine/core": "^3.4.2",
     "@mantine/hooks": "^3.4.2",
+    "@mantine/notifications": "^3.4.2",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   Image,
@@ -7,9 +7,22 @@ import {
   Group,
   useMantineTheme,
 } from "@mantine/core";
+import { useNotifications } from "@mantine/notifications";
 
 function AboutMe() {
   const theme = useMantineTheme();
+  const notifications = useNotifications();
+
+  useEffect(() => {
+    setTimeout(
+      () =>
+        notifications.showNotification({
+          title: "Welcome",
+          message: "This website is still a work in progress, but have a look!",
+        }),
+      500
+    );
+  }, []);
 
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];

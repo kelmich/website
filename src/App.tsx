@@ -8,6 +8,7 @@ import {
   Grid,
   Col,
 } from "@mantine/core";
+import { NotificationsProvider } from "@mantine/notifications";
 import AboutMe from "./Components/AboutMe";
 import MyPlan from "./Components/MyPlan";
 import Socials from "./Components/Socials";
@@ -25,68 +26,70 @@ function App() {
       toggleColorScheme={toggleColorScheme}
     >
       <MantineProvider theme={{ colorScheme }}>
-        <div
-          style={{
-            backgroundColor:
-              colorScheme === "dark"
-                ? theme.colors.dark[8]
-                : theme.colors.gray[2],
-            width: "100%",
-            minHeight: "100vh",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        <NotificationsProvider>
           <div
             style={{
+              backgroundColor:
+                colorScheme === "dark"
+                  ? theme.colors.dark[8]
+                  : theme.colors.gray[2],
+              width: "100%",
+              minHeight: "100vh",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              marginTop: 20,
             }}
           >
-            <Title order={1} style={{ fontFamily: "HindMadurai, serif" }}>
-              Michael Keller
-            </Title>
-          </div>
-          <Grid style={{ margin: 0 }}>
-            <Col
-              span={12}
-              md={6}
+            <div
               style={{
                 display: "flex",
+                alignItems: "center",
                 justifyContent: "center",
+                marginTop: 20,
               }}
             >
-              <AboutMe />
-            </Col>
-            <Col
-              span={12}
-              md={6}
-              style={{
-                display: "flex",
-                alignItems: "stretch",
-                justifyContent: "center",
-              }}
-            >
-              <div
+              <Title order={1} style={{ fontFamily: "HindMadurai, serif" }}>
+                Michael Keller
+              </Title>
+            </div>
+            <Grid style={{ margin: 0 }}>
+              <Col
+                span={12}
+                md={6}
                 style={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "left",
-                  justifyContent: "space-between",
-                  padding: 20,
-                  paddingTop: 40,
+                  justifyContent: "center",
                 }}
               >
-                <MyPlan />
-                <Socials />
-              </div>
-            </Col>
-          </Grid>
-        </div>
+                <AboutMe />
+              </Col>
+              <Col
+                span={12}
+                md={6}
+                style={{
+                  display: "flex",
+                  alignItems: "stretch",
+                  justifyContent: "center",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "left",
+                    justifyContent: "space-between",
+                    padding: 20,
+                    paddingTop: 40,
+                  }}
+                >
+                  <MyPlan />
+                  <Socials />
+                </div>
+              </Col>
+            </Grid>
+          </div>
+        </NotificationsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
