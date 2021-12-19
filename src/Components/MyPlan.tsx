@@ -18,7 +18,7 @@ function MyPlan() {
           </Text>
         </Timeline.Item>
 
-        <Timeline.Item title="Army Service" lineVariant="dashed">
+        <Timeline.Item title="Swiss Armed Forces" lineVariant="dashed">
           <Text color="dimmed" size="sm">
             In the Winter of 2023 I will complete my Swiss Army service.
           </Text>

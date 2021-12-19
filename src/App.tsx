@@ -5,6 +5,8 @@ import {
   useMantineTheme,
   ColorScheme,
   Title,
+  Grid,
+  Col,
 } from "@mantine/core";
 import AboutMe from "./Components/AboutMe";
 import MyPlan from "./Components/MyPlan";
@@ -30,40 +32,57 @@ function App() {
                 ? theme.colors.dark[8]
                 : theme.colors.gray[2],
             width: "100%",
-            height: "100vh",
+            minHeight: "100vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 20,
+            }}
+          >
             <Title order={1} style={{ fontFamily: "HindMadurai, serif" }}>
               Michael Keller
             </Title>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
-            <AboutMe />
-            <div
+          <Grid>
+            <Col
+              span={12}
+              md={6}
+              style={{ display: "flex", justifyContent: "center" }}
+            >
+              <AboutMe />
+            </Col>
+            <Col
+              span={12}
+              md={6}
               style={{
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "left",
-                justifyContent: "space-between",
-                height: "auto",
-                margin: 20,
-                marginTop: 50,
+                alignItems: "stretch",
+                justifyContent: "center",
               }}
             >
-              <MyPlan />
-              <Socials />
-            </div>
-          </div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "left",
+                  justifyContent: "space-between",
+                  margin: 20,
+                  marginTop: 40,
+                }}
+              >
+                <MyPlan />
+                <Socials />
+              </div>
+            </Col>
+          </Grid>
         </div>
       </MantineProvider>
     </ColorSchemeProvider>
