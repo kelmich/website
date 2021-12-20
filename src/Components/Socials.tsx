@@ -17,6 +17,7 @@ function Socials() {
   return (
     <div style={{ width: 300 }}>
       <Group
+        noWrap
         position="apart"
         style={{ marginBottom: 20, marginTop: theme.spacing.sm }}
       >
