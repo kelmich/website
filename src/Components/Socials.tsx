@@ -23,7 +23,8 @@ function Socials() {
         <Button
           variant="light"
           color="gray"
-          onClick={() => window.open("https://github.com/kelmich")}
+          component="a"
+          href="https://github.com/kelmich"
         >
           <div style={buttonStyle}>
             <FiGithub />
@@ -32,9 +33,8 @@ function Socials() {
         <Button
           variant="light"
           color="gray"
-          onClick={() =>
-            window.open("https://www.linkedin.com/in/michael-keller-396467209/")
-          }
+          component="a"
+          href="https://www.linkedin.com/in/michael-keller-396467209/"
         >
           <div style={buttonStyle}>
             <FiLinkedin />
@@ -43,7 +43,8 @@ function Socials() {
         <Button
           variant="light"
           color="gray"
-          onClick={() => window.open("https://gitlab.ethz.ch/kelmich")}
+          component="a"
+          href="https://gitlab.ethz.ch/kelmich"
         >
           <div style={buttonStyle}>
             <FiGitlab />
