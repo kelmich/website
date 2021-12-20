@@ -1,6 +1,6 @@
 import React from "react";
 import CSS from "csstype";
-import { Button, Group, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Group, useMantineTheme } from "@mantine/core";
 import { FiGithub, FiGitlab, FiLinkedin } from "react-icons/fi";
 
 function Socials() {
@@ -21,36 +21,33 @@ function Socials() {
         position="apart"
         style={{ marginBottom: 20, marginTop: theme.spacing.sm }}
       >
-        <Button
+        <ActionIcon
           variant="light"
-          color="gray"
           component="a"
+          size="xl"
+          title="Michael's Github"
           href="https://github.com/kelmich"
         >
-          <div style={buttonStyle}>
-            <FiGithub />
-          </div>
-        </Button>
-        <Button
+          <FiGithub />
+        </ActionIcon>
+        <ActionIcon
           variant="light"
-          color="gray"
           component="a"
+          size="xl"
+          title="Michael's LinkedIn"
           href="https://www.linkedin.com/in/michael-keller-396467209/"
         >
-          <div style={buttonStyle}>
-            <FiLinkedin />
-          </div>
-        </Button>
-        <Button
+          <FiLinkedin />
+        </ActionIcon>
+        <ActionIcon
           variant="light"
-          color="gray"
           component="a"
+          size="xl"
+          title="Michael's ETH Gitlab"
           href="https://gitlab.ethz.ch/kelmich"
         >
-          <div style={buttonStyle}>
-            <FiGitlab />
-          </div>
-        </Button>
+          <FiGitlab />
+        </ActionIcon>
       </Group>
     </div>
   );
