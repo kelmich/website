@@ -14,7 +14,7 @@ function MyPlan() {
 
         <Timeline.Item title="ETH Zürich">
           <Text color="dimmed" size="sm">
-            Currently in my 5th semester of my BSc in Computer Science.
+            Currently in my 6th semester of my BSc in Computer Science.
           </Text>
         </Timeline.Item>
 
