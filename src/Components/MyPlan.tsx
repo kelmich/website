@@ -5,12 +5,12 @@ function MyPlan() {
   return (
     <div style={{ width: 300 }}>
       <Timeline active={2} bulletSize={20} lineWidth={5}>
-        <Timeline.Item title="Kantonsschule Frauenfeld">
+        {/* <Timeline.Item title="Kantonsschule Frauenfeld">
           <Text color="dimmed" size="sm">
             Completed Swiss Matura with focus Law and Economics and thesis in
             Physics.
           </Text>
-        </Timeline.Item>
+        </Timeline.Item> */}
 
         <Timeline.Item title="ETH Zürich">
           <Text color="dimmed" size="sm">
@@ -21,6 +21,12 @@ function MyPlan() {
         <Timeline.Item title="Swiss Armed Forces">
           <Text color="dimmed" size="sm">
             In the Winter of 2023 I will complete my Swiss Army service.
+          </Text>
+        </Timeline.Item>
+
+        <Timeline.Item title="DeepJudge AG">
+          <Text color="dimmed" size="sm">
+            I currently work part time at DeepJudge as a Software Engineer.
           </Text>
         </Timeline.Item>
 

@@ -32,7 +32,7 @@ function AboutMe() {
       <Card shadow="sm" padding="lg">
         <Card.Section>
           <Image
-            src={require("../Assets/me.jpg")}
+            src={require("../Assets/me-frontal.jpeg")}
             height={300}
             alt="Image of Michael Keller"
           />
@@ -52,8 +52,10 @@ function AboutMe() {
 
         <Button
           component="a"
-          variant="gradient"
-          gradient={{ from: "teal", to: "blue", deg: 60 }}
+          // variant="gradient"
+          variant="light"
+          color="blue"
+          // gradient={{ from: "teal", to: "blue", deg: 60 }}
           fullWidth
           style={{ marginTop: 14 }}
           href="mailto:mail@kellermichael.com"
