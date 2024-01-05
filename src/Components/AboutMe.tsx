@@ -6,8 +6,11 @@ import {
   Button,
   Group,
   useMantineTheme,
+  ActionIcon,
 } from "@mantine/core";
 import { useNotifications } from "@mantine/notifications";
+import Socials from "./Socials";
+import { FiGithub, FiLinkedin } from "react-icons/fi";
 
 function AboutMe() {
   const theme = useMantineTheme();
@@ -43,14 +46,47 @@ function AboutMe() {
           style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
         >
           <Text weight={500}>That's me</Text>
+          <Group noWrap position="center">
+            <ActionIcon
+              variant="transparent"
+              component="a"
+              size="xs"
+              title="Michael's Github"
+              href="https://github.com/kelmich"
+            >
+              <FiGithub />
+            </ActionIcon>
+            <ActionIcon
+              variant="transparent"
+              component="a"
+              size="xs"
+              title="Michael's LinkedIn"
+              href="https://www.linkedin.com/in/michael-keller-396467209/"
+            >
+              <FiLinkedin />
+            </ActionIcon>
+            {/* <ActionIcon
+          variant="hover"
+          component="a"
+          size="xl"
+          title="Michael's ETH Gitlab"
+          href="https://gitlab.ethz.ch/kelmich"
+        >
+          <FiGitlab />
+        </ActionIcon> */}
+          </Group>
         </Group>
 
-        <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
-          I'm currently a student at ETH Zürich completing my Bachelors in
-          Computer Science.
+        <Text
+          size="sm"
+          style={{ marginTop: 15, color: secondaryColor, lineHeight: 1.5 }}
+        >
+          I'm a student at ETH Zürich completing my Masters in Computer Science.
+          My interests are in hard algorithmic problems and using computers to
+          make my life easier.
         </Text>
 
-        <Button
+        {/* <Button
           component="a"
           // variant="gradient"
           variant="light"
@@ -61,7 +97,7 @@ function AboutMe() {
           href="mailto:mail@kellermichael.com"
         >
           Get In Touch
-        </Button>
+        </Button> */}
       </Card>
     </div>
   );

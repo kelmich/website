@@ -84,7 +84,6 @@ function App() {
                   }}
                 >
                   <MyPlan />
-                  <Socials />
                 </div>
               </Col>
             </Grid>

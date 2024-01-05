@@ -1,41 +1,42 @@
 import React from "react";
-import { Timeline, Text } from "@mantine/core";
+import {
+  Timeline,
+  Text,
+  Card,
+  Group,
+  useMantineTheme,
+  Button,
+} from "@mantine/core";
+import { TbSchool } from "react-icons/tb";
+import { TbBriefcase } from "react-icons/tb";
+import { FiTool } from "react-icons/fi";
+
+import Socials from "./Socials";
 
 function MyPlan() {
   return (
     <div style={{ width: 300 }}>
-      <Timeline active={2} bulletSize={20} lineWidth={5}>
-        {/* <Timeline.Item title="Kantonsschule Frauenfeld">
-          <Text color="dimmed" size="sm">
-            Completed Swiss Matura with focus Law and Economics and thesis in
-            Physics.
-          </Text>
-        </Timeline.Item> */}
-
-        <Timeline.Item title="ETH Zürich">
+      <Timeline active={2} bulletSize={30} lineWidth={0} color="blue">
+        <Timeline.Item title="ETH Zürich" bullet={<TbSchool size={20} />}>
           <Text color="dimmed" size="sm">
             Requirements for BSc Computer Science satisfied.
           </Text>
         </Timeline.Item>
 
-        <Timeline.Item title="Swiss Armed Forces">
+        <Timeline.Item title="DeepJudge AG" bullet={<TbBriefcase size={20} />}>
           <Text color="dimmed" size="sm">
-            In the Winter of 2023 I will complete my Swiss Army service.
+            I currently work part time at ETH Spinoff DeepJudge as a Software
+            Engineer.
           </Text>
         </Timeline.Item>
 
-        <Timeline.Item title="DeepJudge AG">
+        <Timeline.Item title="Experience" bullet={<FiTool size={20} />}>
           <Text color="dimmed" size="sm">
-            I currently work part time at DeepJudge as a Software Engineer.
-          </Text>
-        </Timeline.Item>
-
-        <Timeline.Item title="ETH Zürich">
-          <Text color="dimmed" size="sm">
-            Master Studies at ETH Zürich.
+            I have experience building modern web applications.
           </Text>
         </Timeline.Item>
       </Timeline>
+      <Socials />
     </div>
   );
 }

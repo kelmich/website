@@ -1,55 +1,37 @@
 import React from "react";
-import CSS from "csstype";
-import { ActionIcon, Group, useMantineTheme } from "@mantine/core";
-import { FiGithub, FiGitlab, FiLinkedin } from "react-icons/fi";
+import { Text, Button, Card, Group, useMantineTheme } from "@mantine/core";
 
 function Socials() {
   const theme = useMantineTheme();
-
-  const buttonStyle: CSS.Properties = {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    width: "50px",
-  };
+  const secondaryColor =
+    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   return (
-    <div style={{ width: 300 }}>
+    <Card shadow="sm" padding="lg" style={{ marginTop: 30 }}>
       <Group
-        noWrap
-        position="apart"
-        style={{ marginBottom: 20, marginTop: theme.spacing.sm }}
+        position="left"
+        style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
       >
-        <ActionIcon
-          variant="light"
-          component="a"
-          size="xl"
-          title="Michael's Github"
-          href="https://github.com/kelmich"
-        >
-          <FiGithub />
-        </ActionIcon>
-        <ActionIcon
-          variant="light"
-          component="a"
-          size="xl"
-          title="Michael's LinkedIn"
-          href="https://www.linkedin.com/in/michael-keller-396467209/"
-        >
-          <FiLinkedin />
-        </ActionIcon>
-        <ActionIcon
-          variant="light"
-          component="a"
-          size="xl"
-          title="Michael's ETH Gitlab"
-          href="https://gitlab.ethz.ch/kelmich"
-        >
-          <FiGitlab />
-        </ActionIcon>
+        <Text weight={500}>Have a hard problem?</Text>
       </Group>
-    </div>
+
+      <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
+        I work freelance and love a challenge.
+      </Text>
+
+      <Button
+        component="a"
+        // variant="gradient"
+        variant="light"
+        color="blue"
+        // gradient={{ from: "teal", to: "blue", deg: 60 }}
+        fullWidth
+        style={{ marginTop: 14 }}
+        href="mailto:mail@kellermichael.com"
+      >
+        Request a quote
+      </Button>
+    </Card>
   );
 }
 
