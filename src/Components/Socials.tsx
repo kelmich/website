@@ -12,11 +12,11 @@ function Socials() {
         position="left"
         style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
       >
-        <Text weight={500}>Have a hard problem?</Text>
+        <Text weight={500}>Have a question?</Text>
       </Group>
 
       <Text size="sm" style={{ color: secondaryColor, lineHeight: 1.5 }}>
-        I work freelance and love a challenge.
+        Please feel free to shoot me an email
       </Text>
 
       <Button
@@ -29,7 +29,7 @@ function Socials() {
         style={{ marginTop: 14 }}
         href="mailto:mail@kellermichael.com"
       >
-        Request a quote
+        Reach Out
       </Button>
     </Card>
   );
