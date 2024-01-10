@@ -61,7 +61,7 @@ function AboutMe() {
               component="a"
               size="xs"
               title="Michael's LinkedIn"
-              href="https://www.linkedin.com/in/michael-keller-396467209/"
+              href="https://www.linkedin.com/in/kelmich/"
             >
               <FiLinkedin />
             </ActionIcon>
