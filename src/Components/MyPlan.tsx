@@ -19,7 +19,7 @@ function MyPlan() {
       <Timeline active={2} bulletSize={30} lineWidth={0} color="blue">
         <Timeline.Item title="ETH Zürich" bullet={<TbSchool size={20} />}>
           <Text color="dimmed" size="sm">
-            Requirements for BSc Computer Science satisfied.
+            BSc Computer Science
           </Text>
         </Timeline.Item>
 
