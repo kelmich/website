@@ -25,7 +25,7 @@ function MyPlan() {
 
         <Timeline.Item title="DeepJudge AG" bullet={<TbBriefcase size={20} />}>
           <Text color="dimmed" size="sm">
-            I currently work part time at DeepJudge, an ETH Spinoff, as a
+            I currently work part time at DeepJudge, an ETH spinoff, as a
             Software Engineer.
           </Text>
         </Timeline.Item>
