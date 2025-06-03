@@ -34,6 +34,7 @@ function AboutMe() {
     <div style={{ width: 340, margin: 20 }}>
       <Card shadow="sm" padding="lg">
         <Card.Section>
+          {/* Picture placeholder - replace with your own image */}
           <Image
             src={require("../Assets/me-frontal.jpeg")}
             height={300}
@@ -81,9 +82,14 @@ function AboutMe() {
           size="sm"
           style={{ marginTop: 15, color: secondaryColor, lineHeight: 1.5 }}
         >
-          I'm a student at ETH Zürich completing my Masters in Computer Science.
-          My interests are in hard algorithmic problems and using computers to
-          make my life easier.
+          I completed my Bachelor's degree in Computer Science at ETH Zürich and am currently pursuing my Master's degree there. I work at DeepJudge AG, where I apply my passion for hard algorithmic problems and using technology to solve real-world challenges.
+        </Text>
+
+        <Text
+          size="sm"
+          style={{ marginTop: 10, color: secondaryColor, lineHeight: 1.5 }}
+        >
+          My interests span across computer science fundamentals and practical applications that make life easier through intelligent automation.
         </Text>
 
         {/* <Button
