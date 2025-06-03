@@ -16,31 +16,18 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check if user has a saved preference
     const savedTheme = localStorage.getItem('theme') as Theme;
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
-    }
-    
+    setTheme(savedTheme || (systemPrefersDark ? 'dark' : 'light'));
     setMounted(true);
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
     
-    // Apply theme to document
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-    
-    // Save to localStorage
+    const root = document.documentElement;
+    root.classList.toggle('dark', theme === 'dark');
     localStorage.setItem('theme', theme);
   }, [theme, mounted]);
 
@@ -48,9 +35,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme((prev: Theme) => prev === 'light' ? 'dark' : 'light');
   };
 
-  // Prevent flash of wrong theme during SSR
   if (!mounted) {
-    return <div style={{ visibility: 'hidden' }}>{children}</div>;
+    return null;
   }
 
   return (
