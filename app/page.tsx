@@ -1,6 +1,6 @@
-import React from 'react'
-import AboutMe from './components/AboutMe'
-import MyPlan from './components/MyPlan'
+import React from "react";
+import AboutMe from "./components/AboutMe";
+import MyPlan from "./components/MyPlan";
 
 export default function Home() {
   return (
@@ -10,12 +10,12 @@ export default function Home() {
           Michael Keller
         </h1>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-6xl w-full px-4">
         <div className="flex justify-center">
           <AboutMe />
         </div>
-        
+
         <div className="flex items-stretch justify-center">
           <div className="flex flex-col items-left justify-between p-5 pt-10">
             <MyPlan />
@@ -23,5 +23,5 @@ export default function Home() {
         </div>
       </div>
     </div>
-  )
+  );
 }

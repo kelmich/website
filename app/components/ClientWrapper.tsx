@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { ThemeToggle } from './ThemeToggle'
+import React from "react";
+import { ThemeToggle } from "./ThemeToggle";
 
-interface ClientWrapperProps {
-  children: React.ReactNode
-}
-
-export function ClientWrapper({ children }: ClientWrapperProps) {
+export default function ClientWrapper({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
+    <div>
       <ThemeToggle />
       {children}
-    </>
-  )
+    </div>
+  );
 }

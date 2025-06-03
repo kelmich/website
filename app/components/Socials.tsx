@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
 
 function Socials() {
   return (
@@ -22,7 +22,7 @@ function Socials() {
         Reach Out
       </a>
     </div>
-  )
+  );
 }
 
-export default Socials
+export default Socials;
