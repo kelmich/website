@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono } from "next/font/google";
 
 const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
   weight: "400",
 });
 import "./globals.css";

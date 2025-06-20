@@ -1,4 +1,3 @@
-import { Github, Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
@@ -39,9 +38,9 @@ export default function Home() {
             width={400}
             height={400}
           />
-          That's me.
+          That&apos;s me.
           <br />
-          I'm bad at cooking if you could not tell.
+          I&apos;m bad at cooking if you could not tell.
         </div>
         <div className="relative bg-blue-200 border border-blue-900 flex flex-col items-center justify-center p-2">
           <p className="absolute top-1 left-1">02</p>
@@ -87,7 +86,8 @@ export default function Home() {
 
       {/* footer */}
       <footer className="min-h-16 p-4 flex flex-row space-x-4 justify-end items-center border border-black">
-        © Michael Keller. All rights reserved. (Not like I'd sue you though)
+        © Michael Keller. All rights reserved. (Not like I&apos;d sue you
+        though)
       </footer>
     </div>
   );
