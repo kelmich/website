@@ -65,7 +65,17 @@ export default function Home() {
             >
               ETH Zürich
             </a>
-            . Working on my Masters now.
+            . While I was there I was the board member of the{" "}
+            <a
+              href="https://vis.ethz.ch"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline text-gray-600"
+            >
+              Computer Science Student Association (VIS)
+            </a>{" "}
+            in charge of the Software Development comission. Working on my
+            Masters now.
           </span>
           <span>
             My current passion project is Flatfalcon. It concerns efficient
