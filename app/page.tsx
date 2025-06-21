@@ -52,8 +52,8 @@ export default function Home() {
               className="hover:underline text-gray-600"
             >
               DeepJudge
-            </a>
-            .
+            </a>{" "}
+            as a software engineer.
           </span>
           <span>
             I did my Computer Science Bachelors at{" "}
