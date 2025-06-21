@@ -75,8 +75,9 @@ export default function Home() {
       </main>
 
       {/* footer */}
-      <footer className="min-h-16 p-4 flex flex-row space-x-4 justify-end items-center border border-black">
-        © Michael Keller. (Not like I&apos;d sue you though)
+      <footer className="min-h-16 p-4 flex flex-wrap justify-end items-center border border-black space-x-3">
+        <span>© Michael Keller</span>
+        <span>(Not like I&apos;d sue you though)</span>
       </footer>
     </div>
   );
