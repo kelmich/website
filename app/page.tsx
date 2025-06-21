@@ -2,9 +2,9 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex flex-col w-screen min-h-screen bg-white text-blue-900">
+    <div className="flex flex-col w-screen min-h-screen bg-white text-gray-900">
       {/* header */}
-      <header className="h-16 p-4 flex flex-row space-x-4 justify-end items-center border border-blue-900">
+      <header className="h-16 p-4 flex flex-row space-x-4 justify-end items-center border border-gray-900">
         <a
           href="https://github.com/kelmich"
           target="_blank"
@@ -29,11 +29,11 @@ export default function Home() {
       </header>
 
       {/* main content */}
-      <main className="flex-1 bg-blue-400 grid lg:grid-cols-2 grid-cols-1">
-        <div className="relative bg-blue-200 border border-blue-900 flex flex-col items-center justify-center p-2">
+      <main className="flex-1 bg-white grid lg:grid-cols-2 grid-cols-1">
+        <div className="relative bg-gray-200 border border-gray-900 flex flex-col items-center justify-center p-12">
           <p className="absolute top-1 left-1">01</p>
           <Image
-            src="/michaelkeller4.png"
+            src="/michaelkeller5.png"
             alt="Picture of Michael Keller"
             width={400}
             height={400}
@@ -42,52 +42,41 @@ export default function Home() {
           <br />
           I&apos;m bad at cooking if you could not tell.
         </div>
-        <div className="relative bg-blue-200 border border-blue-900 flex flex-col items-center justify-center p-2">
-          <p className="absolute top-1 left-1">02</p>
-          <p>
-            I work at{" "}
+        <div className="relative bg-gray-300 border border-gray-900 flex flex-col items-start justify-center p-12 space-y-8 text-left">
+          <span>
+            <p className="absolute top-1 left-1">02</p>I work at{" "}
             <a
               href="https://deepjudge.ai"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-blue-700"
+              className="hover:underline text-gray-600"
             >
               DeepJudge
             </a>
-            .<div className="h-8" />I did my Computer Science Bachelors at{" "}
+            .
+          </span>
+          <span>
+            I did my Computer Science Bachelors at{" "}
             <a
               href="https://www.ethz.ch"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-blue-700"
+              className="hover:underline text-gray-600"
             >
               ETH Zürich
             </a>
-            .
-            <br /> Working on my Masters now.
-            <div className="h-8" />
-            My current passion project is Flatfalcon.
-            <br />
-            It concerns efficient shortest path oracles.
-            <br />
-            Read more{" "}
-            <a
-              href="https://www.ethz.ch"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-blue-700"
-            >
-              here
-            </a>
-            .
-          </p>
+            . Working on my Masters now.
+          </span>
+          <span>
+            My current passion project is Flatfalcon. It concerns efficient
+            shortest path oracles. Read more here soon.
+          </span>
         </div>
       </main>
 
       {/* footer */}
       <footer className="min-h-16 p-4 flex flex-row space-x-4 justify-end items-center border border-black">
-        © Michael Keller. All rights reserved. (Not like I&apos;d sue you
-        though)
+        © Michael Keller. (Not like I&apos;d sue you though)
       </footer>
     </div>
   );
