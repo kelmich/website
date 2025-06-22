@@ -13,9 +13,7 @@ export default function Layout({ children, className = "" }: LayoutProps) {
       <Header />
 
       {/* Main Content - Flexible height that fills remaining space */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Footer - Fixed height */}
       <Footer />
