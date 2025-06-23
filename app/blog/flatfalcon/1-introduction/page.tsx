@@ -4,14 +4,14 @@ import Header from "@/app/components/Header";
 
 export default async function Home() {
   return (
-    <div className="flex flex-col w-screen min-h-screen bg-white text-gray-900">
+    <div className="flex flex-col w-screen min-h-screen">
       <Header />
 
-      <main className="flex-1 bg-gray-200 flex justify-center">
-        <div className="w-full max-w-3xl px-4 py-12 space-y-4">
-          <h1 className="text-4xl font-bold mb-4">Chapter 1</h1>
-          <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
-          <p className="text-base leading-relaxed">
+      <main className="flex justify-center bg-primary text-primary-foreground">
+        <div className="w-full max-w-3xl space-y-6 p-4">
+          <h1>Chapter 1</h1>
+          <h2>Introduction</h2>
+          <p>
             It all started last year when I was looking for a flat in Zurich. I
             had multiple requirements. Most were basic and supported by most
             listing websites, like appartment size and rent price. However many
@@ -22,13 +22,13 @@ export default async function Home() {
             would be something like this:
           </p>
           <CodeBlock lang="python" filename="workflow.py" />
-          <p className="text-base leading-relaxed">
+          <p>
             As every performance driven developer knows: It&apos;s those pesky
             inner loops you have to watch out for. I would end up spending most
             of my time on google maps trying to determine if an otherwise
             promising flat was anywhere close to where I wanted to be.
           </p>
-          <p className="text-base leading-relaxed">
+          <p>
             The solution offered by the platform I used most often was not
             satisfactory. In general the following solutions exist:
           </p>
@@ -41,20 +41,20 @@ export default async function Home() {
               Maps)
             </li>
           </ol>
-          <p className="text-base leading-relaxed">
+          <p>
             The first method is obviously terrible. You're going to force me to
             go figure out the relevant zip codes on my own? Most likely my set
             of zip codes will cover more area than the result set I really would
             want to cover. Horrible.
           </p>
-          <p className="text-base leading-relaxed">
+          <p>
             The second method suffers from many of the same problems. How do I
             even know what my region of interest is? There might be some fast
             highway that makes some far away patch of land from my point of
             interest a relevant region. How would I know? And I need to draw
             this with my fatty finger? Pass.
           </p>
-          <p className="text-base leading-relaxed">
+          <p>
             The third method is actually somewhat reasonable. Essentially the
             idea is to answer the question "What is the region of interest" for
             the user. We run a dijkstra search from the given query point and
