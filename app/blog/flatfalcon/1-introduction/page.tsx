@@ -8,7 +8,7 @@ export default async function Home() {
       <Header />
 
       <main className="flex-1 bg-gray-200 flex justify-center">
-        <div className="w-full max-w-3xl px-4 py-12">
+        <div className="w-full max-w-3xl px-4 py-12 space-y-4">
           <h1 className="text-4xl font-bold mb-4">Chapter 1</h1>
           <h2 className="text-2xl font-semibold mb-4">Introduction</h2>
           <p className="text-base leading-relaxed">
@@ -21,16 +21,13 @@ export default async function Home() {
             listings had appeared since the last time I checked. In python this
             would be something like this:
           </p>
-          <br />
           <CodeBlock lang="python" filename="workflow.py" />
-          <br />
           <p className="text-base leading-relaxed">
             As every performance driven developer knows: It&apos;s those pesky
             inner loops you have to watch out for. I would end up spending most
             of my time on google maps trying to determine if an otherwise
             promising flat was anywhere close to where I wanted to be.
           </p>
-          <br />
           <p className="text-base leading-relaxed">
             The solution offered by the platform I used most often was not
             satisfactory. In general the following solutions exist:
@@ -50,7 +47,6 @@ export default async function Home() {
             of zip codes will cover more area than the result set I really would
             want to cover. Horrible.
           </p>
-          <br />
           <p className="text-base leading-relaxed">
             The second method suffers from many of the same problems. How do I
             even know what my region of interest is? There might be some fast
@@ -58,7 +54,6 @@ export default async function Home() {
             interest a relevant region. How would I know? And I need to draw
             this with my fatty finger? Pass.
           </p>
-          <br />
           <p className="text-base leading-relaxed">
             The third method is actually somewhat reasonable. Essentially the
             idea is to answer the question "What is the region of interest" for

@@ -66,3 +66,7 @@
 a {
     @apply text-link hover:underline;
 }
+
+ol {
+    @apply list-decimal ml-10;
+}
