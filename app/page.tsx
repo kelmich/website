@@ -12,7 +12,7 @@ export default function Home() {
         <div className="relative border flex flex-col items-center justify-center p-12 bg-primary text-primary-foreground">
           <p className="absolute top-1 left-1">01</p>
           <Image
-            src="/michaelkeller7.jpeg"
+            src="/michaelkeller5.png"
             alt="Picture of Michael Keller"
             width={400}
             height={400}
