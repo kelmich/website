@@ -1,12 +1,13 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React from "react";
+import clsx from "clsx";
 
 type NodeId = string;
 
 type Edge = {
   from: NodeId;
   to: NodeId;
-  color: string;
+  style: string; // e.g., "stroke-blue-500 fill-blue-500"
   weight: number;
 };
 
@@ -14,7 +15,7 @@ type Node = {
   id: NodeId;
   x: number;
   y: number;
-  color: string;
+  style: string; // e.g., "fill-pink-500 stroke-pink-500"
 };
 
 type Graph = {
@@ -27,27 +28,16 @@ type Props = {
 };
 
 const GraphVisualizer: React.FC<Props> = ({ graph }) => {
-  const backgroundColor = '#1e103f';
-
   return (
-    <div
-      style={{
-        display: 'flex',
-        gap: '20px',
-        background: backgroundColor,
-        padding: 20,
-        borderRadius: 10,
-      }}
-    >
-      <svg width="500" height="300" style={{ background: backgroundColor, borderRadius: 8 }}>
+    <div className="flex gap-5 bg-background p-5 rounded-lg">
+      <svg width="500" height="300" className="bg-background rounded-md">
         {/* Edges */}
         {graph.edges.map((edge, i) => {
           const from = graph.nodes.find((n) => n.id === edge.from)!;
           const to = graph.nodes.find((n) => n.id === edge.to)!;
 
-          const transitionStyle = {
-            transition: 'stroke 0.25s ease, fill 0.25s ease',
-          };
+          const midX = (from.x + to.x) / 2;
+          const midY = (from.y + to.y) / 2;
 
           return (
             <g key={i}>
@@ -56,31 +46,33 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
                 y1={from.y}
                 x2={to.x}
                 y2={to.y}
-                stroke={edge.color}
-                strokeWidth="2"
-                style={transitionStyle}
+                className={clsx(
+                  edge.style,
+                  "stroke-2 transition-colors duration-200",
+                )}
               />
               <g>
                 <rect
-                  x={(from.x + to.x) / 2 - 12.5}
-                  y={(from.y + to.y) / 2 - 12.5}
+                  x={midX - 12.5}
+                  y={midY - 12.5}
                   width={25}
                   height={25}
                   rx={12.5}
                   ry={12.5}
-                  fill={backgroundColor}
-                  stroke={edge.color}
+                  className={clsx(
+                    "fill-background",
+                    edge.style,
+                    "transition-colors duration-200",
+                  )}
                   strokeWidth={1}
-                  style={transitionStyle}
                 />
                 <text
-                  x={(from.x + to.x) / 2}
-                  y={(from.y + to.y) / 2 + 4}
-                  fill={edge.color}
-                  fontSize="12"
+                  x={midX}
+                  y={midY + 4}
                   textAnchor="middle"
+                  fontSize="12"
                   fontWeight="bold"
-                  style={transitionStyle}
+                  className={clsx(edge.style, "transition-colors duration-200")}
                 >
                   {edge.weight}
                 </text>
@@ -90,34 +82,28 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
         })}
 
         {/* Nodes */}
-        {graph.nodes.map((node) => {
-          const transitionStyle = {
-            transition: 'fill 0.5s ease, stroke 0.5s ease',
-          };
-
-          return (
-            <g key={node.id}>
-              <circle
-                cx={node.x}
-                cy={node.y}
-                r="20"
-                fill={node.color}
-                stroke={node.color}
-                strokeWidth="2"
-                style={transitionStyle}
-              />
-              <text
-                x={node.x}
-                y={node.y + 5}
-                textAnchor="middle"
-                fill={backgroundColor}
-                fontSize="14"
-              >
-                {node.id}
-              </text>
-            </g>
-          );
-        })}
+        {graph.nodes.map((node) => (
+          <g key={node.id}>
+            <circle
+              cx={node.x}
+              cy={node.y}
+              r="20"
+              className={clsx(
+                node.style,
+                "stroke-2 transition-colors duration-300",
+              )}
+            />
+            <text
+              x={node.x}
+              y={node.y + 5}
+              textAnchor="middle"
+              fontSize="14"
+              className={clsx(node.style, "fill-background")}
+            >
+              {node.id}
+            </text>
+          </g>
+        ))}
       </svg>
     </div>
   );
