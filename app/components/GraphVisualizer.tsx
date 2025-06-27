@@ -29,14 +29,6 @@ type Props = {
 const GraphVisualizer: React.FC<Props> = ({ graph }) => {
   const backgroundColor = '#1e103f';
 
-  // Local state to trigger color transitions
-  const [displayGraph, setDisplayGraph] = useState(graph);
-
-  // When `graph` changes, update displayGraph with a small delay to allow transition
-  useEffect(() => {
-    setDisplayGraph(graph);
-  }, [graph]);
-
   return (
     <div
       style={{
@@ -49,9 +41,9 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
     >
       <svg width="500" height="300" style={{ background: backgroundColor, borderRadius: 8 }}>
         {/* Edges */}
-        {displayGraph.edges.map((edge, i) => {
-          const from = displayGraph.nodes.find((n) => n.id === edge.from)!;
-          const to = displayGraph.nodes.find((n) => n.id === edge.to)!;
+        {graph.edges.map((edge, i) => {
+          const from = graph.nodes.find((n) => n.id === edge.from)!;
+          const to = graph.nodes.find((n) => n.id === edge.to)!;
 
           const transitionStyle = {
             transition: 'stroke 0.25s ease, fill 0.25s ease',
@@ -98,7 +90,7 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
         })}
 
         {/* Nodes */}
-        {displayGraph.nodes.map((node) => {
+        {graph.nodes.map((node) => {
           const transitionStyle = {
             transition: 'fill 0.5s ease, stroke 0.5s ease',
           };
