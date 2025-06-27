@@ -2,20 +2,29 @@
 
 /* Base theme variables (light mode default) */
 @theme {
-    --color-background: oklch(1 0 0);
-    --color-foreground: oklch(0.145 0 0);
-    --color-primary: oklch(92.8% 0.006 264.531);
-    --color-primary-foreground: oklch(21% 0.034 264.665);
-    --color-secondary: oklch(87.2% 0.01 258.338);
-    --color-secondary-foreground: oklch(21% 0.034 264.665);
-    --color-muted: oklch(0.97 0 0);
-    --color-muted-foreground: oklch(0.556 0 0);
-    --color-accent: oklch(0.97 0 0);
-    --color-accent-foreground: oklch(0.205 0 0);
-    --color-border: oklch(21% 0.034 264.665);
-    --color-input: oklch(0.922 0 0);
-    --color-ring: oklch(0.708 0 0);
-    --color-link: oklch(37.9% 0.146 265.522);
+
+--color-background: oklch(1 0 0);             /* pure white */
+--color-background-foreground: oklch(32% 0.07 265);         /* dark navy blue */
+
+--color-primary: oklch(32% 0.07 265);         /* dark navy blue */
+--color-primary-foreground: oklch(96% 0.01 265); /* light text on dark navy */
+
+--color-secondary: oklch(88% 0.02 255);       /* soft, desaturated bluish gray */
+--color-secondary-foreground: oklch(32% 0.07 265);         /* dark navy blue */
+
+--color-muted: oklch(0.97 0 0);
+--color-muted-foreground: oklch(0.556 0 0);
+
+--color-accent: oklch(0.97 0 0);
+--color-accent-foreground: oklch(0.205 0 0);
+
+--color-border: oklch(32% 0.07 265);         /* match secondary-foreground for subtle borders */
+--color-input: oklch(0.922 0 0);
+--color-ring: oklch(0.708 0 0);
+--color-link: oklch(45% 0.1 265);             /* lighter version of the navy for inline links */
+
+
+
     /* --color-card: #ffffff;
     --color-card-foreground: #0f172a;
     --color-popover: #ffffff;
@@ -62,6 +71,12 @@
         --color-error: #dc2626;
     }
 } */
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+}
 
 a {
     @apply text-link hover:underline;

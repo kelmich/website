@@ -31,7 +31,7 @@ export default async function CodeBlock({ lang, filename }: Props) {
   return (
     <div
       dangerouslySetInnerHTML={{ __html: html }}
-      className="p-4 rounded-lg bg-white overflow-auto"
+      className="p-4 rounded-lg bg-background overflow-auto"
     />
   );
 }

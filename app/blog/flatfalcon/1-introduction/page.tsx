@@ -7,7 +7,7 @@ export default async function Home() {
     <div className="flex flex-col w-screen min-h-screen">
       <Header />
 
-      <main className="flex justify-center bg-primary text-primary-foreground">
+      <main className="flex justify-center bg-secondary text-secondary-foreground">
         <div className="w-full max-w-3xl space-y-6 p-4">
           <h1>Chapter 1</h1>
           <h2>Introduction</h2>
