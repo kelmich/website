@@ -56,8 +56,8 @@
 
 /* Optional: Custom color palette extensions */
 @theme {
-    --color-success: #10b981;
-    --color-success-foreground: #ffffff;
+    --color-success: oklch(75% 0.10 142);
+    --color-success-foreground: oklch(20% 0.05 142);
     --color-warning: #f59e0b;
     --color-warning-foreground: #ffffff;
     --color-error: #ef4444;
@@ -96,4 +96,8 @@ h1 {
 
 h2 {
     @apply text-2xl font-semibold my-3;
+}
+
+button {
+    @apply bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90 transition-colors hover:cursor-pointer;
 }

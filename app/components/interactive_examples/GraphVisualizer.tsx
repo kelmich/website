@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { clsx } from "clsx";
 import { cva, type VariantProps } from "class-variance-authority";
 
 export type NodeId = string;
@@ -35,6 +34,7 @@ const nodeStyles = cva("transition-colors duration-300", {
     variant: {
       primary: "fill-primary",
       secondary: "fill-secondary",
+      success: "fill-success",
     },
   },
   defaultVariants: {
@@ -47,6 +47,7 @@ const nodeTextStyles = cva("font-bold transition-colors duration-300", {
     variant: {
       primary: "fill-primary-foreground",
       secondary: "fill-secondary-foreground",
+      success: "fill-success-foreground",
     },
   },
   defaultVariants: {
@@ -61,9 +62,7 @@ const edgeStyles = cva("stroke-2 transition-colors duration-200", {
     variant: {
       primary: "stroke-primary",
       secondary: "stroke-secondary",
-    },
-    active: {
-      true: "animate-pulse",
+      success: "stroke-success",
     },
   },
   defaultVariants: {
@@ -76,6 +75,7 @@ const edgeTextStyles = cva("font-bold transition-colors duration-300", {
     variant: {
       primary: "fill-primary",
       secondary: "fill-secondary",
+      success: "fill-success",
     },
   },
   defaultVariants: {
@@ -87,8 +87,8 @@ type EdgeVariantProps = VariantProps<typeof edgeStyles>;
 
 const GraphVisualizer: React.FC<Props> = ({ graph }) => {
   return (
-    <div className="flex gap-5 bg-background p-5 rounded-lg">
-      <svg width="800" height="300" className="bg-background rounded-md">
+    <div className="flex gap-5 bg-background border p-5">
+      <svg width="800" height="300" className="bg-background">
         {/* Edges */}
         {graph.edges.map((edge, i) => {
           const from = graph.nodes.find((n) => n.id === edge.from)!;
@@ -106,7 +106,6 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
                 y2={to.y}
                 className={edgeStyles({
                   variant: edge.variant,
-                  active: edge.active,
                 })}
               />
               <g>
@@ -138,19 +137,13 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
         {/* Nodes */}
         {graph.nodes.map((node) => (
           <g key={node.id}>
-            {node.active && (
-              <circle
-                cx={node.x}
-                cy={node.y}
-                r="28"
-                className="fill-none stroke-ring animate-ping opacity-70"
-              />
-            )}
             <circle
               cx={node.x}
               cy={node.y}
               r="20"
-              className={nodeStyles({ variant: node.variant })}
+              className={nodeStyles({
+                variant: node.variant,
+              })}
             />
             <text
               x={node.x}
