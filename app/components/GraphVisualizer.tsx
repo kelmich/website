@@ -1,24 +1,25 @@
 "use client";
 import React from "react";
 import clsx from "clsx";
+import { cva } from "class-variance-authority";
 
-type NodeId = string;
+export type NodeId = string;
 
-type Edge = {
+export type Edge = {
   from: NodeId;
   to: NodeId;
   style: string; // e.g., "stroke-blue-500 fill-blue-500"
   weight: number;
 };
 
-type Node = {
+export type Node = {
   id: NodeId;
   x: number;
   y: number;
   style: string; // e.g., "fill-pink-500 stroke-pink-500"
 };
 
-type Graph = {
+export type Graph = {
   nodes: Node[];
   edges: Edge[];
 };
@@ -30,7 +31,7 @@ type Props = {
 const GraphVisualizer: React.FC<Props> = ({ graph }) => {
   return (
     <div className="flex gap-5 bg-background p-5 rounded-lg">
-      <svg width="500" height="300" className="bg-background rounded-md">
+      <svg width="800" height="300" className="bg-background rounded-md">
         {/* Edges */}
         {graph.edges.map((edge, i) => {
           const from = graph.nodes.find((n) => n.id === edge.from)!;
@@ -83,22 +84,17 @@ const GraphVisualizer: React.FC<Props> = ({ graph }) => {
 
         {/* Nodes */}
         {graph.nodes.map((node) => (
-          <g key={node.id}>
-            <circle
-              cx={node.x}
-              cy={node.y}
-              r="20"
-              className={clsx(
-                node.style,
-                "stroke-2 transition-colors duration-300",
-              )}
-            />
+          <g
+            key={node.id}
+            className={clsx(node.style, "transition-colors duration-300")}
+          >
+            <circle cx={node.x} cy={node.y} r="20" className="stroke-2" />
             <text
               x={node.x}
               y={node.y + 5}
               textAnchor="middle"
-              fontSize="14"
-              className={clsx(node.style, "fill-background")}
+              fontSize="16"
+              className="fill-red-300"
             >
               {node.id}
             </text>
