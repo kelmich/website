@@ -10,14 +10,14 @@ import { Graph } from "@/app/algorithms/graph";
 export const DijkstraVisualizer = () => {
   const initialGraph = new Graph<VisualizationNodeData, VisualizationEdgeData>(
     [
-      { id: "A", data: { x: 100, y: 100, variant: "primary" } },
-      { id: "B", data: { x: 200, y: 50, variant: "secondary" } },
-      { id: "C", data: { x: 200, y: 150, variant: "secondary" } },
-      { id: "D", data: { x: 300, y: 100, variant: "secondary" } },
-      { id: "E", data: { x: 400, y: 50, variant: "secondary" } },
-      { id: "F", data: { x: 400, y: 150, variant: "secondary" } },
-      { id: "G", data: { x: 500, y: 30, variant: "secondary" } },
-      { id: "H", data: { x: 500, y: 170, variant: "secondary" } },
+      { id: "A", data: { x: 100, y: 200, variant: "primary" } },
+      { id: "B", data: { x: 200, y: 100, variant: "secondary" } },
+      { id: "C", data: { x: 200, y: 300, variant: "secondary" } },
+      { id: "D", data: { x: 300, y: 200, variant: "secondary" } },
+      { id: "E", data: { x: 400, y: 100, variant: "secondary" } },
+      { id: "F", data: { x: 400, y: 300, variant: "secondary" } },
+      { id: "G", data: { x: 500, y: 60, variant: "secondary" } },
+      { id: "H", data: { x: 550, y: 200, variant: "secondary" } },
     ],
     [
       { from: "A", to: "B", weight: 2, data: { variant: "secondary" } },
