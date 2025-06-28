@@ -1,44 +1,30 @@
-import { Graph } from "@/app/components/interactive_examples/GraphVisualizer";
+import { MinHeap } from "@/app/algorithms/minheap";
+import { Graph } from "@/app/algorithms/graph";
 
-export const dijkstra = (
-  graph: Graph,
-  start: string
+export const dijkstraStep = (
+  graph: Graph<unknown, unknown>,
+  minHeap: MinHeap<{ id: string; weight: number }>,
+  visited: Set<string>,
+  result: Record<string, number>
 ): Record<string, number> => {
-  const distances: Record<string, number> = {};
-  const previous: Record<string, string | null> = {};
-  const unvisited: Set<string> = new Set(graph.nodes.map((n) => n.id));
+  const current = minHeap.pop();
+  if (!current) return result;
 
-  // Initialize distances and previous nodes
-  for (const node of graph.nodes) {
-    distances[node.id] = Infinity;
-    previous[node.id] = null;
-  }
-  distances[start] = 0;
+  const { id, weight } = current;
 
-  while (unvisited.size > 0) {
-    // Get the unvisited node with the smallest distance
-    let currentNode: string | null = null;
-    for (const node of unvisited) {
-      if (currentNode === null || distances[node] < distances[currentNode]) {
-        currentNode = node;
+  visited.add(id);
+  result[id] = weight;
+
+  // Update distances for neighbors
+  for (const edge of graph.neighbors(id)) {
+    if (!visited.has(edge.to)) {
+      const newDistance = weight + edge.weight;
+      if (newDistance < (result[edge.to] || Infinity)) {
+        result[edge.to] = newDistance;
+        minHeap.insert({ id: edge.to, weight: newDistance });
       }
     }
-
-    if (distances[currentNode] === Infinity) break; // All remaining nodes are unreachable
-
-    // Update distances to neighbors
-    for (const neighbor in graph[currentNode]) {
-      const weight = graph[currentNode][neighbor];
-      const newDistance = distances[currentNode] + weight;
-
-      if (newDistance < distances[neighbor]) {
-        distances[neighbor] = newDistance;
-        previous[neighbor] = currentNode;
-      }
-    }
-
-    unvisited.delete(currentNode);
   }
 
-  return distances;
+  return result;
 };

@@ -42,10 +42,10 @@ export default async function Home() {
             </li>
           </ol>
           <p>
-            The first method is obviously terrible. You're going to force me to
-            go figure out the relevant zip codes on my own? Most likely my set
-            of zip codes will cover more area than the result set I really would
-            want to cover. Horrible.
+            The first method is obviously terrible. You&apos;re going to force
+            me to go figure out the relevant zip codes on my own? Most likely my
+            set of zip codes will cover more area than the result set I really
+            would want to cover. Horrible.
           </p>
           <p>
             The second method suffers from many of the same problems. How do I
@@ -56,16 +56,16 @@ export default async function Home() {
           </p>
           <p>
             The third method is actually somewhat reasonable. Essentially the
-            idea is to answer the question "What is the region of interest" for
-            the user. We run a dijkstra search from the given query point and
-            compute all reachable area within our time budget.{" "}
-            <a href="https://www.newhome.ch">Newhome</a> does a version of this.
-            This method still has two drawbacks though.
+            idea is to answer the question `&quot;What is the region of
+            interest`&quot; for the user. We run a dijkstra search from the
+            given query point and compute all reachable area within our time
+            budget. <a href="https://www.newhome.ch">Newhome</a> does a version
+            of this. This method still has two drawbacks though.
           </p>
           <ol>
             <li>
-              We don't know how far away an individual listing is, only that
-              it's within our time budget.
+              We don&apos;t know how far away an individual listing is, only
+              that it&apos;s within our time budget.
             </li>
             <li>
               Possibly inefficient. The computed region may be arbitrarily
