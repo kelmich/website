@@ -1,4 +1,3 @@
-import CodeBlock from "@/app/components/CodeBlock";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import { DijkstraVisualizer } from "./DijkstraVisualizer";

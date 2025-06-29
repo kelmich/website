@@ -1,6 +1,12 @@
 export class MinHeap<T extends { weight: number }> {
   private heap: T[] = [];
 
+  clone(): MinHeap<T> {
+    const newHeap = new MinHeap<T>();
+    newHeap.heap = [...this.heap];
+    return newHeap;
+  }
+
   insert(val: T) {
     this.heap.push(val);
     this.bubbleUp();

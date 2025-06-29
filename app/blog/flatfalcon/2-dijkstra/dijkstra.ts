@@ -1,30 +1,76 @@
 import { MinHeap } from "@/app/algorithms/minheap";
 import { Graph } from "@/app/algorithms/graph";
+import {
+  AlgorithmStep,
+  AlgorithmVisualizer,
+} from "@/app/components/interactive_examples/AlgorithmVisualizer";
 
-export const dijkstraStep = (
-  graph: Graph<unknown, unknown>,
-  minHeap: MinHeap<{ id: string; weight: number }>,
-  visited: Set<string>,
-  result: Record<string, number>
-): Record<string, number> => {
-  const current = minHeap.pop();
-  if (!current) return result;
+export type DijkstraState = {
+  visited: Record<string, number>;
+  minHeap: MinHeap<{
+    id: string;
+    weight: number;
+    parent?: string;
+  }>;
+  currentNode?: string;
+};
 
-  const { id, weight } = current;
+export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
+  private graph: Graph<unknown, unknown>;
+  private visited: Record<string, number>;
+  private minHeap: MinHeap<{
+    id: string;
+    weight: number;
+    parent?: string;
+  }>;
+  private currentNode?: string;
 
-  visited.add(id);
-  result[id] = weight;
+  constructor(graph: Graph<unknown, unknown>, startNodeId: string) {
+    super();
+    this.graph = graph.clone();
+    this.visited = {};
+    this.minHeap = new MinHeap<{
+      id: string;
+      weight: number;
+      parent?: string;
+    }>();
+    this.minHeap.insert({ id: startNodeId, weight: 0 });
+    this.currentNode = startNodeId;
+  }
 
-  // Update distances for neighbors
-  for (const edge of graph.neighbors(id)) {
-    if (!visited.has(edge.to)) {
-      const newDistance = weight + edge.weight;
-      if (newDistance < (result[edge.to] || Infinity)) {
-        result[edge.to] = newDistance;
-        minHeap.insert({ id: edge.to, weight: newDistance });
+  protected getState(): DijkstraState {
+    return {
+      visited: { ...this.visited },
+      minHeap: this.minHeap.clone(),
+      currentNode: this.currentNode,
+    };
+  }
+
+  *run(): Generator<AlgorithmStep<DijkstraState>, void, unknown> {
+    while (this.minHeap.size() > 0) {
+      let currentNode = this.minHeap.pop();
+
+      // Skip already visited nodes
+      while (currentNode && this.visited[currentNode.id] !== undefined) {
+        currentNode = this.minHeap.pop();
+      }
+
+      if (!currentNode) return;
+
+      const { id, weight } = currentNode;
+
+      this.currentNode = id;
+      this.breakpoint(`Visiting ${id}`);
+      this.visited[id] = weight;
+
+      for (const edge of this.graph.neighbors(id)) {
+        const newDistance = weight + edge.weight;
+        this.minHeap.insert({
+          id: edge.to,
+          weight: newDistance,
+          parent: id,
+        });
       }
     }
   }
-
-  return result;
-};
+}

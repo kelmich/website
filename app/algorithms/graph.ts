@@ -20,6 +20,12 @@ export class Graph<T, U> {
     this.edges = edges;
   }
 
+  clone(): Graph<T, U> {
+    const clonedNodes = this.nodes.map((node) => ({ ...node }));
+    const clonedEdges = this.edges.map((edge) => ({ ...edge }));
+    return new Graph(clonedNodes, clonedEdges);
+  }
+
   neighbors(nodeId: NodeId): Edge<U>[] {
     return this.edges.filter((edge) => edge.from === nodeId);
   }
