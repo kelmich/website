@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { AlgorithmStep, AlgorithmVisualizer } from "./AlgorithmVisualizer";
 
 interface Props<T> {
@@ -18,10 +18,15 @@ export const ControlBar = <T,>(props: Props<T>) => {
 
   const handleReset = () => {
     generatorRef.current = props.executorFactory().run();
+    handleStep();
   };
 
+  useEffect(() => {
+    handleReset();
+  }, []);
+
   return (
-    <div className="h-16 p-4 flex flex-row space-x-4 justify-between items-center border bg-background text-background-foreground">
+    <div className="h-16 p-4 flex flex-row space-x-4 justify-between items-center bg-background text-background-foreground">
       <div className="space-x-4">
         <button onClick={handleStep}>Step</button>
       </div>

@@ -12,7 +12,6 @@ export type VisualizationEdgeData = EdgeVariantProps;
 
 type Props<T extends VisualizationNodeData, U extends VisualizationEdgeData> = {
   graph: Graph<T, U>;
-  info?: string;
 };
 
 const nodeStyles = cva("transition-colors duration-300", {
@@ -73,7 +72,7 @@ export type EdgeVariantProps = VariantProps<typeof edgeStyles>;
 
 const GraphVisualizer: React.FC<
   Props<VisualizationNodeData, VisualizationEdgeData>
-> = ({ graph, info }) => {
+> = ({ graph }) => {
   const [containerRef, { width, height }] = useElementSize<HTMLDivElement>();
   const padding = 40; // padding inside SVG
 
@@ -103,158 +102,151 @@ const GraphVisualizer: React.FC<
   const nodeRadius = 20;
 
   return (
-    <div className="w-full">
-      <div
-        ref={containerRef}
-        className="flex gap-5 bg-background border w-full"
-        style={{ height: `${graphHeight + 2 * padding}px` }}
-      >
-        <svg width={width} height={height} className="bg-background">
-          {/* Arrow marker defs */}
-          <defs>
-            <marker
-              id="arrow"
-              viewBox="0 0 10 10"
-              refX="10"
-              refY="5"
-              markerWidth="6"
-              markerHeight="6"
-              orient="auto-start-reverse"
-            >
-              <path d="M 0 0 L 10 5 L 0 10 z" className="fill-primary" />
-            </marker>
-          </defs>
+    <div
+      ref={containerRef}
+      className="flex gap-5 bg-background w-full"
+      style={{ height: `${graphHeight + 2 * padding}px` }}
+    >
+      <svg width={width} height={height} className="bg-background">
+        {/* Arrow marker defs */}
+        <defs>
+          <marker
+            id="arrow"
+            viewBox="0 0 10 10"
+            refX="10"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            orient="auto-start-reverse"
+          >
+            <path d="M 0 0 L 10 5 L 0 10 z" className="fill-primary" />
+          </marker>
+        </defs>
 
-          {/* Edges */}
-          {graph.edges.map((edge, i) => {
-            const from = graph.nodes.find((n) => n.id === edge.from)!;
-            const to = graph.nodes.find((n) => n.id === edge.to)!;
+        {/* Edges */}
+        {graph.edges.map((edge, i) => {
+          const from = graph.nodes.find((n) => n.id === edge.from)!;
+          const to = graph.nodes.find((n) => n.id === edge.to)!;
 
-            // Use mapped positions
-            const { x: x1, y: y1 } = mapNodePosition(from.data.x, from.data.y);
-            const { x: x2, y: y2 } = mapNodePosition(to.data.x, to.data.y);
+          // Use mapped positions
+          const { x: x1, y: y1 } = mapNodePosition(from.data.x, from.data.y);
+          const { x: x2, y: y2 } = mapNodePosition(to.data.x, to.data.y);
 
-            const dx = x2 - x1;
-            const dy = y2 - y1;
-            const mx = (x1 + x2) / 2;
-            const my = (y1 + y2) / 2;
+          const dx = x2 - x1;
+          const dy = y2 - y1;
+          const mx = (x1 + x2) / 2;
+          const my = (y1 + y2) / 2;
 
-            const bendAmount = 0.3;
-            const cx = mx - dy * bendAmount;
-            const cy = my + dx * bendAmount;
+          const bendAmount = 0.3;
+          const cx = mx - dy * bendAmount;
+          const cy = my + dx * bendAmount;
 
-            // Compute unit tangent vectors for curve adjustments
-            const dx1 = 2 * (cx - x1);
-            const dy1 = 2 * (cy - y1);
-            const dx2 = 2 * (x2 - cx);
-            const dy2 = 2 * (y2 - cy);
+          // Compute unit tangent vectors for curve adjustments
+          const dx1 = 2 * (cx - x1);
+          const dy1 = 2 * (cy - y1);
+          const dx2 = 2 * (x2 - cx);
+          const dy2 = 2 * (y2 - cy);
 
-            const tangentStart = Math.atan2(dy1, dx1);
-            const tangentEnd = Math.atan2(dy2, dx2);
+          const tangentStart = Math.atan2(dy1, dx1);
+          const tangentEnd = Math.atan2(dy2, dx2);
 
-            // Adjust edge start/end so arrow doesn't overlap node circle
-            const x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
-            const y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
-            const x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
-            const y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
+          // Adjust edge start/end so arrow doesn't overlap node circle
+          const x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
+          const y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
+          const x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
+          const y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
 
-            const pathD = `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
-            const markerId = `arrow-${i}`;
+          const pathD = `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
+          const markerId = `arrow-${i}`;
 
-            const strokeClass = edgeStyles({ variant: edge.data.variant });
-            const fillClass = edgeTextStyles({ variant: edge.data.variant });
+          const strokeClass = edgeStyles({ variant: edge.data.variant });
+          const fillClass = edgeTextStyles({ variant: edge.data.variant });
 
-            const t = 0.5;
-            const xt =
-              (1 - t) * (1 - t) * x1Adj + 2 * (1 - t) * t * cx + t * t * x2Adj;
-            const yt =
-              (1 - t) * (1 - t) * y1Adj + 2 * (1 - t) * t * cy + t * t * y2Adj;
+          const t = 0.5;
+          const xt =
+            (1 - t) * (1 - t) * x1Adj + 2 * (1 - t) * t * cx + t * t * x2Adj;
+          const yt =
+            (1 - t) * (1 - t) * y1Adj + 2 * (1 - t) * t * cy + t * t * y2Adj;
 
-            return (
-              <g key={i}>
-                <defs>
-                  <marker
-                    id={markerId}
-                    viewBox="0 0 10 10"
-                    refX="8"
-                    refY="5"
-                    markerWidth="6"
-                    markerHeight="6"
-                    orient="auto"
-                  >
-                    <path
-                      d="M 0 0 L 10 5 L 0 10"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      className={strokeClass}
-                    />
-                  </marker>
-                </defs>
-
-                <path
-                  d={pathD}
-                  className={strokeClass}
-                  markerEnd={`url(#${markerId})`}
-                />
-
-                <rect
-                  x={xt - 10}
-                  y={yt - 10}
-                  width={20}
-                  height={20}
-                  rx={10}
-                  ry={10}
-                  className="fill-background"
-                />
-                <text
-                  x={xt}
-                  y={yt + 4}
-                  textAnchor="middle"
-                  fontSize="12"
-                  fontWeight="bold"
-                  className={fillClass}
+          return (
+            <g key={i}>
+              <defs>
+                <marker
+                  id={markerId}
+                  viewBox="0 0 10 10"
+                  refX="8"
+                  refY="5"
+                  markerWidth="6"
+                  markerHeight="6"
+                  orient="auto"
                 >
-                  {edge.weight}
-                </text>
-              </g>
-            );
-          })}
+                  <path
+                    d="M 0 0 L 10 5 L 0 10"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    className={strokeClass}
+                  />
+                </marker>
+              </defs>
 
-          {/* Nodes */}
-          {graph.nodes.map((node) => {
-            const { x, y } = mapNodePosition(node.data.x, node.data.y);
-            return (
-              <g key={node.id}>
-                <circle
-                  cx={x}
-                  cy={y}
-                  r={nodeRadius}
-                  className={nodeStyles({
-                    variant: node.data.variant,
-                  })}
-                />
-                <text
-                  x={x}
-                  y={y + 5}
-                  textAnchor="middle"
-                  fontSize="16"
-                  className={nodeTextStyles({
-                    variant: node.data.variant,
-                  })}
-                >
-                  {node.id}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
-      </div>
-      {info && (
-        <div className="p-4 bg-background text-background-foreground text-sm border-b border-l border-r">
-          {info}
-        </div>
-      )}
+              <path
+                d={pathD}
+                className={strokeClass}
+                markerEnd={`url(#${markerId})`}
+              />
+
+              <rect
+                x={xt - 10}
+                y={yt - 10}
+                width={20}
+                height={20}
+                rx={10}
+                ry={10}
+                className="fill-background"
+              />
+              <text
+                x={xt}
+                y={yt + 4}
+                textAnchor="middle"
+                fontSize="12"
+                fontWeight="bold"
+                className={fillClass}
+              >
+                {edge.weight}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* Nodes */}
+        {graph.nodes.map((node) => {
+          const { x, y } = mapNodePosition(node.data.x, node.data.y);
+          return (
+            <g key={node.id}>
+              <circle
+                cx={x}
+                cy={y}
+                r={nodeRadius}
+                className={nodeStyles({
+                  variant: node.data.variant,
+                })}
+              />
+              <text
+                x={x}
+                y={y + 5}
+                textAnchor="middle"
+                fontSize="16"
+                className={nodeTextStyles({
+                  variant: node.data.variant,
+                })}
+              >
+                {node.id}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
     </div>
   );
 };

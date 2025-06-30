@@ -61,13 +61,13 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
         currentNode = this.minHeap.pop();
       }
 
-      if (!currentNode) return;
+      if (!currentNode) break;
 
       const { id, weight, parent } = currentNode;
 
       this.currentNode = id;
       this.visited[id] = [weight, parent];
-      yield* this.breakpoint(`Visiting ${id}`);
+      yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
 
       for (const edge of this.graph.neighbors(id)) {
         const newDistance = weight + edge.weight;
@@ -78,6 +78,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
         });
       }
     }
+    yield* this.breakpoint(`Execution Completed.`);
   }
   // kelmich-highlight-end
 }

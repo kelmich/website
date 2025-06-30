@@ -79,10 +79,6 @@ export const DijkstraVisualizer = () => {
         }
       });
 
-      console.log("Used Edges:", usedEdges);
-      console.log("Current Node:", state.currentNode);
-      console.log("Visited Nodes:", state.visited);
-
       newGraph.edges.forEach((edge) => {
         if (state.currentNode === edge.from) {
           edge.data.variant = "primary";
@@ -98,12 +94,19 @@ export const DijkstraVisualizer = () => {
   }, [stepData]);
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col border divide-y">
       <ControlBar
-        executorFactory={() => new Dijkstra(initialGraph, "A")}
+        executorFactory={() => {
+          return new Dijkstra(initialGraph, "A");
+        }}
         onStep={setStepData}
       />
-      <GraphVisualizer graph={graph} info={stepData?.message} />
+      <GraphVisualizer graph={graph} />
+      {stepData?.message && (
+        <div className="p-4 bg-background text-background-foreground text-sm">
+          {stepData?.message}
+        </div>
+      )}
     </div>
   );
 };
