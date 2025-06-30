@@ -16,7 +16,10 @@ import {
   Dijkstra,
   DijkstraState,
 } from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
-import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
+import {
+  AlgorithmStep,
+  AlgorithmVisualizer,
+} from "@/app/components/interactive_examples/AlgorithmVisualizer";
 
 export const DijkstraVisualizer = () => {
   const initialGraph = useMemo(
@@ -49,78 +52,21 @@ export const DijkstraVisualizer = () => {
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
+
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
     null
   );
-  const [, setIsDone] = useState(false);
-
-  const dijkstraRef = useRef<Dijkstra | null>(null);
-
-  const reset = useCallback(() => {
-    setGraph(initialGraph);
-    dijkstraRef.current = new Dijkstra(initialGraph, "A");
-    setStepData(null);
-    setIsDone(false);
-  }, [initialGraph]);
-
-  const step = async () => {
-    if (!dijkstraRef.current) return;
-    const { done, value } = dijkstraRef.current.run().next();
-    setIsDone(done ?? false);
-    setStepData(value ?? null);
-  };
-
-  useEffect(() => {
-    reset();
-  }, [reset]);
-
-  useEffect(() => {
-    if (!stepData) return;
-
-    const { state } = stepData;
-    setGraph((prevGraph) => {
-      const newGraph = prevGraph.clone();
-      const { visited } = state;
-
-      // mark all nodes
-      newGraph.nodes.forEach((node) => {
-        if (visited[node.id] !== undefined) {
-          node.data.variant = "success";
-        } else {
-          node.data.variant = "secondary";
-        }
-        if (node.id === state.currentNode) {
-          node.data.variant = "primary";
-        }
-      });
-
-      // mark edges
-      newGraph.edges.forEach((edge) => {
-        if (edge.from === state.currentNode) {
-          edge.data.variant = "primary";
-        } else {
-          edge.data.variant = "secondary";
-        }
-      });
-
-      return newGraph;
-    });
-  }, [stepData]);
 
   return (
     <div className="flex flex-col space-y-2">
       <ControlBar
-        reset={reset}
-        run={() => {
-          console.log("Running Dijkstra's algorithm...");
-        }}
-        step={step}
+        executorFactory={() => new Dijkstra(initialGraph, "A")}
+        onStep={setStepData}
       />
       <div className="text-sm text-muted-foreground">
-        {stepData
-          ? stepData.description
-          : "Click 'Run' to start the algorithm."}
+        {stepData ? stepData.message : "Click 'Run' to start the algorithm."}
       </div>
+      {JSON.stringify(stepData)}
       <GraphVisualizer graph={graph} />
     </div>
   );

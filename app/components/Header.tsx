@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="h-16 p-4 flex flex-row space-x-4 justify-between items-center border text-background-foreground">
+    <header className="h-16 p-4 flex flex-row space-x-4 justify-between items-center border-t border-b text-background-foreground">
       <div className="space-x-4">
         <Link href="/">Home</Link>
         <Link href="/blog">Blog</Link>

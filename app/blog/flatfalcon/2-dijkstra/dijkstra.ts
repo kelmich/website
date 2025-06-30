@@ -47,6 +47,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
   }
 
   *run(): Generator<AlgorithmStep<DijkstraState>, void, unknown> {
+    console.log("Hello from Dijkstra!", this.minHeap.size());
     while (this.minHeap.size() > 0) {
       let currentNode = this.minHeap.pop();
 
@@ -55,12 +56,14 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
         currentNode = this.minHeap.pop();
       }
 
+      console.log("Current Node:", currentNode);
+
       if (!currentNode) return;
 
       const { id, weight } = currentNode;
 
       this.currentNode = id;
-      this.breakpoint(`Visiting ${id}`);
+      yield* this.breakpoint(`Visiting ${id}`);
       this.visited[id] = weight;
 
       for (const edge of this.graph.neighbors(id)) {
@@ -71,6 +74,9 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
           parent: id,
         });
       }
+
+      console.log("MinHeap after visiting:", this.minHeap.size());
     }
+    console.log("Exited Dijkstra loop");
   }
 }
