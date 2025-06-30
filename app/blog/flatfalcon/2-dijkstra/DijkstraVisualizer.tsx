@@ -53,6 +53,15 @@ export const DijkstraVisualizer = () => {
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
 
+  const [message, setMessage] = useState<string | undefined>(undefined);
+
+  const updateGraph = useCallback(
+    (algoState: AlgorithmStep<DijkstraState>) => {
+      setMessage(algoState.message);
+    },
+    [setGraph]
+  );
+
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
     null
   );
@@ -61,13 +70,9 @@ export const DijkstraVisualizer = () => {
     <div className="flex flex-col space-y-2">
       <ControlBar
         executorFactory={() => new Dijkstra(initialGraph, "A")}
-        onStep={setStepData}
+        onStep={updateGraph}
       />
-      <div className="text-sm text-muted-foreground">
-        {stepData ? stepData.message : "Click 'Run' to start the algorithm."}
-      </div>
-      {JSON.stringify(stepData)}
-      <GraphVisualizer graph={graph} />
+      <GraphVisualizer graph={graph} info={message} />
     </div>
   );
 };
