@@ -174,7 +174,7 @@ const GraphVisualizer: React.FC<
                 <marker
                   id={markerId}
                   viewBox="0 0 10 10"
-                  refX="8"
+                  refX="11"
                   refY="5"
                   markerWidth="6"
                   markerHeight="6"
