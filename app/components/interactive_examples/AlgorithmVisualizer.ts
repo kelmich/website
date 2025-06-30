@@ -4,7 +4,7 @@ export type AlgorithmStep<TState> = {
 };
 
 export abstract class AlgorithmVisualizer<TState> {
-  protected abstract state: TState;
+  protected abstract getState(): TState;
 
   *run(): Generator<AlgorithmStep<TState>, void, unknown> {
     // This method should be implemented by subclasses to define the algorithm's steps.
@@ -14,6 +14,6 @@ export abstract class AlgorithmVisualizer<TState> {
   protected *breakpoint(
     message: string
   ): Generator<AlgorithmStep<TState>, void, unknown> {
-    yield { message, state: structuredClone(this.state) };
+    yield { message, state: this.getState() };
   }
 }

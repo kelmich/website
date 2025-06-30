@@ -52,27 +52,58 @@ export const DijkstraVisualizer = () => {
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
-
-  const [message, setMessage] = useState<string | undefined>(undefined);
-
-  const updateGraph = useCallback(
-    (algoState: AlgorithmStep<DijkstraState>) => {
-      setMessage(algoState.message);
-    },
-    [setGraph]
-  );
-
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
     null
   );
+
+  useEffect(() => {
+    if (!stepData) return;
+    const { state } = stepData;
+    setGraph((prevGraph) => {
+      const newGraph = prevGraph.clone();
+
+      newGraph.nodes.forEach((node) => {
+        if (node.id in state.visited) {
+          node.data.variant = "success";
+        } else if (state.currentNode === node.id) {
+          node.data.variant = "primary";
+        } else {
+          node.data.variant = "secondary";
+        }
+      });
+
+      const usedEdges = new Set<string>();
+      Object.entries(state.visited).forEach(([nodeId, [_, parentId]]) => {
+        if (parentId !== null && parentId !== undefined) {
+          usedEdges.add(`${parentId}-${nodeId}`);
+        }
+      });
+
+      console.log("Used Edges:", usedEdges);
+      console.log("Current Node:", state.currentNode);
+      console.log("Visited Nodes:", state.visited);
+
+      newGraph.edges.forEach((edge) => {
+        if (state.currentNode === edge.from) {
+          edge.data.variant = "primary";
+        } else if (usedEdges.has(`${edge.from}-${edge.to}`)) {
+          edge.data.variant = "success";
+        } else {
+          edge.data.variant = "secondary";
+        }
+      });
+
+      return newGraph;
+    });
+  }, [stepData]);
 
   return (
     <div className="flex flex-col space-y-2">
       <ControlBar
         executorFactory={() => new Dijkstra(initialGraph, "A")}
-        onStep={updateGraph}
+        onStep={setStepData}
       />
-      <GraphVisualizer graph={graph} info={message} />
+      <GraphVisualizer graph={graph} info={stepData?.message} />
     </div>
   );
 };
