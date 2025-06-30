@@ -17,66 +17,57 @@ export type DijkstraState = {
 
 export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
   private graph: Graph<unknown, unknown>;
-  private visited: Record<string, number>;
-  private minHeap: MinHeap<{
-    id: string;
-    weight: number;
-    parent?: string;
-  }>;
-  private currentNode?: string;
+  private startNodeId: string;
+  protected state: DijkstraState;
 
+  // initialize the Dijkstra algorithm with a graph and a starting node
   constructor(graph: Graph<unknown, unknown>, startNodeId: string) {
     super();
     this.graph = graph.clone();
-    this.visited = {};
-    this.minHeap = new MinHeap<{
-      id: string;
-      weight: number;
-      parent?: string;
-    }>();
-    this.minHeap.insert({ id: startNodeId, weight: 0 });
-    this.currentNode = startNodeId;
-  }
-
-  protected getState(): DijkstraState {
-    return {
-      visited: { ...this.visited },
-      minHeap: this.minHeap.clone(),
-      currentNode: this.currentNode,
+    this.startNodeId = startNodeId;
+    this.state = {
+      visited: {},
+      minHeap: new MinHeap<{
+        id: string;
+        weight: number;
+        parent?: string;
+      }>(),
+      currentNode: startNodeId,
     };
   }
 
+  // kelmich-highlight-start
   *run(): Generator<AlgorithmStep<DijkstraState>, void, unknown> {
-    console.log("Hello from Dijkstra!", this.minHeap.size());
-    while (this.minHeap.size() > 0) {
-      let currentNode = this.minHeap.pop();
+    // enqueue the starting node
+    this.state.minHeap.insert({ id: this.startNodeId, weight: 0 });
+
+    // while there are unvisited nodes
+    while (this.state.minHeap.size() > 0) {
+      let currentNode = this.state.minHeap.pop();
 
       // Skip already visited nodes
-      while (currentNode && this.visited[currentNode.id] !== undefined) {
-        currentNode = this.minHeap.pop();
+      while (currentNode && this.state.visited[currentNode.id] !== undefined) {
+        currentNode = this.state.minHeap.pop();
       }
-
-      console.log("Current Node:", currentNode);
 
       if (!currentNode) return;
 
       const { id, weight } = currentNode;
 
-      this.currentNode = id;
+      this.state.currentNode = id;
       yield* this.breakpoint(`Visiting ${id}`);
-      this.visited[id] = weight;
+      this.state.visited[id] = weight;
 
+      // enqueue all neighbors of the current node
       for (const edge of this.graph.neighbors(id)) {
         const newDistance = weight + edge.weight;
-        this.minHeap.insert({
+        this.state.minHeap.insert({
           id: edge.to,
           weight: newDistance,
           parent: id,
         });
       }
-
-      console.log("MinHeap after visiting:", this.minHeap.size());
     }
-    console.log("Exited Dijkstra loop");
   }
+  // kelmich-highlight-end
 }

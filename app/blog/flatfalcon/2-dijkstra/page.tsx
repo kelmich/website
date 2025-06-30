@@ -1,6 +1,7 @@
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
 import { DijkstraVisualizer } from "./DijkstraVisualizer";
+import CodeBlock from "@/app/components/CodeBlock";
 
 export default async function Home() {
   return (
@@ -17,6 +18,8 @@ export default async function Home() {
             a shortest path algorithm (e.g. Dijkstra) from the query point to
             find all sufficiently close listings.
           </p>
+
+          <CodeBlock lang="ts" filename="dijkstra.ts" />
 
           <DijkstraVisualizer />
         </div>
