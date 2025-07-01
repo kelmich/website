@@ -1,11 +1,5 @@
 "use client";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import GraphVisualizer, {
   VisualizationEdgeData,
   VisualizationNodeData,
@@ -16,10 +10,7 @@ import {
   Dijkstra,
   DijkstraState,
 } from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
-import {
-  AlgorithmStep,
-  AlgorithmVisualizer,
-} from "@/app/components/interactive_examples/AlgorithmVisualizer";
+import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
 
 export const DijkstraVisualizer = () => {
   const initialGraph = useMemo(
@@ -73,7 +64,7 @@ export const DijkstraVisualizer = () => {
       });
 
       const usedEdges = new Set<string>();
-      Object.entries(state.visited).forEach(([nodeId, [_, parentId]]) => {
+      Object.entries(state.visited).forEach(([nodeId, [, parentId]]) => {
         if (parentId !== null && parentId !== undefined) {
           usedEdges.add(`${parentId}-${nodeId}`);
         }
