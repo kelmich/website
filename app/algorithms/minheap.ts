@@ -1,10 +1,14 @@
-export class MinHeap<T extends { weight: number }> {
+export class MinHeap<T extends { id: string; weight: number }> {
   private heap: T[] = [];
 
   clone(): MinHeap<T> {
     const newHeap = new MinHeap<T>();
     newHeap.heap = [...this.heap];
     return newHeap;
+  }
+
+  export(): T[] {
+    return [...this.heap];
   }
 
   insert(val: T) {

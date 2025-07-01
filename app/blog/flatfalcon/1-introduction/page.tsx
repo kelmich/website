@@ -21,7 +21,7 @@ export default async function Home() {
             listings had appeared since the last time I checked. In python this
             would be something like this:
           </p>
-          <CodeBlock lang="python" filename="workflow.py" />
+          <CodeBlock lang="ts" filename="workflow.ts" />
           <p>
             As every performance driven developer knows: It&apos;s those pesky
             inner loops you have to watch out for. I would end up spending most
