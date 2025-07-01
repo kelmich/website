@@ -1,8 +1,8 @@
-import fs from "fs/promises";
 import path from "path";
 import { headers } from "next/headers";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
+import { readFileSync } from "fs";
 
 interface Props {
   filename: string;
@@ -27,7 +27,7 @@ export default async function CodeBlock({ lang, filename }: Props) {
   const headersList = await headers();
   const pathname = headersList.get("x-pathname") || "";
   const fullPath = path.join("app", pathname, filename);
-  const fileContent = await fs.readFile(fullPath, "utf8");
+  const fileContent = readFileSync(fullPath, "utf8");
   const interestingPart = extractInterestingCode(fileContent);
 
   const html = await codeToHtml(interestingPart, {
