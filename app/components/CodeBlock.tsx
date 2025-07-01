@@ -1,11 +1,11 @@
-import path from "path";
-import { headers } from "next/headers";
+// import path from "path";
+// import { headers } from "next/headers";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 import { readFileSync } from "fs";
 
 interface Props {
-  filename: string;
+  filepath: string;
   lang: BundledLanguage;
 }
 
@@ -23,11 +23,11 @@ function extractInterestingCode(content: string): string {
   return content; // fallback to full content
 }
 
-export default async function CodeBlock({ lang, filename }: Props) {
-  const headersList = await headers();
-  const pathname = headersList.get("x-pathname") || "";
-  const fullPath = path.join("app", pathname, filename);
-  const fileContent = readFileSync(fullPath, "utf8");
+export default async function CodeBlock({ lang, filepath }: Props) {
+  // const headersList = await headers();
+  // const pathname = headersList.get("x-pathname") || "";
+  // const fullPath = path.join("app", pathname, filename);
+  const fileContent = readFileSync(filepath, "utf8");
   const interestingPart = extractInterestingCode(fileContent);
 
   const html = await codeToHtml(interestingPart, {

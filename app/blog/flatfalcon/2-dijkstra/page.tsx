@@ -1,6 +1,6 @@
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
-import { DijkstraVisualizer } from "./DijkstraVisualizer";
+import { DijkstraVisualizer } from "@/app/blog/flatfalcon/2-dijkstra/DijkstraVisualizer";
 import CodeBlock from "@/app/components/CodeBlock";
 
 export default async function Home() {
@@ -19,7 +19,10 @@ export default async function Home() {
             find all sufficiently close listings.
           </p>
 
-          <CodeBlock lang="ts" filename="dijkstra.ts" />
+          <CodeBlock
+            lang="ts"
+            filepath="./app/blog/flatfalcon/2-dijkstra/dijkstra.ts"
+          />
 
           <DijkstraVisualizer />
         </div>
