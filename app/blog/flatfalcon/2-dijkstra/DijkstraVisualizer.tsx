@@ -6,12 +6,12 @@ import GraphVisualizer, {
 } from "@/app/components/interactive_examples/GraphVisualizer";
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
+import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
+import { MinHeapVisualizer } from "@/app/components/interactive_examples/MinHeapVisualizer";
 import {
   Dijkstra,
   DijkstraState,
 } from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
-import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
-import { MinHeapVisualizer } from "@/app/components/interactive_examples/MinHeapVisualizer";
 
 export const DijkstraVisualizer = () => {
   const initialGraph = useMemo(
@@ -39,14 +39,14 @@ export const DijkstraVisualizer = () => {
 
           // { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
           // { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
-        ],
+        ]
       ),
-    [],
+    []
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
-    null,
+    null
   );
 
   useEffect(() => {
@@ -73,9 +73,9 @@ export const DijkstraVisualizer = () => {
       });
 
       newGraph.edges.forEach((edge) => {
-        if (state.currentNode === edge.from) {
+        if (state.currentNode === edge.to) {
           edge.data.variant = "primary";
-        } else if (usedEdges.has(`${edge.from}-${edge.to}`)) {
+        } else if (usedEdges.has(`${edge.to}-${edge.from}`)) {
           edge.data.variant = "success";
         } else {
           edge.data.variant = "secondary";

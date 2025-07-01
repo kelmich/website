@@ -61,7 +61,10 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
         currentNode = this.minHeap.pop();
       }
 
-      if (!currentNode) break;
+      if (!currentNode) {
+        this.currentNode = undefined;
+        break;
+      }
 
       const { id, weight, parent } = currentNode;
 
@@ -69,10 +72,10 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       this.visited[id] = [weight, parent];
       yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
 
-      for (const edge of this.graph.neighbors(id)) {
+      for (const edge of this.graph.neighbors(id, true)) {
         const newDistance = weight + edge.weight;
         this.minHeap.insert({
-          id: edge.to,
+          id: edge.from,
           weight: newDistance,
           parent: id,
         });

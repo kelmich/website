@@ -26,7 +26,13 @@ export class Graph<T, U> {
     return new Graph(clonedNodes, clonedEdges);
   }
 
-  neighbors(nodeId: NodeId): Edge<U>[] {
-    return this.edges.filter((edge) => edge.from === nodeId);
+  neighbors(nodeId: NodeId, incoming?: boolean): Edge<U>[] {
+    return this.edges.filter((edge) => {
+      if (incoming) {
+        return edge.to === nodeId;
+      } else {
+        return edge.from === nodeId;
+      }
+    });
   }
 }

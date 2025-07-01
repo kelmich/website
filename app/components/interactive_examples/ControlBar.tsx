@@ -23,12 +23,12 @@ export const ControlBar = <T,>(props: Props<T>) => {
     }
   }, [props]);
 
-  const handleReset = useCallback(() => {
+  const handleReset = () => {
     generatorRef.current = props.executorFactory().run();
     setIsRunning(false);
     setHasFinished(false);
     handleStep();
-  }, [handleStep, props]);
+  };
 
   const handlePlayPause = () => {
     if (!hasFinished) {
@@ -51,11 +51,11 @@ export const ControlBar = <T,>(props: Props<T>) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [handleStep, isRunning]);
+  }, [isRunning, handleStep]);
 
   useEffect(() => {
     handleReset(); // Initial reset
-  }, [handleReset]);
+  }, []);
 
   return (
     <div className="h-16 p-4 flex flex-row justify-between items-center bg-background text-background-foreground">
