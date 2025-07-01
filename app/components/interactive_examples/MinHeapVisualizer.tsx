@@ -12,7 +12,7 @@ export const MinHeapVisualizer: React.FC<MinHeapViewProps> = ({ minHeap }) => {
         {minHeap
           .export()
           .slice()
-          .map((item, idx) => (
+          .map((item) => (
             <li key={item.id} className="flex justify-between">
               <span className="font-mono">{item.id}</span>
               <span className="text-right">{item.weight}</span>

@@ -39,14 +39,14 @@ export const DijkstraVisualizer = () => {
 
           // { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
           // { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
-        ]
+        ],
       ),
-    []
+    [],
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
-    null
+    null,
   );
 
   useEffect(() => {

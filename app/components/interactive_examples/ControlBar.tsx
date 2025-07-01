@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AlgorithmStep, AlgorithmVisualizer } from "./AlgorithmVisualizer";
 
 interface Props<T> {
@@ -13,7 +13,7 @@ export const ControlBar = <T,>(props: Props<T>) => {
   const [isRunning, setIsRunning] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
 
-  const handleStep = () => {
+  const handleStep = useCallback(() => {
     const step = generatorRef.current.next();
     if (!step.done) {
       props.onStep(step.value);
@@ -21,14 +21,14 @@ export const ControlBar = <T,>(props: Props<T>) => {
       setIsRunning(false);
       setHasFinished(true); // Mark algorithm as finished
     }
-  };
+  }, [props]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     generatorRef.current = props.executorFactory().run();
     setIsRunning(false);
     setHasFinished(false);
     handleStep();
-  };
+  }, [handleStep, props]);
 
   const handlePlayPause = () => {
     if (!hasFinished) {
@@ -51,11 +51,11 @@ export const ControlBar = <T,>(props: Props<T>) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning]);
+  }, [handleStep, isRunning]);
 
   useEffect(() => {
     handleReset(); // Initial reset
-  }, []);
+  }, [handleReset]);
 
   return (
     <div className="h-16 p-4 flex flex-row justify-between items-center bg-background text-background-foreground">
