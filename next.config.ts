@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   // this means we can't render code samples on the fly so for right now static export it is.
   // yay for performance I guess
   output: "export",
+  images: {
+    unoptimized: true, // disable image optimization for export mode
+  }
 };
 
 export default nextConfig;

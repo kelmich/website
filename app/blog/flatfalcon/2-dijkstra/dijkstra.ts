@@ -46,8 +46,9 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     };
   }
 
-  // kelmich-highlight-start
+  
   *run(): Generator<AlgorithmStep<DijkstraState>, void, unknown> {
+    // kelmich-highlight-start
     this.minHeap.insert({
       id: this.startNodeId,
       weight: 0,
@@ -56,23 +57,15 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     while (this.minHeap.size() > 0) {
       let currentNode = this.minHeap.pop();
 
-      // Skip already visited nodes
-      while (currentNode && this.visited[currentNode.id] !== undefined) {
-        currentNode = this.minHeap.pop();
-      }
-
-      if (!currentNode) {
-        this.currentNode = undefined;
-        break;
-      }
-
-      const { id, weight, parent } = currentNode;
+      const { id, weight, parent } = currentNode!;
 
       this.currentNode = id;
       this.visited[id] = [weight, parent];
-      yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
 
       for (const edge of this.graph.neighbors(id, true)) {
+        if (this.visited[edge.from] !== undefined) {
+          continue; // Skip already visited nodes
+        }
         const newDistance = weight + edge.weight;
         this.minHeap.insert({
           id: edge.from,
@@ -80,8 +73,10 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
           parent: id,
         });
       }
+
+      yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
     }
-    yield* this.breakpoint(`Execution Completed.`);
+    // kelmich-highlight-end
   }
-  // kelmich-highlight-end
+  
 }

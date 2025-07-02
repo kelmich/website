@@ -7,6 +7,7 @@ import { useElementSize } from "@/app/utils/useElementSize";
 export interface VisualizationNodeData extends NodeVariantProps {
   x: number;
   y: number;
+  shape?: "circle" | "rect";
 }
 export type VisualizationEdgeData = EdgeVariantProps;
 
@@ -84,8 +85,8 @@ const GraphVisualizer: React.FC<
   const minY = Math.min(...ys);
   const maxY = Math.max(...ys);
 
-  const graphWidth = maxX - minX || 1; // Ensure non-zero width
-  const graphHeight = maxY - minY || 1; // Ensure non-zero height
+  const graphWidth = maxX - minX + 10; // Ensure non-zero width
+  const graphHeight = maxY - minY + 10; // Ensure non-zero height
 
   // Function to normalize and map nodes to SVG coordinates
   function mapNodePosition(x: number, y: number) {
@@ -224,24 +225,38 @@ const GraphVisualizer: React.FC<
           const { x, y } = mapNodePosition(node.data.x, node.data.y);
           return (
             <g key={node.id}>
+              {node.data.shape === "rect" ? (
+              <rect
+                x={x - nodeRadius}
+                y={y - nodeRadius}
+                width={nodeRadius * 2}
+                height={nodeRadius * 2}
+                rx={6}
+                ry={6}
+                className={nodeStyles({
+                variant: node.data.variant,
+                })}
+              />
+              ) : (
               <circle
                 cx={x}
                 cy={y}
                 r={nodeRadius}
                 className={nodeStyles({
-                  variant: node.data.variant,
+                variant: node.data.variant,
                 })}
               />
+              )}
               <text
-                x={x}
-                y={y + 5}
-                textAnchor="middle"
-                fontSize="16"
-                className={nodeTextStyles({
-                  variant: node.data.variant,
-                })}
+              x={x}
+              y={y + 5}
+              textAnchor="middle"
+              fontSize="16"
+              className={nodeTextStyles({
+                variant: node.data.variant,
+              })}
               >
-                {node.id}
+              {node.id}
               </text>
             </g>
           );

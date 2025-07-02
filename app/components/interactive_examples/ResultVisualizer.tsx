@@ -1,17 +1,15 @@
 import { MinHeap } from "@/app/algorithms/minheap";
 
 interface MinHeapViewProps {
-  minHeap: MinHeap<{ id: string; weight: number }>;
+  results: { id: string; weight: number }[];
 }
 
-export const MinHeapVisualizer: React.FC<MinHeapViewProps> = ({ minHeap }) => {
+export const ResultVisualizer: React.FC<MinHeapViewProps> = ({ results }) => {
   return (
     <div className="p-4 text-sm bg-background text-background-foreground h-full">
-      <p className="mb-2">Min Heap</p>
+      <p className="mb-2">Results</p>
       <ul className="space-y-1">
-        {minHeap
-          .export()
-          .slice()
+        {results
           .map((item) => (
             <li key={item.id} className="flex justify-between">
               <span className="font-mono">{item.id}</span>

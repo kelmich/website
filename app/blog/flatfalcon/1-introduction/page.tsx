@@ -18,7 +18,7 @@ export default async function Home() {
             had no or only poor support for filtering appartments that were too
             far away from where I would be commuting to frequently. I would run
             the following procedure anytime I rechecked if any new promising
-            listings had appeared since the last time I checked. In python this
+            listings had appeared since the last time I checked. In Typescript it
             would be something like this:
           </p>
           <CodeBlock
@@ -59,8 +59,8 @@ export default async function Home() {
           </p>
           <p>
             The third method is actually somewhat reasonable. Essentially the
-            idea is to answer the question `&quot;What is the region of
-            interest`&quot; for the user. We run a dijkstra search from the
+            idea is to answer the question &quot;What is the region of
+            interest&quot; for the user. We run a dijkstra search from the
             given query point and compute all reachable area within our time
             budget. <a href="https://www.newhome.ch">Newhome</a> does a version
             of this. This method still has two drawbacks though.
@@ -75,6 +75,7 @@ export default async function Home() {
               complex, making determining what points are inside it inefficient.
             </li>
           </ol>
+          <a href="/blog/flatfalcon/2-dijkstra">Read about a naive attempt in chapter 2</a>
         </div>
       </main>
 
