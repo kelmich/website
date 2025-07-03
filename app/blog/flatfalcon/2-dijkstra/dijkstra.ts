@@ -77,6 +77,8 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
     }
     // kelmich-highlight-end
+    this.currentNode = undefined;
+    yield* this.breakpoint(`Algorithm Completed.`);
   }
   
 }
