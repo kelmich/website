@@ -1,3 +1,4 @@
+import { BlogNavigation } from "@/app/components/BlogNavigation";
 import CodeBlock from "@/app/components/CodeBlock";
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/Header";
@@ -75,7 +76,13 @@ export default async function Home() {
               complex, making determining what points are inside it inefficient.
             </li>
           </ol>
-          <a href="/blog/flatfalcon/2-dijkstra">Read about a naive attempt in chapter 2</a>
+          <BlogNavigation
+            to={{
+              title: "Chapter 2",
+              description: "A naïve first attempt with Dijkstra",
+              href: "/blog/flatfalcon/2-dijkstra",
+            }}
+          />
         </div>
       </main>
 
