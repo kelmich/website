@@ -151,7 +151,7 @@ export default function Pomodoro() {
                 <div className="w-full flex flex-col max-w-md items-center space-y-4">
 
                     {/* Timer */}
-                    <div className="w-full bg-background text-background-foreground p-2">
+                    <div className="w-full bg-background text-background-foreground p-2 border">
                         <h2>Pomodoro Timer</h2>
                         <div className="flex flex-col items-center">
                             <div className="text-xl">{mode === "pomodoro" ? "Work" : mode === "shortBreak" ? "Short Break" : "Long Break"}</div>
