@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 type PomodoroTask = {
     name: string;
     estimatedPomodoros: number;
+    completedPomodoros: number;
 }
 
 type Mode = "pomodoro" | "shortBreak" | "longBreak";
@@ -14,6 +15,7 @@ type Mode = "pomodoro" | "shortBreak" | "longBreak";
 
 export default function Pomodoro() {
     const POMODORO_DURATION = 25 * 60;
+    const POMODOROS_BEFORE_LONG_BREAK = 4;
     const SHORT_BREAK_DURATION = 5 * 60;
     const LONG_BREAK_DURATION = 15 * 60;
 
@@ -36,7 +38,7 @@ export default function Pomodoro() {
         if (mode === "pomodoro") {
             const newCompleted = completedPomodoros + 1;
             setCompletedPomodoros(newCompleted);
-            if (newCompleted % 4 === 0) {
+            if (newCompleted % POMODOROS_BEFORE_LONG_BREAK === 0) {
                 setMode("longBreak");
                 setTimeLeft(LONG_BREAK_DURATION);
             } else {
@@ -126,6 +128,12 @@ export default function Pomodoro() {
         setIsRunning((r) => !r);
     };
 
+    const changeMode = (newMode: Mode) => {
+        setMode(newMode);
+        setTimeLeft(getDuration(newMode));
+        setIsRunning(false);
+    };
+
     const addTask = (newTask: PomodoroTask) => {
         setTasks((prev) => ({
             ...prev,
@@ -141,6 +149,44 @@ export default function Pomodoro() {
         });
     };
 
+    function computeCompletionTime(tasks: Record<string, PomodoroTask>): import("react").ReactNode {
+
+        const totalPomodoros = Object.values(tasks).reduce(
+            (sum, task) => sum + (task.estimatedPomodoros || 0),
+            0
+        );
+
+        // Calculate total time including breaks
+        let totalMinutes = 0;
+        let pomodorosLeft = totalPomodoros;
+
+        while (pomodorosLeft > 0) {
+            // Do a pomodoro
+            totalMinutes += POMODORO_DURATION;
+            pomodorosLeft--;
+
+            // Add break if not last pomodoro
+            if (pomodorosLeft > 0) {
+                // Every 4th pomodoro, long break, else short break
+                if ((totalPomodoros - pomodorosLeft) % POMODOROS_BEFORE_LONG_BREAK === 0) {
+                    totalMinutes += LONG_BREAK_DURATION;
+                } else {
+                    totalMinutes += SHORT_BREAK_DURATION;
+                }
+            }
+        }
+
+        // Add totalMinutes to current time
+        const now = new Date();
+        const completion = new Date(now.getTime() + totalMinutes * 60 * 1000);
+
+        // Format as "HH:mm" (24h) or "h:mm AM/PM"
+        const options: Intl.DateTimeFormatOptions = {
+            hour: "2-digit",
+            minute: "2-digit",
+        };
+        return completion.toLocaleTimeString([], options);
+    }
     return (
         <div className="flex flex-col w-screen min-h-screen bg-white text-gray-900">
             <Header />
@@ -151,39 +197,55 @@ export default function Pomodoro() {
                 <div className="w-full flex flex-col max-w-md items-center space-y-4">
 
                     {/* Timer */}
-                    <div className="w-full bg-background text-background-foreground p-2 border">
+                    <div className="w-full">
                         <h2>Pomodoro Timer</h2>
-                        <div className="flex flex-col items-center">
-                            <div className="text-xl">{mode === "pomodoro" ? "Work" : mode === "shortBreak" ? "Short Break" : "Long Break"}</div>
-                            <div className="text-6xl mb-4">{formatTime(timeLeft)}</div>
-                            <div className="space-x-4">
-                                <button
-                                    onClick={handleStartPause}
+                        <div className="w-full bg-background text-background-foreground p-2 border">
+
+                            <div className="flex justify-between items-center mb-4">
+
+                                <div className="space-x-4">
+                                    <button
+                                        onClick={handleStartPause}
+                                    >
+                                        {isRunning ? "Pause" : "Start"}
+                                    </button>
+                                    <button
+                                        onClick={reset}
+                                    >
+                                        Reset
+                                    </button>
+                                </div>
+
+                                <select
+                                    value={mode}
+                                    onChange={e => changeMode(e.target.value as Mode)}
+                                    className="p-2 border"
                                 >
-                                    {isRunning ? "Pause" : "Start"}
-                                </button>
-                                <button
-                                    onClick={reset}
-                                >
-                                    Reset
-                                </button>
+                                    <option value="pomodoro">Work</option>
+                                    <option value="shortBreak">Short Break</option>
+                                    <option value="longBreak">Long Break</option>
+                                </select>
+                            </div>
+
+
+                            <div className="flex flex-col items-center">
+                                <div className="text-6xl mb-4">{formatTime(timeLeft)}</div>
+
                             </div>
                         </div>
                     </div>
 
                     {/* Tasks list */}
-                    <div className="w-full">
+                    <div className="w-full space-y-2">
                         <h2>Tasks</h2>
-                        {Object.keys(tasks).length === 0 ? (
-                            <p>Slay. You're done for the day.</p>
-                        ) : null}
+
                         <ul className="space-y-2">
                             {Object.entries(tasks).map(([key, task]) => (
                                 <li
                                     key={key}
                                     className="flex justify-between items-center p-2 border bg-background text-background-foreground"
                                 >
-                                    <span>{task.name}</span>
+                                    <span>{task.completedPomodoros} / {task.estimatedPomodoros} {task.name}</span>
                                     <button
                                         onClick={() => removeTask(key)}
                                     >
@@ -192,6 +254,10 @@ export default function Pomodoro() {
                                 </li>
                             ))}
                         </ul>
+                        {Object.keys(tasks).length === 0 ? (
+                            <p>Slay. You're done for the day.</p>
+                        ) : <p>Estimated Completion time {computeCompletionTime(tasks)}</p>}
+
                     </div>
 
                     {/* Add Task Form */}
@@ -204,7 +270,7 @@ export default function Pomodoro() {
                                 const name = (form.elements.namedItem("taskName") as HTMLInputElement).value;
                                 const estimatedPomodoros = parseInt((form.elements.namedItem("estimatedPomodoros") as HTMLInputElement).value, 10);
                                 if (name && !isNaN(estimatedPomodoros)) {
-                                    addTask({ name, estimatedPomodoros });
+                                    addTask({ name, estimatedPomodoros, completedPomodoros: 0 });
                                     form.reset();
                                 }
                             }}
