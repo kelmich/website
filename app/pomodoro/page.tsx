@@ -1,25 +1,64 @@
 "use client";
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState } from "react";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+
+type PomodoroTask = {
+    name: string;
+    estimatedPomodoros: number;
+}
+
+type Mode = "pomodoro" | "shortBreak" | "longBreak";
+
 
 export default function Pomodoro() {
-    const POMODORO_DURATION = 25 * 60; // 25 minutes
+    const POMODORO_DURATION = 25 * 60;
+    const SHORT_BREAK_DURATION = 5 * 60;
+    const LONG_BREAK_DURATION = 15 * 60;
+
+
     const [timeLeft, setTimeLeft] = useState(POMODORO_DURATION);
     const [isRunning, setIsRunning] = useState(false);
-    const [tasks, setTasks] = useState<string[]>(() => {
-        const saved = localStorage.getItem('pomodoro-tasks');
-        return saved ? JSON.parse(saved) : [];
-    });
-    const [newTask, setNewTask] = useState('');
+    const [mode, setMode] = useState<Mode>("pomodoro");
+    const [tasks, setTasks] = useState<Record<string, PomodoroTask>>({});
+    const [completedPomodoros, setCompletedPomodoros] = useState(0);
+
+    const [currentTask, setCurrentTask] = useState<number | undefined>(undefined);
+
+    const getDuration = (m: Mode) => {
+        if (m === "pomodoro") return POMODORO_DURATION;
+        if (m === "shortBreak") return SHORT_BREAK_DURATION;
+        return LONG_BREAK_DURATION;
+    };
+
+    const switchMode = () => {
+        if (mode === "pomodoro") {
+            const newCompleted = completedPomodoros + 1;
+            setCompletedPomodoros(newCompleted);
+            if (newCompleted % 4 === 0) {
+                setMode("longBreak");
+                setTimeLeft(LONG_BREAK_DURATION);
+            } else {
+                setMode("shortBreak");
+                setTimeLeft(SHORT_BREAK_DURATION);
+            }
+        } else {
+            setMode("pomodoro");
+            setTimeLeft(POMODORO_DURATION);
+        }
+    };
 
     useEffect(() => {
         if (!isRunning) return;
 
         const interval = setInterval(() => {
-            setTimeLeft(t => {
+            setTimeLeft((t) => {
                 if (t <= 1) {
                     clearInterval(interval);
                     setIsRunning(false);
                     notify();
+                    switchMode();
                     return 0;
                 }
                 return t - 1;
@@ -27,115 +66,174 @@ export default function Pomodoro() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [isRunning]);
+    }, [isRunning, mode]);
+
+    // load tasks from localStorage on mount
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const saved = localStorage.getItem("pomodoro-tasks");
+            try {
+                const parsedTasks = JSON.parse(saved ?? "{}");
+                setTasks(parsedTasks);
+            } catch (error) {
+                console.error("Failed to parse tasks from localStorage", error);
+            }
+        }
+    }, []);
 
     useEffect(() => {
-        document.title = `${formatTime(timeLeft)} | Pomodoro`;
-    }, [timeLeft]);
+        document.title = `${formatTime(timeLeft)} | ${currentTask || "Pomodoro"}`;
+    }, [timeLeft, currentTask]);
 
     useEffect(() => {
-        localStorage.setItem('pomodoro-tasks', JSON.stringify(tasks));
+        localStorage.setItem("pomodoro-tasks", JSON.stringify(tasks));
     }, [tasks]);
 
     const formatTime = (seconds: number) => {
-        const m = Math.floor(seconds / 60).toString().padStart(2, '0');
-        const s = (seconds % 60).toString().padStart(2, '0');
+        const m = Math.floor(seconds / 60)
+            .toString()
+            .padStart(2, "0");
+        const s = (seconds % 60).toString().padStart(2, "0");
         return `${m}:${s}`;
     };
 
     const reset = () => {
-        setTimeLeft(POMODORO_DURATION);
+        setTimeLeft(getDuration(mode));
         setIsRunning(false);
-    };
-
-    const addTask = () => {
-        if (newTask.trim()) {
-            setTasks([...tasks, newTask.trim()]);
-            setNewTask('');
-        }
-    };
-
-    const removeTask = (index: number) => {
-        setTasks(tasks.filter((_, i) => i !== index));
-    };
+    };;
 
     const notify = () => {
-        if (Notification.permission === 'granted') {
-            new Notification('Pomodoro complete! Take a break.');
-        } else if (Notification.permission !== 'denied') {
-            Notification.requestPermission().then(permission => {
-                if (permission === 'granted') {
-                    new Notification('Pomodoro complete! Take a break.');
-                }
-            });
+        if (Notification.permission === "granted") {
+            let message = "";
+            if (mode === "pomodoro") {
+                message = "Pomodoro complete! Take a break.";
+            } else {
+                message = "Break over! Time to work.";
+            }
+            new Notification(message);
         }
+    };
+
+    const handleStartPause = () => {
+        if (!isRunning) {
+            if (
+                Notification.permission !== "granted" &&
+                Notification.permission !== "denied"
+            ) {
+                Notification.requestPermission();
+            }
+        }
+        setIsRunning((r) => !r);
+    };
+
+    const addTask = (newTask: PomodoroTask) => {
+        setTasks((prev) => ({
+            ...prev,
+            [newTask.name]: newTask,
+        }));
+    };
+
+    const removeTask = (taskId: string) => {
+        setTasks((prev) => {
+            const newTasks = { ...prev };
+            delete newTasks[taskId];
+            return newTasks;
+        });
     };
 
     return (
-        <div style={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            height: '100vh', backgroundColor: '#0A1733', color: '#cbd5e1', fontFamily: 'monospace', padding: '2rem'
-        }}>
-            <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Pomodoro Timer</h1>
-            <div style={{ fontSize: '5rem', marginBottom: '1rem' }}>{formatTime(timeLeft)}</div>
-            <div>
-                <button
-                    onClick={() => setIsRunning(r => !r)}
-                    style={{
-                        background: 'none', border: '1px solid #cbd5e1', color: '#cbd5e1',
-                        padding: '0.5rem 1rem', marginRight: '1rem', cursor: 'pointer'
-                    }}
-                >
-                    {isRunning ? 'Pause' : 'Start'}
-                </button>
-                <button
-                    onClick={reset}
-                    style={{
-                        background: 'none', border: '1px solid #cbd5e1', color: '#cbd5e1',
-                        padding: '0.5rem 1rem', cursor: 'pointer'
-                    }}
-                >
-                    Reset
-                </button>
-            </div>
+        <div className="flex flex-col w-screen min-h-screen bg-white text-gray-900">
+            <Header />
 
-            <div style={{ marginTop: '2rem', width: '100%', maxWidth: '400px' }}>
-                <h2 style={{ marginBottom: '0.5rem' }}>Tasks</h2>
-                <ul>
-                    {tasks.map((task, index) => (
-                        <li key={index} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
-                            <span>{task}</span>
+            {/* main content */}
+            <main className="flex flex-1 flex-col bg-secondary text-secondary-foreground p-4 items-center justify-center">
+
+                <div className="w-full flex flex-col max-w-md items-center space-y-4">
+
+                    {/* Timer */}
+                    <div className="w-full bg-background text-background-foreground p-2">
+                        <h2>Pomodoro Timer</h2>
+                        <div className="flex flex-col items-center">
+                            <div className="text-xl">{mode === "pomodoro" ? "Work" : mode === "shortBreak" ? "Short Break" : "Long Break"}</div>
+                            <div className="text-6xl mb-4">{formatTime(timeLeft)}</div>
+                            <div className="space-x-4">
+                                <button
+                                    onClick={handleStartPause}
+                                >
+                                    {isRunning ? "Pause" : "Start"}
+                                </button>
+                                <button
+                                    onClick={reset}
+                                >
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Tasks list */}
+                    <div className="w-full">
+                        <h2>Tasks</h2>
+                        {Object.keys(tasks).length === 0 ? (
+                            <p>Slay. You're done for the day.</p>
+                        ) : null}
+                        <ul className="space-y-2">
+                            {Object.entries(tasks).map(([key, task]) => (
+                                <li
+                                    key={key}
+                                    className="flex justify-between items-center p-2 border bg-background text-background-foreground"
+                                >
+                                    <span>{task.name}</span>
+                                    <button
+                                        onClick={() => removeTask(key)}
+                                    >
+                                        Done
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    {/* Add Task Form */}
+                    <div className="w-full">
+                        <h2 className="mb-2">Add Task</h2>
+                        <form
+                            onSubmit={(e) => {
+                                e.preventDefault();
+                                const form = e.target as HTMLFormElement;
+                                const name = (form.elements.namedItem("taskName") as HTMLInputElement).value;
+                                const estimatedPomodoros = parseInt((form.elements.namedItem("estimatedPomodoros") as HTMLInputElement).value, 10);
+                                if (name && !isNaN(estimatedPomodoros)) {
+                                    addTask({ name, estimatedPomodoros });
+                                    form.reset();
+                                }
+                            }}
+                            className="flex flex-col space-y-2"
+                        >
+                            <input
+                                type="text"
+                                name="taskName"
+                                placeholder="Task Name"
+                                required
+                            />
+                            <input
+                                type="number"
+                                name="estimatedPomodoros"
+                                placeholder="Estimated Pomodoros"
+                                min="1"
+                                defaultValue={1}
+                                required
+                            />
                             <button
-                                onClick={() => removeTask(index)}
-                                style={{ background: 'none', border: 'none', color: '#f87171', cursor: 'pointer' }}
+                                type="submit"
                             >
-                                ✖
+                                Add Task
                             </button>
-                        </li>
-                    ))}
-                </ul>
-                <div style={{ marginTop: '0.5rem' }}>
-                    <input
-                        type="text"
-                        value={newTask}
-                        onChange={e => setNewTask(e.target.value)}
-                        placeholder="New task"
-                        style={{
-                            background: '#1e293b', color: '#cbd5e1', border: '1px solid #334155',
-                            padding: '0.25rem', width: '70%', marginRight: '0.5rem'
-                        }}
-                    />
-                    <button
-                        onClick={addTask}
-                        style={{
-                            background: 'none', border: '1px solid #cbd5e1', color: '#cbd5e1',
-                            padding: '0.25rem 0.5rem', cursor: 'pointer'
-                        }}
-                    >
-                        Add
-                    </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+            </main>
+            <Footer />
         </div>
     );
 }
