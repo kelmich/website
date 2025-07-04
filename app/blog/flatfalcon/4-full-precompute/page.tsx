@@ -20,8 +20,8 @@ export default async function Home() {
 
           <p>
             What we are really after at the end of the day is raw query
-            performance. When it comes to query performance, you can't do better
-            than simply precomputing everything.
+            performance. When it comes to query performance, you can&apos;t do
+            better than simply precomputing everything.
           </p>
 
           <p>

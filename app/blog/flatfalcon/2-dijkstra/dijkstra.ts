@@ -46,7 +46,6 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     };
   }
 
-  
   *run(): Generator<AlgorithmStep<DijkstraState>, void, unknown> {
     // kelmich-highlight-start
     this.minHeap.insert({
@@ -55,9 +54,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       parent: undefined,
     });
     while (this.minHeap.size() > 0) {
-      let currentNode = this.minHeap.pop();
-
-      const { id, weight, parent } = currentNode!;
+      const { id, weight, parent } = this.minHeap.pop()!;
 
       this.currentNode = id;
       this.visited[id] = [weight, parent];
@@ -80,5 +77,4 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     this.currentNode = undefined;
     yield* this.breakpoint(`Algorithm Completed.`);
   }
-  
 }

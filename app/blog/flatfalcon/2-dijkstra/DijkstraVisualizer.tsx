@@ -20,10 +20,16 @@ export const DijkstraVisualizer = () => {
       new Graph<VisualizationNodeData, VisualizationEdgeData>(
         [
           { id: "A", data: { x: 0, y: 0, variant: "primary" } },
-          { id: "B", data: { x: 150, y: 0, variant: "secondary", shape: "rect" } },
+          {
+            id: "B",
+            data: { x: 150, y: 0, variant: "secondary", shape: "rect" },
+          },
           { id: "C", data: { x: 0, y: 200, variant: "secondary" } },
           { id: "D", data: { x: 150, y: 200, variant: "secondary" } },
-          { id: "E", data: { x: 300, y: 100, variant: "secondary", shape: "rect" } },
+          {
+            id: "E",
+            data: { x: 300, y: 100, variant: "secondary", shape: "rect" },
+          },
         ],
         [
           { from: "A", to: "B", weight: 5, data: { variant: "secondary" } },
@@ -103,32 +109,32 @@ export const DijkstraVisualizer = () => {
           <GraphVisualizer graph={graph} />
           <div className="flex flex-row gap-8 justify-center bg-background">
             <div className="flex flex-row gap-2 p-1">
-              <div
-                className="w-6 h-6 bg-secondary rounded-full"
-              />
-              <span className="text-sm">Road Intersection</span></div>
-            <div className="flex flex-row gap-2 p-1"><div
-              className="w-6 h-6 bg-secondary rounded-sm"
-            />
-              <span className="text-sm">Listing</span></div>
+              <div className="w-6 h-6 bg-secondary rounded-full" />
+              <span className="text-sm">Road Intersection</span>
+            </div>
+            <div className="flex flex-row gap-2 p-1">
+              <div className="w-6 h-6 bg-secondary rounded-sm" />
+              <span className="text-sm">Listing</span>
+            </div>
           </div>
-
         </div>
 
         <div className="w-[200px] overflow-auto divide-y">
           {stepData?.state.minHeap && (
             <div className="h-1/2">
-            <MinHeapVisualizer minHeap={stepData.state.minHeap} />
+              <MinHeapVisualizer minHeap={stepData.state.minHeap} />
             </div>
           )}
           {stepData?.state.minHeap && (
             <div className="h-1/2">
-            <ResultVisualizer results={Object.entries(stepData.state.visited).map(
-              ([id, [weight, parent]]) => ({
-                id,
-                weight,
-              })
-            ).filter((item) => listingNodes.includes(item.id))} />
+              <ResultVisualizer
+                results={Object.entries(stepData.state.visited)
+                  .map(([id, [weight]]) => ({
+                    id,
+                    weight,
+                  }))
+                  .filter((item) => listingNodes.includes(item.id))}
+              />
             </div>
           )}
         </div>

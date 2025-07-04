@@ -14,13 +14,13 @@ export default async function Home() {
       <main className="flex justify-center bg-secondary text-secondary-foreground">
         <div className="w-full max-w-3xl space-y-6 p-4">
           <h1>Chapter 3</h1>
-          <h2>Dial's Algorithm</h2>
+          <h2>Dial&apos;s Algorithm</h2>
 
           <p>
-            Dial's Algorithm doesn't really address any of the core issues we
-            had with Dijkstra, but it's quite a neat optimization and quite a
-            bit faster for basically free, which is why I want to show it to
-            you.
+            Dial&apos;s Algorithm doesn&apos;t really address any of the core
+            issues we had with Dijkstra, but it&apos;s quite a neat optimization
+            and quite a bit faster for basically free, which is why I want to
+            show it to you.
           </p>
 
           <p>
