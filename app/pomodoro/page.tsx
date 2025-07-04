@@ -230,7 +230,6 @@ export default function Pomodoro() {
 
                             <div className="flex flex-col items-center">
                                 <div className="text-6xl mb-4">{formatTime(timeLeft)}</div>
-
                             </div>
                         </div>
                     </div>
@@ -245,7 +244,8 @@ export default function Pomodoro() {
                                     key={key}
                                     className="flex justify-between items-center p-2 border bg-background text-background-foreground"
                                 >
-                                    <span>{task.completedPomodoros} / {task.estimatedPomodoros} {task.name}</span>
+                                    <span className="text-secondary">{task.completedPomodoros} / {task.estimatedPomodoros}</span>
+                                    <span className="text-background-foreground">{task.name}</span>
                                     <button
                                         onClick={() => removeTask(key)}
                                     >
