@@ -1,0 +1,57 @@
+test result: ok. 0 passed; 0 failed; 15 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/benchmark.rs (target/release/deps/benchmark-43493b28f2c8b1a8)
+Building Graph
+Graph loaded with 264346 nodes and 733846 edges.
+Graph Built
+Number of listings: 2643
+BasicSearcher construction took: 2.750625ms
+BasicSearcher           time:   [31.714 ms 32.146 ms 32.699 ms]
+                        change: [-7.3194% -5.5653% -3.6403%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 4 outliers among 100 measurements (4.00%)
+  2 (2.00%) high mild
+  2 (2.00%) high severe
+
+DijkstraSearcher construction took: 1.494916ms
+DijkstraSearcher        time:   [29.238 ms 29.479 ms 29.732 ms]
+                        change: [-10.742% -9.5505% -8.4742%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+DialSearcher construction took: 1.187583ms
+DialSearcher            time:   [10.941 ms 11.070 ms 11.239 ms]
+                        change: [-15.261% -13.011% -10.843%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 11 outliers among 100 measurements (11.00%)
+  8 (8.00%) high mild
+  3 (3.00%) high severe
+
+Dijkstra done
+SmartStupidSearcher construction took: 267.499520709s
+SmartStupidSearcher     time:   [10.922 µs 11.218 µs 11.572 µs]
+Found 1 outliers among 100 measurements (1.00%)
+  1 (1.00%) high severe
+
+ContractionHierarchiesSearcher construction took: 4.8507645s
+Benchmarking ContractionHierarchiesSearcher: Collecting 100 samples in estimated 7.0629 s (10k iteratio
+ContractionHierarchiesSearcher
+                        time:   [688.93 µs 702.03 µs 716.90 µs]
+                        change: [+11.951% +15.049% +18.303%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 7 outliers among 100 measurements (7.00%)
+  6 (6.00%) high mild
+  1 (1.00%) high severe
+
+Max source label size: 524, Max target label size: 523
+Avg source label size: 159.95, Avg target label size: 160.18
+ContractionHubLabelSearcher construction took: 8.415240708s
+Benchmarking ContractionHubLabelSearcher: Collecting 100 samples in estimated 5.1346 s (2100 iterations
+ContractionHubLabelSearcher
+                        time:   [2.4021 ms 2.4345 ms 2.4671 ms]
+                        change: [+6.6347% +8.7442% +10.970%] (p = 0.00 < 0.05)
+                        Performance has regressed.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
