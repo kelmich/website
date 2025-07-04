@@ -138,7 +138,7 @@ const GraphVisualizer: React.FC<
           const mx = (x1 + x2) / 2;
           const my = (y1 + y2) / 2;
 
-          const bendAmount = 0.3;
+          const bendAmount = 0.2;
           const cx = mx - dy * bendAmount;
           const cy = my + dx * bendAmount;
 
@@ -226,37 +226,37 @@ const GraphVisualizer: React.FC<
           return (
             <g key={node.id}>
               {node.data.shape === "rect" ? (
-              <rect
-                x={x - nodeRadius}
-                y={y - nodeRadius}
-                width={nodeRadius * 2}
-                height={nodeRadius * 2}
-                rx={6}
-                ry={6}
-                className={nodeStyles({
-                variant: node.data.variant,
-                })}
-              />
+                <rect
+                  x={x - nodeRadius}
+                  y={y - nodeRadius}
+                  width={nodeRadius * 2}
+                  height={nodeRadius * 2}
+                  rx={6}
+                  ry={6}
+                  className={nodeStyles({
+                    variant: node.data.variant,
+                  })}
+                />
               ) : (
-              <circle
-                cx={x}
-                cy={y}
-                r={nodeRadius}
-                className={nodeStyles({
-                variant: node.data.variant,
-                })}
-              />
+                <circle
+                  cx={x}
+                  cy={y}
+                  r={nodeRadius}
+                  className={nodeStyles({
+                    variant: node.data.variant,
+                  })}
+                />
               )}
               <text
-              x={x}
-              y={y + 5}
-              textAnchor="middle"
-              fontSize="16"
-              className={nodeTextStyles({
-                variant: node.data.variant,
-              })}
+                x={x}
+                y={y + 5}
+                textAnchor="middle"
+                fontSize="16"
+                className={nodeTextStyles({
+                  variant: node.data.variant,
+                })}
               >
-              {node.id}
+                {node.id}
               </text>
             </g>
           );

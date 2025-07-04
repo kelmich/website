@@ -18,7 +18,11 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
   private startNodeId: string;
   private maxDistance: number;
 
-  constructor(graph: Graph<unknown, unknown>, startNodeId: string, maxDistance: number) {
+  constructor(
+    graph: Graph<unknown, unknown>,
+    startNodeId: string,
+    maxDistance: number
+  ) {
     super();
     this.graph = graph.clone();
     this.startNodeId = startNodeId;
@@ -30,7 +34,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
 
   protected getState(): DialsState {
     // Deep copy of buckets for safe state inspection
-    const bucketsCopy = this.buckets.map(bucket => [...bucket]);
+    const bucketsCopy = this.buckets.map((bucket) => [...bucket]);
     return {
       visited: { ...this.visited },
       buckets: bucketsCopy,
@@ -39,12 +43,16 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
   }
 
   *run(): Generator<AlgorithmStep<DialsState>, void, unknown> {
-
     // kelmich-highlight-start
 
-    this.buckets[0].push({ id: this.startNodeId, weight: 0, parent: undefined });
+    this.buckets[0].push({
+      id: this.startNodeId,
+      weight: 0,
+      parent: undefined,
+    });
 
     for (let distance = 0; distance <= this.maxDistance; distance++) {
+      yield* this.breakpoint(`Exploring distance ${distance}.`);
       const bucket = this.buckets[distance];
       while (bucket.length > 0) {
         const currentNode = bucket.shift()!;
@@ -67,7 +75,8 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
             this.buckets[newDistance].push({
               id: edge.from,
               weight: newDistance,
-              parent: this.currentNode });
+              parent: this.currentNode,
+            });
           }
         }
 
@@ -75,7 +84,6 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
       }
     }
     // kelmich-highlight-end
-
 
     console.log("Dial's algorithm completed", this.visited);
     yield* this.breakpoint(`Completed Algorithm.`);
