@@ -147,11 +147,13 @@ export const FullPrecomputeVisualizer = () => {
         }}
         onStep={setStepData}
       />
-      <div className="flex flex-row divide-x">
+      <div className="flex flex-col divide-y">
         <div className="flex-1 overflow-auto">
-          <GraphVisualizer graph={graphA} id="graphA" />
-          <GraphVisualizer graph={graphB} id="graphB" />
-          <div className="flex flex-row gap-8 justify-center bg-background">
+          <div className="flex flex-row">
+            <GraphVisualizer graph={graphA} id="graphA" />
+            <GraphVisualizer graph={graphB} id="graphB" />
+          </div>
+          <div className="flex flex-row gap-8 justify-center bg-background py-4">
             <div className="flex flex-row gap-2 p-1">
               <div className="w-6 h-6 bg-secondary rounded-full" />
               <span className="text-sm">Road Intersection</span>
@@ -162,35 +164,58 @@ export const FullPrecomputeVisualizer = () => {
             </div>
           </div>
         </div>
+        <div className="w-full overflow-auto bg-background text-background-foreground">
+          <table className="min-w-full text-sm divide-y table-fixed">
+            <thead>
+              <tr className="bg-muted divide-x">
+                <th className="px-2 py-1 text-left w-20">From \ To</th>
+                {Array.from(initialGraphA.nodes).map((node) => (
+                  <th
+                    key={node.id}
+                    className="px-2 py-1 text-center font-medium w-20"
+                  >
+                    {node.id}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              <tr className="odd:bg-background even:bg-muted divide-x">
+                <td className="px-2 py-1 font-medium">B</td>
+                {Array.from(initialGraphA.nodes).map((node) => {
+                  const weightA =
+                    stepData?.state[0].visited[node.id]?.[0] ?? "∞";
+                  return (
+                    <td
+                      key={node.id}
+                      className="px-2 py-1 text-center font-mono w-20"
+                    >
+                      {weightA}
+                    </td>
+                  );
+                })}
+              </tr>
+              <tr className="odd:bg-background even:bg-muted divide-x">
+                <td className="px-2 py-1 font-medium">E</td>
+                {Array.from(initialGraphA.nodes).map((node) => {
+                  const weightB =
+                    stepData?.state[1].visited[node.id]?.[0] ?? "∞";
+                  return (
+                    <td
+                      key={node.id}
+                      className="px-2 py-1 text-center font-mono w-20"
+                    >
+                      {weightB}
+                    </td>
+                  );
+                })}
+              </tr>
+            </tbody>
+          </table>
 
-        <div className="w-[200px] overflow-auto divide-y">
-          {stepData?.state[0].minHeap && (
-            <div className="h-1/2">
-              <ResultVisualizer
-                title="Results A"
-                results={Object.entries(stepData.state[0].visited).map(
-                  ([id, [weight]]) => ({
-                    id,
-                    weight,
-                  })
-                )}
-              />
-            </div>
-          )}
-          {stepData?.state[1].minHeap && (
-            <div className="h-1/2">
-              <ResultVisualizer
-                title="Results B"
-                results={Object.entries(stepData.state[1].visited).map(
-                  ([id, [weight]]) => ({
-                    id,
-                    weight,
-                  })
-                )}
-              />
-            </div>
-          )}
         </div>
+
+
       </div>
       {stepData?.message && (
         <div className="p-4 bg-background text-background-foreground text-sm">
