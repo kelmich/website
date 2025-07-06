@@ -1,6 +1,7 @@
 export type AlgorithmStep<TState> = {
   message: string;
   state: TState;
+  completed: boolean;
 };
 
 export abstract class AlgorithmVisualizer<TState> {
@@ -12,8 +13,9 @@ export abstract class AlgorithmVisualizer<TState> {
   }
 
   protected *breakpoint(
-    message: string
+    message: string,
+    completed: boolean = false
   ): Generator<AlgorithmStep<TState>, void, unknown> {
-    yield { message, state: this.getState() };
+    yield { message, state: this.getState(), completed };
   }
 }

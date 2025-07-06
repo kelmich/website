@@ -75,6 +75,6 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     }
     // kelmich-highlight-end
     this.currentNode = undefined;
-    yield* this.breakpoint(`Algorithm Completed.`);
+    yield* this.breakpoint(`Algorithm Completed.`, true);
   }
 }

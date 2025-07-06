@@ -17,9 +17,11 @@ export const ControlBar = <T,>(props: Props<T>) => {
     const step = generatorRef.current.next();
     if (!step.done) {
       props.onStep(step.value);
-    } else {
+    }
+
+    if (step.done || step.value.completed) {
       setIsRunning(false);
-      setHasFinished(true); // Mark algorithm as finished
+      setHasFinished(true);
     }
   }, [props]);
 
