@@ -23,14 +23,30 @@ function extractInterestingCode(content: string): string {
   return content; // fallback to full content
 }
 
+function removeLeadingWhitespace(code: string): string {
+  const lines = code.split("\n");
+  const leadingWhitespace = lines
+    .filter((line) => line.trim() !== "")
+    .reduce((min, line) => {
+      const match = line.match(/^(\s*)/);
+      return match ? Math.min(min, match[0].length) : min;
+    }, Infinity);
+
+  return lines
+    .map((line) => line.slice(leadingWhitespace))
+    .join("\n")
+    .trim();
+}
+
 export default async function CodeBlock({ lang, filepath }: Props) {
   // const headersList = await headers();
   // const pathname = headersList.get("x-pathname") || "";
   // const fullPath = path.join("app", pathname, filename);
   const fileContent = readFileSync(filepath, "utf8");
   const interestingPart = extractInterestingCode(fileContent);
+  const cleanedCode = removeLeadingWhitespace(interestingPart);
 
-  const html = await codeToHtml(interestingPart, {
+  const html = await codeToHtml(cleanedCode, {
     lang,
     theme: "github-light",
     transformers: [
