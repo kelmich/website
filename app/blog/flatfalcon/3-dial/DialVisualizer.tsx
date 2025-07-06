@@ -9,25 +9,7 @@ import { Graph } from "@/app/algorithms/graph";
 import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
 import { Dials, DialsState } from "./dial";
-
-// new: you need this simple BucketsVisualizer
-const BucketsVisualizer = ({
-  buckets,
-}: {
-  buckets: DialsState["buckets"];
-}) => {
-  return (
-    <div className="p-2 overflow-auto bg-background text-background-foreground">
-      <h4 className="text-sm font-bold">Buckets</h4>
-      {buckets.map((bucket, idx) => (
-        <div key={idx} className="text-xs">
-          <span className="font-mono">{idx}:</span>{" "}
-          {bucket.map((n) => n.id).join(", ") || "-"}
-        </div>
-      ))}
-    </div>
-  );
-};
+import { BucketsVisualizer } from "@/app/components/interactive_examples/BucketVisualizer.tsx";
 
 export const DialVisualizer = () => {
   const initialGraph = useMemo(
@@ -35,10 +17,16 @@ export const DialVisualizer = () => {
       new Graph<VisualizationNodeData, VisualizationEdgeData>(
         [
           { id: "A", data: { x: 0, y: 0, variant: "primary" } },
-          { id: "B", data: { x: 150, y: 0, variant: "secondary", shape: "rect" } },
+          {
+            id: "B",
+            data: { x: 150, y: 0, variant: "secondary", shape: "rect" },
+          },
           { id: "C", data: { x: 0, y: 200, variant: "secondary" } },
           { id: "D", data: { x: 150, y: 200, variant: "secondary" } },
-          { id: "E", data: { x: 300, y: 100, variant: "secondary", shape: "rect" } },
+          {
+            id: "E",
+            data: { x: 300, y: 100, variant: "secondary", shape: "rect" },
+          },
         ],
         [
           { from: "A", to: "B", weight: 5, data: { variant: "secondary" } },
@@ -129,13 +117,17 @@ export const DialVisualizer = () => {
 
         <div className="w-[200px] overflow-auto divide-y">
           {stepData?.state.buckets && (
-            <div className="h-1/2">
-              <BucketsVisualizer buckets={stepData.state.buckets} />
+            <div className="h-8/12">
+              <BucketsVisualizer
+                buckets={stepData.state.buckets}
+                activeIdx={stepData.state.activeBucket}
+              />
             </div>
           )}
           {stepData?.state.buckets && (
-            <div className="h-1/2">
+            <div className="h-4/12">
               <ResultVisualizer
+                title="Results"
                 results={Object.entries(stepData.state.visited)
                   .map(([id, [weight]]) => ({ id, weight }))
                   .filter((item) => listingNodes.includes(item.id))}

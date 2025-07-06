@@ -7,6 +7,7 @@ import {
 export type DialsState = {
   visited: Record<string, [number, string | undefined]>;
   buckets: { id: string; weight: number; parent?: string }[][];
+  activeBucket?: number;
   currentNode?: string;
 };
 
@@ -14,6 +15,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
   private graph: Graph<unknown, unknown>;
   private visited: Record<string, [number, string | undefined]>;
   private buckets: { id: string; weight: number; parent?: string }[][];
+  private activeBucket: number;
   private currentNode?: string;
   private startNodeId: string;
   private maxDistance: number;
@@ -29,6 +31,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
     this.maxDistance = maxDistance;
 
     this.visited = {};
+    this.activeBucket = 0;
     this.buckets = Array.from({ length: maxDistance + 1 }, () => []);
   }
 
@@ -39,6 +42,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
       visited: { ...this.visited },
       buckets: bucketsCopy,
       currentNode: this.currentNode,
+      activeBucket: this.activeBucket,
     };
   }
 
@@ -51,9 +55,13 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
       parent: undefined,
     });
 
-    for (let distance = 0; distance <= this.maxDistance; distance++) {
-      yield* this.breakpoint(`Exploring distance ${distance}.`);
-      const bucket = this.buckets[distance];
+    for (
+      this.activeBucket = 0;
+      this.activeBucket <= this.maxDistance;
+      this.activeBucket++
+    ) {
+      yield* this.breakpoint(`Exploring distance ${this.activeBucket}.`);
+      const bucket = this.buckets[this.activeBucket];
       while (bucket.length > 0) {
         const currentNode = bucket.shift()!;
         const { id, weight, parent } = currentNode;
@@ -81,11 +89,10 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
         }
 
         yield* this.breakpoint(`Visiting ${id} and exploring neighbors.`);
+        this.currentNode = undefined;
       }
     }
     // kelmich-highlight-end
-
-    console.log("Dial's algorithm completed", this.visited);
-    yield* this.breakpoint(`Completed Algorithm.`);
+    yield* this.breakpoint(`Completed Algorithm.`, true);
   }
 }

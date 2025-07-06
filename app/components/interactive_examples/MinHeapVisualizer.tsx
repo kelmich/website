@@ -6,9 +6,9 @@ interface MinHeapViewProps {
 
 export const MinHeapVisualizer: React.FC<MinHeapViewProps> = ({ minHeap }) => {
   return (
-    <div className="p-4 text-sm bg-background text-background-foreground h-full">
-      <p className="mb-2">Min Heap</p>
-      <ul className="space-y-1">
+    <div className="p-2 overflow-auto bg-background text-background-foreground h-full">
+      <h4 className="text-sm font-bold mb-2">Min Heap</h4>
+      <ul className="space-y-1 px-2">
         {minHeap
           .export()
           .slice()

@@ -7,7 +7,6 @@ import GraphVisualizer, {
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
 import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
-import { MinHeapVisualizer } from "@/app/components/interactive_examples/MinHeapVisualizer";
 import {
   Dijkstra,
   DijkstraState,
@@ -122,12 +121,16 @@ export const DijkstraVisualizer = () => {
         <div className="w-[200px] overflow-auto divide-y">
           {stepData?.state.minHeap && (
             <div className="h-1/2">
-              <MinHeapVisualizer minHeap={stepData.state.minHeap} />
+              <ResultVisualizer
+                title="Min Heap"
+                results={stepData.state.minHeap.export()}
+              />
             </div>
           )}
           {stepData?.state.minHeap && (
             <div className="h-1/2">
               <ResultVisualizer
+                title="Results"
                 results={Object.entries(stepData.state.visited)
                   .map(([id, [weight]]) => ({
                     id,

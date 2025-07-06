@@ -166,6 +166,7 @@ export const FullPrecomputeVisualizer = () => {
           {stepData?.state.minHeap && (
             <div className="h-1/2">
               <ResultVisualizer
+                title="Results"
                 results={Object.entries(stepData.state.visited)
                   .map(([id, [weight]]) => ({
                     id,
