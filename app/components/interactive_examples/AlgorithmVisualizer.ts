@@ -1,5 +1,5 @@
 export type AlgorithmStep<TState> = {
-  message: string;
+  message: string | string[];
   state: TState;
   completed: boolean;
 };
@@ -58,9 +58,21 @@ export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
 
       yield {
         message: [
-          stepA?.message ?? (doneA ? "Algorithm A completed" : ""),
-          stepB?.message ?? (doneB ? "Algorithm B completed" : ""),
-        ].join(" | "),
+          ...(
+            stepA
+              ? Array.isArray(stepA.message)
+                ? stepA.message
+                : [stepA.message]
+              : ["Algorithm A completed"]
+          ),
+          ...(
+            stepB
+              ? Array.isArray(stepB.message)
+                ? stepB.message
+                : [stepB.message]
+              : ["Algorithm B completed"]
+          )
+        ],
         state: this.getState(),
         completed: doneA && doneB,
       };

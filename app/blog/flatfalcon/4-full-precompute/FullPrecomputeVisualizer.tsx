@@ -15,6 +15,8 @@ import {
   DijkstraState,
 } from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
+import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
+import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 
 export const FullPrecomputeVisualizer = () => {
   const initialGraphA = useMemo(
@@ -153,16 +155,7 @@ export const FullPrecomputeVisualizer = () => {
             <GraphVisualizer graph={graphA} id="graphA" />
             <GraphVisualizer graph={graphB} id="graphB" />
           </div>
-          <div className="flex flex-row gap-8 justify-center bg-background py-4">
-            <div className="flex flex-row gap-2 p-1">
-              <div className="w-6 h-6 bg-secondary rounded-full" />
-              <span className="text-sm">Road Intersection</span>
-            </div>
-            <div className="flex flex-row gap-2 p-1">
-              <div className="w-6 h-6 bg-secondary rounded-sm" />
-              <span className="text-sm">Listing</span>
-            </div>
-          </div>
+          <GraphLegend />
         </div>
         <div className="w-full overflow-auto bg-background text-background-foreground">
           <table className="min-w-full text-sm divide-y table-fixed">
@@ -217,11 +210,7 @@ export const FullPrecomputeVisualizer = () => {
 
 
       </div>
-      {stepData?.message && (
-        <div className="p-4 bg-background text-background-foreground text-sm">
-          {stepData?.message}
-        </div>
-      )}
+      {stepData?.message && <MessageRenderer message={stepData.message} />}
     </div>
   );
 };

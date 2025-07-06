@@ -10,6 +10,8 @@ import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVi
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
 import { Dials, DialsState } from "./dial";
 import { BucketsVisualizer } from "@/app/components/interactive_examples/BucketVisualizer.tsx";
+import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
+import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 
 export const DialVisualizer = () => {
   const initialGraph = useMemo(
@@ -103,16 +105,7 @@ export const DialVisualizer = () => {
       <div className="flex flex-row divide-x">
         <div className="flex-1 overflow-auto">
           <GraphVisualizer graph={graph} />
-          <div className="flex flex-row gap-8 justify-center bg-background py-4">
-            <div className="flex flex-row gap-2 p-1">
-              <div className="w-6 h-6 bg-secondary rounded-full" />
-              <span className="text-sm">Road Intersection</span>
-            </div>
-            <div className="flex flex-row gap-2 p-1">
-              <div className="w-6 h-6 bg-secondary rounded-sm" />
-              <span className="text-sm">Listing</span>
-            </div>
-          </div>
+          <GraphLegend />
         </div>
 
         <div className="w-[200px] overflow-auto divide-y">
@@ -137,11 +130,7 @@ export const DialVisualizer = () => {
         </div>
       </div>
 
-      {stepData?.message && (
-        <div className="p-4 bg-background text-background-foreground text-sm">
-          {stepData?.message}
-        </div>
-      )}
+      {stepData?.message && <MessageRenderer message={stepData.message} />}
     </div>
   );
 };
