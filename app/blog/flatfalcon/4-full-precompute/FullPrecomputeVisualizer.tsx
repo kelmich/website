@@ -122,7 +122,7 @@ export const FullPrecomputeVisualizer = () => {
         });
 
         newGraph.edges.forEach((edge) => {
-          if (state.currentNode === edge.to) {
+          if (state.currentNode === edge.from) {
             edge.data.variant = "primary";
           } else if (usedEdges.has(`${edge.from}-${edge.to}`)) {
             edge.data.variant = "success";
@@ -149,8 +149,8 @@ export const FullPrecomputeVisualizer = () => {
       />
       <div className="flex flex-row divide-x">
         <div className="flex-1 overflow-auto">
-          <GraphVisualizer graph={graphA} />
-          <GraphVisualizer graph={graphB} />
+          <GraphVisualizer graph={graphA} id="graphA" />
+          <GraphVisualizer graph={graphB} id="graphB" />
           <div className="flex flex-row gap-8 justify-center bg-background">
             <div className="flex flex-row gap-2 p-1">
               <div className="w-6 h-6 bg-secondary rounded-full" />

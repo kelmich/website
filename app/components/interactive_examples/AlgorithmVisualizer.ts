@@ -50,8 +50,8 @@ export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
       const nextA = doneA ? null : genA.next();
       const nextB = doneB ? null : genB.next();
 
-      if (nextA && nextA.done) doneA = true;
-      if (nextB && nextB.done) doneB = true;
+      if (nextA && (nextA.done || nextA.value.completed)) doneA = true;
+      if (nextB && (nextB.done || nextB.value.completed)) doneB = true;
 
       const stepA = nextA?.value;
       const stepB = nextB?.value;
