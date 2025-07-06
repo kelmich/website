@@ -6,8 +6,10 @@ import GraphVisualizer, {
 } from "@/app/components/interactive_examples/GraphVisualizer";
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
-import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
-import { MinHeapVisualizer } from "@/app/components/interactive_examples/MinHeapVisualizer";
+import {
+  AlgorithmStep,
+  ConcurrentVisualizer,
+} from "@/app/components/interactive_examples/AlgorithmVisualizer";
 import {
   Dijkstra,
   DijkstraState,
@@ -42,7 +44,7 @@ export const FullPrecomputeVisualizer = () => {
           { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
-          { from: "E", to: "D", weight: 1, data: { variant: "secondary" } },
+          { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
         ]
       ),
     []
@@ -74,14 +76,11 @@ export const FullPrecomputeVisualizer = () => {
           { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
-          { from: "E", to: "D", weight: 1, data: { variant: "secondary" } },
+          { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
         ]
       ),
     []
   );
-  const listingNodes = initialGraphA.nodes
-    .filter((node) => node.data.shape === "rect")
-    .map((node) => node.id);
   const [graphA, setGraphA] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(
       initialGraphA
@@ -90,14 +89,18 @@ export const FullPrecomputeVisualizer = () => {
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(
       initialGraphB
     );
-  const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
-    null
-  );
+  const [stepData, setStepData] = useState<AlgorithmStep<
+    [DijkstraState, DijkstraState]
+  > | null>(null);
 
   useEffect(() => {
-    for (const setGraph of [setGraphA, setGraphB]) {
-      if (!stepData) return;
-      const { state } = stepData;
+    if (!stepData) return;
+    const { state } = stepData;
+    const [stateA, stateB] = state;
+    for (const [setGraph, state] of [
+      [setGraphA, stateA],
+      [setGraphB, stateB],
+    ] as const) {
       setGraph((prevGraph) => {
         const newGraph = prevGraph.clone();
 
@@ -121,7 +124,7 @@ export const FullPrecomputeVisualizer = () => {
         newGraph.edges.forEach((edge) => {
           if (state.currentNode === edge.to) {
             edge.data.variant = "primary";
-          } else if (usedEdges.has(`${edge.to}-${edge.from}`)) {
+          } else if (usedEdges.has(`${edge.from}-${edge.to}`)) {
             edge.data.variant = "success";
           } else {
             edge.data.variant = "secondary";
@@ -137,7 +140,10 @@ export const FullPrecomputeVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Dijkstra(initialGraphA, "B");
+          return new ConcurrentVisualizer<DijkstraState, DijkstraState>(
+            new Dijkstra(initialGraphA, "B", false),
+            new Dijkstra(initialGraphB, "E", false)
+          );
         }}
         onStep={setStepData}
       />
@@ -158,21 +164,29 @@ export const FullPrecomputeVisualizer = () => {
         </div>
 
         <div className="w-[200px] overflow-auto divide-y">
-          {stepData?.state.minHeap && (
-            <div className="h-1/2">
-              <MinHeapVisualizer minHeap={stepData.state.minHeap} />
-            </div>
-          )}
-          {stepData?.state.minHeap && (
+          {stepData?.state[0].minHeap && (
             <div className="h-1/2">
               <ResultVisualizer
-                title="Results"
-                results={Object.entries(stepData.state.visited)
-                  .map(([id, [weight]]) => ({
+                title="Results A"
+                results={Object.entries(stepData.state[0].visited).map(
+                  ([id, [weight]]) => ({
                     id,
                     weight,
-                  }))
-                  .filter((item) => listingNodes.includes(item.id))}
+                  })
+                )}
+              />
+            </div>
+          )}
+          {stepData?.state[1].minHeap && (
+            <div className="h-1/2">
+              <ResultVisualizer
+                title="Results B"
+                results={Object.entries(stepData.state[1].visited).map(
+                  ([id, [weight]]) => ({
+                    id,
+                    weight,
+                  })
+                )}
               />
             </div>
           )}

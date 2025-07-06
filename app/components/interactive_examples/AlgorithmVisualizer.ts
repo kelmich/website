@@ -5,7 +5,7 @@ export type AlgorithmStep<TState> = {
 };
 
 export abstract class AlgorithmVisualizer<TState> {
-  protected abstract getState(): TState;
+  public abstract getState(): TState;
 
   *run(): Generator<AlgorithmStep<TState>, void, unknown> {
     // This method should be implemented by subclasses to define the algorithm's steps.
@@ -17,5 +17,53 @@ export abstract class AlgorithmVisualizer<TState> {
     completed: boolean = false
   ): Generator<AlgorithmStep<TState>, void, unknown> {
     yield { message, state: this.getState(), completed };
+  }
+}
+
+export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
+  [T1, T2]
+> {
+  private visA: AlgorithmVisualizer<T1>;
+  private visB: AlgorithmVisualizer<T2>;
+
+  constructor(
+    visualizerA: AlgorithmVisualizer<T1>,
+    visualizerB: AlgorithmVisualizer<T2>
+  ) {
+    super();
+    this.visA = visualizerA;
+    this.visB = visualizerB;
+  }
+
+  public getState(): [T1, T2] {
+    return [this.visA.getState(), this.visB.getState()];
+  }
+
+  *run(): Generator<AlgorithmStep<[T1, T2]>, void, unknown> {
+    const genA = this.visA.run();
+    const genB = this.visB.run();
+
+    let doneA = false;
+    let doneB = false;
+
+    while (!doneA || !doneB) {
+      const nextA = doneA ? null : genA.next();
+      const nextB = doneB ? null : genB.next();
+
+      if (nextA && nextA.done) doneA = true;
+      if (nextB && nextB.done) doneB = true;
+
+      const stepA = nextA?.value;
+      const stepB = nextB?.value;
+
+      yield {
+        message: [
+          stepA?.message ?? (doneA ? "Algorithm A completed" : ""),
+          stepB?.message ?? (doneB ? "Algorithm B completed" : ""),
+        ].join(" | "),
+        state: this.getState(),
+        completed: doneA && doneB,
+      };
+    }
   }
 }

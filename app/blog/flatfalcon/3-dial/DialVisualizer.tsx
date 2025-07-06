@@ -36,7 +36,7 @@ export const DialVisualizer = () => {
           { from: "C", to: "D", weight: 2, data: { variant: "secondary" } },
           { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
-          { from: "E", to: "D", weight: 1, data: { variant: "secondary" } },
+          { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
         ]
       ),
     []

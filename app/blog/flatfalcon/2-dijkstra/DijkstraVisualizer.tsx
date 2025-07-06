@@ -41,7 +41,7 @@ export const DijkstraVisualizer = () => {
           { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
-          { from: "E", to: "D", weight: 1, data: { variant: "secondary" } },
+          { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
 
           // { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
           // { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
@@ -99,7 +99,7 @@ export const DijkstraVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Dijkstra(initialGraph, "A");
+          return new Dijkstra(initialGraph, "A", true);
         }}
         onStep={setStepData}
       />

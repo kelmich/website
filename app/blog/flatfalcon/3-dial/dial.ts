@@ -35,7 +35,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
     this.buckets = Array.from({ length: maxDistance + 1 }, () => []);
   }
 
-  protected getState(): DialsState {
+  public getState(): DialsState {
     // Deep copy of buckets for safe state inspection
     const bucketsCopy = this.buckets.map((bucket) => [...bucket]);
     return {

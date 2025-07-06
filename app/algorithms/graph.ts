@@ -21,8 +21,18 @@ export class Graph<T, U> {
   }
 
   clone(): Graph<T, U> {
-    const clonedNodes = this.nodes.map((node) => ({ ...node }));
-    const clonedEdges = this.edges.map((edge) => ({ ...edge }));
+    const clonedNodes = this.nodes.map((node) => ({
+      id: node.id,
+      data: structuredClone(node.data),
+    }));
+
+    const clonedEdges = this.edges.map((edge) => ({
+      from: edge.from,
+      to: edge.to,
+      weight: edge.weight,
+      data: structuredClone(edge.data),
+    }));
+
     return new Graph(clonedNodes, clonedEdges);
   }
 

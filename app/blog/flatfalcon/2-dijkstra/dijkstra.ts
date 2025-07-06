@@ -25,8 +25,13 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
   }>;
   private currentNode?: string;
   private startNodeId: string;
+  private incoming: boolean;
 
-  constructor(graph: Graph<unknown, unknown>, startNodeId: string) {
+  constructor(
+    graph: Graph<unknown, unknown>,
+    startNodeId: string,
+    incoming: boolean
+  ) {
     super();
     this.graph = graph.clone();
     this.startNodeId = startNodeId;
@@ -36,9 +41,10 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       weight: number;
       parent?: string;
     }>();
+    this.incoming = incoming;
   }
 
-  protected getState(): DijkstraState {
+  public getState(): DijkstraState {
     return {
       visited: { ...this.visited },
       minHeap: this.minHeap.clone(),
@@ -59,15 +65,17 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       this.currentNode = id;
       this.visited[id] = [weight, parent];
 
-      for (const edge of this.graph.neighbors(id, true)) {
-        if (this.visited[edge.from] !== undefined) {
+      for (const edge of this.graph.neighbors(id, this.incoming)) {
+        const sourceId = this.incoming ? edge.to : edge.from;
+        const targetId = this.incoming ? edge.from : edge.to;
+        if (this.visited[targetId] !== undefined) {
           continue; // Skip already visited nodes
         }
         const newDistance = weight + edge.weight;
         this.minHeap.insert({
-          id: edge.from,
+          id: targetId,
           weight: newDistance,
-          parent: id,
+          parent: sourceId,
         });
       }
 
