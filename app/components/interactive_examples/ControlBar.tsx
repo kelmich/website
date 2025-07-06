@@ -13,24 +13,26 @@ export const ControlBar = <T,>(props: Props<T>) => {
   const [isRunning, setIsRunning] = useState(false);
   const [hasFinished, setHasFinished] = useState(false);
 
+  const { executorFactory, onStep } = props;
+
   const handleStep = useCallback(() => {
     const step = generatorRef.current.next();
     if (!step.done) {
-      props.onStep(step.value);
+      onStep(step.value);
     }
 
     if (step.done || step.value.completed) {
       setIsRunning(false);
       setHasFinished(true);
     }
-  }, [props]);
+  }, [onStep]);
 
-  const handleReset = () => {
-    generatorRef.current = props.executorFactory().run();
+  const handleReset = useCallback(() => {
+    generatorRef.current = executorFactory().run();
     setIsRunning(false);
     setHasFinished(false);
     handleStep();
-  };
+  }, [handleStep, executorFactory]);
 
   const handlePlayPause = () => {
     if (!hasFinished) {
@@ -57,6 +59,7 @@ export const ControlBar = <T,>(props: Props<T>) => {
 
   useEffect(() => {
     handleReset(); // Initial reset
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

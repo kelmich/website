@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -32,7 +32,7 @@ export default function Pomodoro() {
     return LONG_BREAK_DURATION;
   };
 
-  const switchMode = () => {
+  const switchMode = useCallback(() => {
     if (mode === "pomodoro") {
       const newCompleted = completedPomodoros + 1;
       setCompletedPomodoros(newCompleted);
@@ -47,7 +47,25 @@ export default function Pomodoro() {
       setMode("pomodoro");
       setTimeLeft(POMODORO_DURATION);
     }
-  };
+  }, [
+    LONG_BREAK_DURATION,
+    POMODORO_DURATION,
+    SHORT_BREAK_DURATION,
+    completedPomodoros,
+    mode,
+  ]);
+
+  const notify = useCallback(() => {
+    if (Notification.permission === "granted") {
+      let message = "";
+      if (mode === "pomodoro") {
+        message = "Pomodoro complete! Take a break.";
+      } else {
+        message = "Break over! Time to work.";
+      }
+      new Notification(message);
+    }
+  }, [mode]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -66,7 +84,7 @@ export default function Pomodoro() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, mode]);
+  }, [isRunning, mode, notify, switchMode]);
 
   // load tasks from localStorage on mount
   useEffect(() => {
@@ -100,18 +118,6 @@ export default function Pomodoro() {
   const reset = () => {
     setTimeLeft(getDuration(mode));
     setIsRunning(false);
-  };
-
-  const notify = () => {
-    if (Notification.permission === "granted") {
-      let message = "";
-      if (mode === "pomodoro") {
-        message = "Pomodoro complete! Take a break.";
-      } else {
-        message = "Break over! Time to work.";
-      }
-      new Notification(message);
-    }
   };
 
   const handleStartPause = () => {
