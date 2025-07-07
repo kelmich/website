@@ -54,6 +54,11 @@ export default async function Home() {
             case.
           </p>
 
+          <p>
+            We also see a nice drop in real world query performance. Using Dial&quot;s
+            Algorithm we are almost three times faster than if we used a more traditional MinHeap.
+          </p>
+
           <BarChart
             unit="ms"
             title="Average Query Time (NYC)"

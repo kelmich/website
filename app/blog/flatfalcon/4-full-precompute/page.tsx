@@ -33,6 +33,16 @@ export default async function Home() {
 
           <FullPrecomputeVisualizer />
 
+          <p>
+            However, even if we run these shortest path algorithms in parallel,
+            it takes quite a while to start up and be ready for the first query.
+            In the real world this might be okay, we only need to compute this
+            once and can persist the results to disk later for faster startup times.
+            There is however also the issue that the memory requirements for scaling
+            this approach are non-trivial. Asymptotically it amounts to storing
+            the entire graph again for every listing we have.
+          </p>
+
           <BarChart
             unit="s"
             title="Precomputation Time (NYC)"
@@ -46,6 +56,12 @@ export default async function Home() {
             ]}
           />
 
+          <p>
+            What is really nice however is the query performance. We are 1000x faster at query time
+            in comparison to our Dial approach. So depending on your needs and your tolarance
+            for memory usage this approach might very well be a viable option.
+          </p>
+
           <BarChart
             unit="ms"
             title="Average Query Time (NYC)"
@@ -58,6 +74,11 @@ export default async function Home() {
               },
             ]}
           />
+
+          <p>For the use cases we have in mind we prefer to have more efficient startup times
+            and less memory usage. To this end we will explore an alternative approach
+            that is somewhat of a middle ground between no precompute and full precompute.
+          </p>
 
           <BlogNavigation
             from={{

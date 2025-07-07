@@ -18,21 +18,21 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
   private activeBucket: number;
   private currentNode?: string;
   private startNodeId: string;
-  private maxDistance: number;
+  private maxTravelTime: number;
 
   constructor(
     graph: Graph<unknown, unknown>,
     startNodeId: string,
-    maxDistance: number
+    maxTravelTime: number
   ) {
     super();
     this.graph = graph.clone();
     this.startNodeId = startNodeId;
-    this.maxDistance = maxDistance;
+    this.maxTravelTime = maxTravelTime;
 
     this.visited = {};
     this.activeBucket = 0;
-    this.buckets = Array.from({ length: maxDistance + 1 }, () => []);
+    this.buckets = Array.from({ length: maxTravelTime + 1 }, () => []);
   }
 
   public getState(): DialsState {
@@ -57,7 +57,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
 
     for (
       this.activeBucket = 0;
-      this.activeBucket <= this.maxDistance;
+      this.activeBucket <= this.maxTravelTime;
       this.activeBucket++
     ) {
       yield* this.breakpoint(`Exploring distance ${this.activeBucket}.`);
@@ -79,7 +79,7 @@ export class Dials extends AlgorithmVisualizer<DialsState> {
           }
 
           const newDistance = weight + edge.weight;
-          if (newDistance <= this.maxDistance) {
+          if (newDistance <= this.maxTravelTime) {
             this.buckets[newDistance].push({
               id: edge.from,
               weight: newDistance,

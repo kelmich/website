@@ -62,15 +62,15 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
     while (this.minHeap.size() > 0) {
       const { id, weight, parent } = this.minHeap.pop()!;
 
+      if(this.visited[id] !== undefined) continue;
+
       this.currentNode = id;
       this.visited[id] = [weight, parent];
 
       for (const edge of this.graph.neighbors(id, this.incoming)) {
         const sourceId = this.incoming ? edge.to : edge.from;
         const targetId = this.incoming ? edge.from : edge.to;
-        if (this.visited[targetId] !== undefined) {
-          continue; // Skip already visited nodes
-        }
+        if(this.visited[id] !== undefined) continue;
         const newDistance = weight + edge.weight;
         this.minHeap.insert({
           id: targetId,
