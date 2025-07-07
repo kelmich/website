@@ -14,7 +14,6 @@ import {
   Dijkstra,
   DijkstraState,
 } from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
-import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 
@@ -163,10 +162,7 @@ export const FullPrecomputeVisualizer = () => {
               <tr className="bg-muted divide-x">
                 <th className="px-2 py-1 text-left w-20">From \ To</th>
                 {Array.from(initialGraphA.nodes).map((node) => (
-                  <th
-                    key={node.id}
-                    className="px-2 py-1 text-center w-20"
-                  >
+                  <th key={node.id} className="px-2 py-1 text-center w-20">
                     {node.id}
                   </th>
                 ))}
@@ -205,10 +201,7 @@ export const FullPrecomputeVisualizer = () => {
               </tr>
             </tbody>
           </table>
-
         </div>
-
-
       </div>
       {stepData?.message && <MessageRenderer message={stepData.message} />}
     </div>
