@@ -62,6 +62,13 @@ export default async function Home() {
             for memory usage this approach might very well be a viable option.
           </p>
 
+          <p>
+            Consider the following back of the envolope calculation for New York. Zillow lists
+            approximately 17000 listings for New York City. The Graph of New York City we use for testing
+            is 3.6MB large. So storing the entire shortest path for every listing would mean
+            needing 3.6MB * 17000 = 61'200MB &asymp; 60GB.
+          </p>
+
           <BarChart
             unit="ms"
             title="Average Query Time (NYC)"
