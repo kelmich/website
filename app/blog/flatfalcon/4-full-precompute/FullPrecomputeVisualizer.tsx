@@ -165,7 +165,7 @@ export const FullPrecomputeVisualizer = () => {
                 {Array.from(initialGraphA.nodes).map((node) => (
                   <th
                     key={node.id}
-                    className="px-2 py-1 text-center font-medium w-20"
+                    className="px-2 py-1 text-center w-20"
                   >
                     {node.id}
                   </th>
@@ -174,7 +174,7 @@ export const FullPrecomputeVisualizer = () => {
             </thead>
             <tbody className="divide-y">
               <tr className="odd:bg-background even:bg-muted divide-x">
-                <td className="px-2 py-1 font-medium">B</td>
+                <td className="px-2 py-1 font-bold">B</td>
                 {Array.from(initialGraphA.nodes).map((node) => {
                   const weightA =
                     stepData?.state[0].visited[node.id]?.[0] ?? "∞";
@@ -189,7 +189,7 @@ export const FullPrecomputeVisualizer = () => {
                 })}
               </tr>
               <tr className="odd:bg-background even:bg-muted divide-x">
-                <td className="px-2 py-1 font-medium">E</td>
+                <td className="px-2 py-1 font-bold">E</td>
                 {Array.from(initialGraphA.nodes).map((node) => {
                   const weightB =
                     stepData?.state[1].visited[node.id]?.[0] ?? "∞";
