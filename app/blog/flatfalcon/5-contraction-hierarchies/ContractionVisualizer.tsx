@@ -7,37 +7,29 @@ import GraphVisualizer, {
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
 import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
-import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
-import { Dials, DialsState } from "@/app/blog/flatfalcon/3-dial/dial";
+import { Contractor, ContractorState } from "./contraction_hierarchies";
 
 export const ContractionVisualizer = () => {
   const initialGraph = useMemo(
     () =>
       new Graph<VisualizationNodeData, VisualizationEdgeData>(
         [
-          { id: "A", data: { x: 0, y: 0, variant: "primary" } },
+          { id: "A", data: { x: 0, y: 0, variant: "secondary" } },
           {
             id: "B",
-            data: { x: 150, y: 0, variant: "secondary", shape: "rect" },
+            data: { x: 200, y: 0, variant: "secondary" },
           },
-          { id: "C", data: { x: 0, y: 200, variant: "secondary" } },
-          { id: "D", data: { x: 150, y: 200, variant: "secondary" } },
-          {
-            id: "E",
-            data: { x: 300, y: 100, variant: "secondary", shape: "rect" },
-          },
+          { id: "C", data: { x: 100, y: 0, variant: "primary" } },
+          { id: "D", data: { x: 100, y: 300, variant: "secondary" } },
         ],
         [
-          { from: "A", to: "B", weight: 5, data: { variant: "secondary" } },
-          { from: "B", to: "A", weight: 5, data: { variant: "secondary" } },
-          { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
           { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
-          { from: "C", to: "D", weight: 2, data: { variant: "secondary" } },
-          { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
-          { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
-          { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
-        ]
+          { from: "D", to: "C", weight: 3, data: { variant: "secondary" } },
+          { from: "C", to: "B", weight: 2, data: { variant: "secondary" } },
+          { from: "D", to: "B", weight: 8, data: { variant: "secondary" } },
+        ],
+        () => { return { variant: "secondary" } }
       ),
     []
   );
@@ -45,7 +37,7 @@ export const ContractionVisualizer = () => {
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
 
-  const [stepData, setStepData] = useState<AlgorithmStep<DialsState> | null>(
+  const [stepData, setStepData] = useState<AlgorithmStep<ContractorState<VisualizationNodeData, VisualizationEdgeData>> | null>(
     null
   );
 
@@ -53,31 +45,15 @@ export const ContractionVisualizer = () => {
     if (!stepData) return;
     const { state } = stepData;
 
-    setGraph((prevGraph) => {
-      const newGraph = prevGraph.clone();
-
-      newGraph.nodes.forEach((node) => {
-        if (node.id in state.visited) {
-          node.data.variant = "success";
-        } else if (state.currentNode === node.id) {
-          node.data.variant = "primary";
-        } else {
-          node.data.variant = "secondary";
-        }
-      });
-
-      const usedEdges = new Set<string>();
-      Object.entries(state.visited).forEach(([nodeId, [, parentId]]) => {
-        if (parentId !== null && parentId !== undefined) {
-          usedEdges.add(`${parentId}-${nodeId}`);
-        }
-      });
+    setGraph(() => {
+      // Create a shallow copy of the graph to avoid mutating state directly
+      const newGraph = state.graph.clone();
 
       newGraph.edges.forEach((edge) => {
-        if (state.currentNode === edge.to) {
+        if (state.inEdge?.from === edge.from && state.inEdge?.to === edge.to) {
           edge.data.variant = "primary";
-        } else if (usedEdges.has(`${edge.to}-${edge.from}`)) {
-          edge.data.variant = "success";
+        } else if (state.outEdge?.from === edge.from && state.outEdge?.to === edge.to) {
+          edge.data.variant = "primary";
         } else {
           edge.data.variant = "secondary";
         }
@@ -91,14 +67,12 @@ export const ContractionVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          // adjust maxDistance here if needed
-          return new Dials(initialGraph, "A", 7);
+          return new Contractor(initialGraph, "C")
         }}
         onStep={setStepData}
       />
       <div className="flex flex-col">
-        <GraphVisualizer graph={graph} />
-        <GraphLegend />
+        <GraphVisualizer graph={graph} straightEdges />
       </div>
 
       {stepData?.message && <MessageRenderer message={stepData.message} />}

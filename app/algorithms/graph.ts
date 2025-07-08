@@ -15,9 +15,12 @@ export class Graph<T, U> {
   nodes: Node<T>[];
   edges: Edge<U>[];
 
-  constructor(nodes: Node<T>[], edges: Edge<U>[]) {
+  defaultEdgeDataFactory?: () => U;
+
+  constructor(nodes: Node<T>[], edges: Edge<U>[], defaultEdgeDataFactory?: () => U) {
     this.nodes = nodes;
     this.edges = edges;
+    this.defaultEdgeDataFactory = defaultEdgeDataFactory;
   }
 
   clone(): Graph<T, U> {
@@ -33,7 +36,32 @@ export class Graph<T, U> {
       data: structuredClone(edge.data),
     }));
 
-    return new Graph(clonedNodes, clonedEdges);
+    return new Graph(clonedNodes, clonedEdges, this.defaultEdgeDataFactory);
+  }
+
+  hasEdge(source: NodeId, target: NodeId) {
+    return this.edges.some((edge) => source === edge.from && edge.to === target);
+  }
+
+  createEdge(source: NodeId, target: NodeId, weight: number) {
+    if (!this.defaultEdgeDataFactory) {
+      throw "You must specify a defaultEdgeDataFactory to create Edges"
+    }
+    this.edges.push({
+      from: source,
+      to: target,
+      weight,
+      data: this.defaultEdgeDataFactory()
+    })
+  }
+
+  updateEdge(source: NodeId, target: NodeId, weight: number) {
+    const edge = this.edges.find((edge) => source === edge.from && edge.to === target);
+    if (edge) {
+      edge.weight = weight;
+    } else {
+      throw "Edge does not exist!"
+    }
   }
 
   neighbors(nodeId: NodeId, incoming?: boolean): Edge<U>[] {

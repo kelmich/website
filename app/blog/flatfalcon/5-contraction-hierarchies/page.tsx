@@ -4,6 +4,7 @@ import { BlogNavigation } from "@/app/components/BlogNavigation";
 import BarChart from "@/app/components/BarChart";
 import { queryPerformance } from "@/app/blog/flatfalcon/results";
 import { ContractionVisualizer } from "@/app/blog/flatfalcon/5-contraction-hierarchies/ContractionVisualizer";
+import CodeBlock from "@/app/components/CodeBlock";
 
 export default async function Home() {
   return (
@@ -25,9 +26,22 @@ export default async function Home() {
           <p>
             At the core of Contraction Hierarchies is the contraction process.
             It allows us to precompute shortcuts in the graph for later use.
+            Below you can find an example where we contract a single node.
+            This is the bilding block we will use to create our efficient query datastructure.
           </p>
 
+          <CodeBlock
+            lang="ts"
+            filepath="./app/blog/flatfalcon/5-contraction-hierarchies/contraction_hierarchies.ts"
+          />
+
           <ContractionVisualizer />
+
+          <p>Alright, but how does this contraction process help us?
+            Please indulge me for one more moment and let us assume that we have some
+            &quot;good&quot; ordering of all nodes in the graph. What we could do is iteratively
+            contract the nodes.
+          </p>
 
           <BarChart
             unit="ms"

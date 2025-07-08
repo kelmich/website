@@ -14,7 +14,8 @@ export type VisualizationEdgeData = EdgeVariantProps;
 
 type Props<T extends VisualizationNodeData, U extends VisualizationEdgeData> = {
   graph: Graph<T, U>;
-  id?: string; // NEW
+  id?: string;
+  straightEdges?: boolean;
 };
 
 const nodeStyles = cva("transition-colors duration-300", {
@@ -75,7 +76,7 @@ export type EdgeVariantProps = VariantProps<typeof edgeStyles>;
 
 const GraphVisualizer: React.FC<
   Props<VisualizationNodeData, VisualizationEdgeData>
-> = ({ graph, id = "" }) => {
+> = ({ graph, id = "", straightEdges = false }) => {
   const [containerRef, { width, height }] = useElementSize<HTMLDivElement>();
   const padding = 40;
   const xs = graph.nodes.map((n) => n.data.x);
@@ -121,7 +122,7 @@ const GraphVisualizer: React.FC<
         </defs>
 
         {/* Edges */}
-        {graph.edges.map((edge, i) => {
+        {graph.edges.map((edge) => {
           const from = graph.nodes.find((n) => n.id === edge.from)!;
           const to = graph.nodes.find((n) => n.id === edge.to)!;
 
@@ -145,25 +146,52 @@ const GraphVisualizer: React.FC<
           const tangentStart = Math.atan2(dy1, dx1);
           const tangentEnd = Math.atan2(dy2, dx2);
 
-          const x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
-          const y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
-          const x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
-          const y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
 
-          const pathD = `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
-          const markerId = `arrow-${id}-${i}`; // updated
+          let x1Adj = x1;
+          let y1Adj = y1;
+          let x2Adj = x2;
+          let y2Adj = y2;
+
+          if (straightEdges) {
+            const angle = Math.atan2(y2 - y1, x2 - x1);
+            x1Adj = x1 + Math.cos(angle) * nodeRadius;
+            y1Adj = y1 + Math.sin(angle) * nodeRadius;
+            x2Adj = x2 - Math.cos(angle) * nodeRadius;
+            y2Adj = y2 - Math.sin(angle) * nodeRadius;
+          } else {
+            x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
+            y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
+            x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
+            y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
+          }
+
+          x1Adj = Math.fround(x1Adj);
+          y1Adj = Math.fround(y1Adj);
+          x2Adj = Math.fround(x2Adj);
+          y2Adj = Math.fround(y2Adj);
+
+
+
+          const pathD = straightEdges
+            ? `M ${x1Adj} ${y1Adj} L ${x2Adj} ${y2Adj}`
+            : `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
+          const markerId = `arrow-${id}-${edge.from}-${edge.to}`; // updated
 
           const strokeClass = edgeStyles({ variant: edge.data.variant });
           const fillClass = edgeTextStyles({ variant: edge.data.variant });
 
           const t = 0.5;
-          const xt =
-            (1 - t) * (1 - t) * x1Adj + 2 * (1 - t) * t * cx + t * t * x2Adj;
-          const yt =
-            (1 - t) * (1 - t) * y1Adj + 2 * (1 - t) * t * cy + t * t * y2Adj;
+
+          const xt = straightEdges
+            ? (x1Adj + x2Adj) / 2
+            : (1 - t) * (1 - t) * x1Adj + 2 * (1 - t) * t * cx + t * t * x2Adj;
+
+          const yt = straightEdges
+            ? (y1Adj + y2Adj) / 2
+            : (1 - t) * (1 - t) * y1Adj + 2 * (1 - t) * t * cy + t * t * y2Adj;
 
           return (
-            <g key={i}>
+            <g key={`${edge.from}-${edge.to}`}>
               <defs>
                 <marker
                   id={markerId}
