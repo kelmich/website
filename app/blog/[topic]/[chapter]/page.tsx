@@ -36,9 +36,7 @@ export default async function Page({
     const ChapterContent = mod.default;
 
     return (
-        <BlogPage
-            params={params}
-        >
+        <BlogPage params={params}>
             <ChapterContent />
         </BlogPage>
     );
