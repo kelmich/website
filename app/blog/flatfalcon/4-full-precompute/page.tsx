@@ -96,7 +96,7 @@ export default async function Home() {
             to={{
               title: "Chapter 5",
               description: "Contraction Hierarchies",
-              href: "/blog/flatfalcon/5-contraction-hierarchies",
+              href: "/blog/flatfalcon/5-contraction-hierarchies-introduction",
             }}
           />
         </div>

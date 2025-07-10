@@ -16,6 +16,7 @@ type Props<T extends VisualizationNodeData, U extends VisualizationEdgeData> = {
   graph: Graph<T, U>;
   id?: string;
   straightEdges?: boolean;
+  edgeBendAmount?: number;
 };
 
 const nodeStyles = cva("transition-colors duration-300", {
@@ -76,7 +77,7 @@ export type EdgeVariantProps = VariantProps<typeof edgeStyles>;
 
 const GraphVisualizer: React.FC<
   Props<VisualizationNodeData, VisualizationEdgeData>
-> = ({ graph, id = "", straightEdges = false }) => {
+> = ({ graph, id = "", straightEdges = false, edgeBendAmount = 0.2 }) => {
   const [containerRef, { width, height }] = useElementSize<HTMLDivElement>();
   const padding = 40;
   const xs = graph.nodes.map((n) => n.data.x);
@@ -134,9 +135,8 @@ const GraphVisualizer: React.FC<
           const mx = (x1 + x2) / 2;
           const my = (y1 + y2) / 2;
 
-          const bendAmount = 0.2;
-          const cx = mx - dy * bendAmount;
-          const cy = my + dx * bendAmount;
+          const cx = mx - dy * edgeBendAmount;
+          const cy = my + dx * edgeBendAmount;
 
           const dx1 = 2 * (cx - x1);
           const dy1 = 2 * (cy - y1);
@@ -219,12 +219,12 @@ const GraphVisualizer: React.FC<
               />
 
               <rect
-                x={xt - 10}
-                y={yt - 10}
-                width={20}
-                height={20}
-                rx={10}
-                ry={10}
+                x={xt - 7.5}
+                y={yt - 7.5}
+                width={15}
+                height={15}
+                rx={7.5}
+                ry={7.5}
                 className="fill-background"
               />
               <text
