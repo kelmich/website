@@ -10,7 +10,7 @@ import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVi
 import {
   Dijkstra,
   DijkstraState,
-} from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
+} from "@/content/blog/flatfalcon/2-dijkstra/dijkstra";
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";

@@ -13,7 +13,7 @@ import {
 import {
   Dijkstra,
   DijkstraState,
-} from "@/app/blog/flatfalcon/2-dijkstra/dijkstra";
+} from "@/content/blog/flatfalcon/2-dijkstra/dijkstra";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 
