@@ -1,8 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 type PomodoroTask = {
   name: string;
@@ -10,21 +24,148 @@ type PomodoroTask = {
   completedPomodoros: number;
 };
 
-type Mode = "pomodoro" | "shortBreak" | "longBreak";
+type TaskWithId = PomodoroTask & { id: string };
+enum Mode {
+  POMODORO = "pomodoro",
+  SHORT_BREAK = "shortBreak",
+  LONG_BREAK = "longBreak",
+}
+
+const SortableTask = ({
+  task,
+  onRemove,
+}: {
+  task: TaskWithId;
+  onRemove: () => void;
+}) => {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: task.id,
+    });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className="flex justify-between items-center p-2 border bg-background text-background-foreground"
+    >
+      <div
+        className="flex flex-1 items-center gap-4 overflow-hidden cursor-grab"
+        {...listeners}
+      >
+        <span className="text-secondary shrink-0">
+          {task.completedPomodoros} / {task.estimatedPomodoros}
+        </span>
+        <span>{task.name}</span>
+      </div>
+      <button onClick={onRemove}>Done</button>
+    </li>
+  );
+};
+
+const notify = (message: string) => {
+  if (Notification.permission === "granted") {
+    new Notification(message);
+  } else {
+    console.warn("Notification permission not granted");
+  }
+};
+
+const NotificationPermissionBar = () => {
+  const [permission, setPermission] = useState<NotificationPermission | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (typeof Notification !== "undefined") {
+      setPermission(Notification.permission);
+    }
+  }, []);
+
+  return permission === null || permission === "granted" ? null : (
+    <button
+      onClick={() => Notification.requestPermission().then(setPermission)}
+    >
+      Notify me when timer ends
+    </button>
+  );
+};
+
+type PomodoroState = {
+  isRunning: boolean;
+  mode: Mode;
+  timeLeft: number;
+  tasks: TaskWithId[];
+  completedTasks: number;
+  lastUpdated: number;
+};
 
 export default function Pomodoro() {
-  const POMODORO_DURATION = 25 * 60;
+  const POMODORO_DURATION = 3; // 25 * 60;
   const POMODOROS_BEFORE_LONG_BREAK = 4;
-  const SHORT_BREAK_DURATION = 5 * 60;
-  const LONG_BREAK_DURATION = 15 * 60;
+  const SHORT_BREAK_DURATION = 5; // 5 * 60;
+  const LONG_BREAK_DURATION = 7; // 15 * 60;
 
-  const [timeLeft, setTimeLeft] = useState(POMODORO_DURATION);
-  const [isRunning, setIsRunning] = useState(false);
-  const [mode, setMode] = useState<Mode>("pomodoro");
-  const [tasks, setTasks] = useState<Record<string, PomodoroTask>>({});
-  const [completedPomodoros, setCompletedPomodoros] = useState(0);
+  const defaultState: PomodoroState = useMemo(() => {
+    return {
+      timeLeft: POMODORO_DURATION,
+      isRunning: false,
+      mode: Mode.POMODORO,
+      tasks: [],
+      completedTasks: 0,
+      lastUpdated: Date.now(),
+    };
+  }, []);
 
-  // const [currentTask, setCurrentTask] = useState<number | undefined>(undefined);
+  const [pomodoroState, setPomodoroState] =
+    useState<PomodoroState>(defaultState);
+  const updateState = (partial: Partial<PomodoroState>) =>
+    setPomodoroState((prev) => ({
+      ...prev,
+      ...partial,
+      lastUpdated: Date.now(),
+    }));
+
+  // load last state from local storage
+  useEffect(() => {
+    const saved = localStorage.getItem("pomodoro-state");
+    if (saved) {
+      try {
+        const parsed: PomodoroState = JSON.parse(saved);
+        const now = Date.now();
+        const delta = Math.floor((now - parsed.lastUpdated) / 1000);
+        let updatedTimeLeft = parsed.timeLeft;
+
+        if (parsed.isRunning) {
+          updatedTimeLeft -= delta;
+          if (updatedTimeLeft <= 0) {
+            updatedTimeLeft = 0;
+            parsed.isRunning = false;
+          }
+        }
+
+        setPomodoroState({
+          ...parsed,
+          timeLeft: Math.max(0, updatedTimeLeft),
+          lastUpdated: now,
+        });
+      } catch (e) {
+        setPomodoroState(defaultState);
+        console.error("Failed to parse pomodoro state", e);
+      }
+    }
+  }, [defaultState]);
+  useEffect(() => {
+    localStorage.setItem("pomodoro-state", JSON.stringify(pomodoroState));
+  }, [pomodoroState]);
+
+  const sensors = useSensors(useSensor(PointerSensor));
 
   const getDuration = (m: Mode) => {
     if (m === "pomodoro") return POMODORO_DURATION;
@@ -32,80 +173,9 @@ export default function Pomodoro() {
     return LONG_BREAK_DURATION;
   };
 
-  const switchMode = useCallback(() => {
-    if (mode === "pomodoro") {
-      const newCompleted = completedPomodoros + 1;
-      setCompletedPomodoros(newCompleted);
-      if (newCompleted % POMODOROS_BEFORE_LONG_BREAK === 0) {
-        setMode("longBreak");
-        setTimeLeft(LONG_BREAK_DURATION);
-      } else {
-        setMode("shortBreak");
-        setTimeLeft(SHORT_BREAK_DURATION);
-      }
-    } else {
-      setMode("pomodoro");
-      setTimeLeft(POMODORO_DURATION);
-    }
-  }, [
-    LONG_BREAK_DURATION,
-    POMODORO_DURATION,
-    SHORT_BREAK_DURATION,
-    completedPomodoros,
-    mode,
-  ]);
-
-  const notify = useCallback(() => {
-    if (Notification.permission === "granted") {
-      let message = "";
-      if (mode === "pomodoro") {
-        message = "Pomodoro complete! Take a break.";
-      } else {
-        message = "Break over! Time to work.";
-      }
-      new Notification(message);
-    }
-  }, [mode]);
-
   useEffect(() => {
-    if (!isRunning) return;
-
-    const interval = setInterval(() => {
-      setTimeLeft((t) => {
-        if (t <= 1) {
-          clearInterval(interval);
-          setIsRunning(false);
-          notify();
-          switchMode();
-          return 0;
-        }
-        return t - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [isRunning, mode, notify, switchMode]);
-
-  // load tasks from localStorage on mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("pomodoro-tasks");
-      try {
-        const parsedTasks = JSON.parse(saved ?? "{}");
-        setTasks(parsedTasks);
-      } catch (error) {
-        console.error("Failed to parse tasks from localStorage", error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    document.title = `${formatTime(timeLeft)} | Pomodoro`;
-  }, [timeLeft]);
-
-  useEffect(() => {
-    localStorage.setItem("pomodoro-tasks", JSON.stringify(tasks));
-  }, [tasks]);
+    document.title = `${formatTime(pomodoroState.timeLeft)} | Pomodoro`;
+  }, [pomodoroState.timeLeft]);
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60)
@@ -116,149 +186,213 @@ export default function Pomodoro() {
   };
 
   const reset = () => {
-    setTimeLeft(getDuration(mode));
-    setIsRunning(false);
-  };
-
-  const handleStartPause = () => {
-    if (!isRunning) {
-      if (
-        Notification.permission !== "granted" &&
-        Notification.permission !== "denied"
-      ) {
-        Notification.requestPermission();
-      }
-    }
-    setIsRunning((r) => !r);
-  };
-
-  const changeMode = (newMode: Mode) => {
-    setMode(newMode);
-    setTimeLeft(getDuration(newMode));
-    setIsRunning(false);
-  };
-
-  const addTask = (newTask: PomodoroTask) => {
-    setTasks((prev) => ({
-      ...prev,
-      [newTask.name]: newTask,
-    }));
-  };
-
-  const removeTask = (taskId: string) => {
-    setTasks((prev) => {
-      const newTasks = { ...prev };
-      delete newTasks[taskId];
-      return newTasks;
+    updateState({
+      timeLeft: getDuration(pomodoroState.mode),
+      isRunning: false,
     });
   };
 
-  function computeCompletionTime(
-    tasks: Record<string, PomodoroTask>
-  ): import("react").ReactNode {
-    const totalPomodoros = Object.values(tasks).reduce(
+  const changeMode = (newMode: Mode) => {
+    updateState({
+      mode: newMode,
+      timeLeft: getDuration(newMode),
+      isRunning: false,
+    });
+  };
+
+  const addTask = (newTask: PomodoroTask) => {
+    const id = crypto.randomUUID();
+    updateState({
+      tasks: [...pomodoroState.tasks, { ...newTask, id }],
+    });
+  };
+
+  const removeTask = (taskId: string) => {
+    updateState({
+      tasks: pomodoroState.tasks.filter((task) => task.id !== taskId),
+    });
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (pomodoroState.isRunning && pomodoroState.timeLeft > 0) {
+        updateState({
+          timeLeft: pomodoroState.isRunning
+            ? pomodoroState.timeLeft - 1
+            : pomodoroState.timeLeft,
+        });
+      } else if (pomodoroState.isRunning && pomodoroState.timeLeft === 0) {
+        switch (pomodoroState.mode) {
+          case Mode.POMODORO:
+            const newMode =
+              pomodoroState.completedTasks % POMODOROS_BEFORE_LONG_BREAK === 0
+                ? Mode.LONG_BREAK
+                : Mode.SHORT_BREAK;
+            const updatedTasks = [...pomodoroState.tasks];
+            if (
+              pomodoroState.mode === Mode.POMODORO &&
+              updatedTasks.length > 0
+            ) {
+              updatedTasks[0].completedPomodoros += 1;
+            }
+            updateState({
+              mode: newMode,
+              isRunning: false,
+              timeLeft: getDuration(newMode),
+              completedTasks: pomodoroState.completedTasks + 1,
+              tasks: updatedTasks,
+            });
+            notify(
+              `Enjoy a ${newMode === Mode.SHORT_BREAK ? "short" : "long"} break!`,
+            );
+            break;
+          case Mode.SHORT_BREAK:
+            updateState({
+              mode: Mode.POMODORO,
+              isRunning: false,
+              timeLeft: getDuration(Mode.POMODORO),
+            });
+            notify("Back to work!");
+            break;
+          case Mode.LONG_BREAK:
+            updateState({
+              mode: Mode.POMODORO,
+              isRunning: false,
+              timeLeft: getDuration(Mode.POMODORO),
+            });
+            notify("Back to work!");
+            break;
+        }
+      }
+    }, 1000);
+
+    // Clean up the interval on unmount
+    return () => clearInterval(interval);
+  }, [
+    pomodoroState.isRunning,
+    pomodoroState.timeLeft,
+    pomodoroState.mode,
+    pomodoroState.completedTasks,
+    pomodoroState.tasks,
+  ]);
+
+  function computeCompletionTime(tasks: TaskWithId[]) {
+    const totalPomodoros = tasks.reduce(
       (sum, task) => sum + (task.estimatedPomodoros || 0),
-      0
+      0,
     );
 
-    // Calculate total time including breaks
-    let totalMinutes = 0;
+    let totalSeconds = 0;
     let pomodorosLeft = totalPomodoros;
 
     while (pomodorosLeft > 0) {
-      // Do a pomodoro
-      totalMinutes += POMODORO_DURATION;
+      totalSeconds += POMODORO_DURATION;
       pomodorosLeft--;
 
-      // Add break if not last pomodoro
       if (pomodorosLeft > 0) {
-        // Every 4th pomodoro, long break, else short break
         if (
           (totalPomodoros - pomodorosLeft) % POMODOROS_BEFORE_LONG_BREAK ===
           0
         ) {
-          totalMinutes += LONG_BREAK_DURATION;
+          totalSeconds += LONG_BREAK_DURATION;
         } else {
-          totalMinutes += SHORT_BREAK_DURATION;
+          totalSeconds += SHORT_BREAK_DURATION;
         }
       }
     }
 
-    // Add totalMinutes to current time
     const now = new Date();
-    const completion = new Date(now.getTime() + totalMinutes * 60 * 1000);
+    const completion = new Date(now.getTime() + totalSeconds * 1000);
 
-    // Format as "HH:mm" (24h) or "h:mm AM/PM"
-    const options: Intl.DateTimeFormatOptions = {
+    return completion.toLocaleTimeString([], {
       hour: "2-digit",
       minute: "2-digit",
-    };
-    return completion.toLocaleTimeString([], options);
+    });
   }
-  return (
-    <div className="flex flex-col w-screen min-h-screen bg-white text-gray-900">
-      <Header />
 
-      {/* main content */}
-      <main className="flex flex-1 flex-col bg-secondary text-secondary-foreground p-4 items-center justify-center">
-        <div className="w-full flex flex-col max-w-md items-center space-y-4">
-          {/* Timer */}
-          <div className="w-full">
+  return (
+    <div className="flex flex-col w-screen min-h-screen">
+      <Header />
+      <main className="flex flex-1 bg-secondary text-secondary-foreground items-center justify-center">
+        <div className="w-full max-w-md space-y-4">
+          <div className="w-full space-y-2">
             <h2>Pomodoro Timer</h2>
             <div className="w-full bg-background text-background-foreground p-2 border">
-              <div className="flex justify-between items-center mb-4">
+              <div className="flex justify-between items-center">
                 <div className="space-x-4">
-                  <button onClick={handleStartPause}>
-                    {isRunning ? "Pause" : "Start"}
+                  <button
+                    onClick={() =>
+                      updateState({ isRunning: !pomodoroState.isRunning })
+                    }
+                  >
+                    {pomodoroState.isRunning ? "Pause" : "Start"}
                   </button>
                   <button onClick={reset}>Reset</button>
                 </div>
-
                 <select
-                  value={mode}
+                  value={pomodoroState.mode}
                   onChange={(e) => changeMode(e.target.value as Mode)}
-                  className="p-2 border"
                 >
                   <option value="pomodoro">Work</option>
                   <option value="shortBreak">Short Break</option>
                   <option value="longBreak">Long Break</option>
                 </select>
               </div>
-
-              <div className="flex flex-col items-center">
-                <div className="text-6xl mb-4">{formatTime(timeLeft)}</div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-6xl py-8 text-center">
+                {formatTime(pomodoroState.timeLeft)}
+              </div>
+              <div className="flex justify-center">
+                <NotificationPermissionBar />
               </div>
             </div>
           </div>
 
-          {/* Tasks list */}
           <div className="w-full space-y-2">
             <h2>Tasks</h2>
-
-            <ul className="space-y-2">
-              {Object.entries(tasks).map(([key, task]) => (
-                <li
-                  key={key}
-                  className="flex justify-between items-center p-2 border bg-background text-background-foreground"
-                >
-                  <span className="text-secondary">
-                    {task.completedPomodoros} / {task.estimatedPomodoros}
-                  </span>
-                  <span className="text-background-foreground">
-                    {task.name}
-                  </span>
-                  <button onClick={() => removeTask(key)}>Done</button>
-                </li>
-              ))}
-            </ul>
-            {Object.keys(tasks).length === 0 ? (
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={({ active, over }) => {
+                if (active.id !== over?.id) {
+                  const oldIndex = pomodoroState.tasks.findIndex(
+                    (t) => t.id === active.id,
+                  );
+                  const newIndex = pomodoroState.tasks.findIndex(
+                    (t) => t.id === over?.id,
+                  );
+                  updateState({
+                    tasks: arrayMove(pomodoroState.tasks, oldIndex, newIndex),
+                  });
+                }
+              }}
+            >
+              <SortableContext
+                items={pomodoroState.tasks.map((t) => t.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <ul className="space-y-2">
+                  {pomodoroState.tasks.map((task) => (
+                    <SortableTask
+                      key={task.id}
+                      task={task}
+                      onRemove={() => removeTask(task.id)}
+                    />
+                  ))}
+                </ul>
+              </SortableContext>
+            </DndContext>
+            {pomodoroState.tasks.length === 0 ? (
               <p>Slay. You&apos;re done for the day.</p>
             ) : (
-              <p>Estimated Completion time {computeCompletionTime(tasks)}</p>
+              <p>
+                Estimated Completion time{" "}
+                {computeCompletionTime(pomodoroState.tasks)}
+              </p>
             )}
           </div>
 
-          {/* Add Task Form */}
           <div className="w-full">
             <h2 className="mb-2">Add Task</h2>
             <form
@@ -271,10 +405,10 @@ export default function Pomodoro() {
                 const estimatedPomodoros = parseInt(
                   (
                     form.elements.namedItem(
-                      "estimatedPomodoros"
+                      "estimatedPomodoros",
                     ) as HTMLInputElement
                   ).value,
-                  10
+                  10,
                 );
                 if (name && !isNaN(estimatedPomodoros)) {
                   addTask({ name, estimatedPomodoros, completedPomodoros: 0 });
