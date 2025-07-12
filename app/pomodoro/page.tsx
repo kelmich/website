@@ -360,7 +360,7 @@ export default function Pomodoro() {
                   form.reset();
                 }
               }}
-              className="flex gap-2"
+              className="flex gap-2 pt-4"
             >
               <input
                 type="text"
