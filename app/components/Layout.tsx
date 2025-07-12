@@ -8,14 +8,12 @@ interface LayoutProps {
 
 export default function Layout({ children, className = "" }: LayoutProps) {
   return (
-    <div className={`min-h-screen flex flex-col bg-gray-900 ${className}`}>
+    <div className={`min-h-screen flex flex-col ${className}`}>
       {/* Header - Fixed height */}
       <Header />
 
       {/* Main Content - Flexible height that fills remaining space */}
-      <main className="flex-1">
-        {children}
-      </main>
+      <main className="flex-1">{children}</main>
 
       {/* Footer - Fixed height */}
       <Footer />
