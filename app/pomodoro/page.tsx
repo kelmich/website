@@ -3,20 +3,6 @@
 import { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import {
-  DndContext,
-  closestCenter,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  verticalListSortingStrategy,
-  useSortable,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 type PomodoroTask = {
   name: string;
@@ -30,44 +16,6 @@ enum Mode {
   SHORT_BREAK = "shortBreak",
   LONG_BREAK = "longBreak",
 }
-
-const SortableTask = ({
-  task,
-  onRemove,
-}: {
-  task: TaskWithId;
-  onRemove: () => void;
-}) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: task.id,
-    });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <li
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-      className="flex justify-between items-center p-2 border bg-background text-background-foreground"
-    >
-      <div
-        className="flex flex-1 items-center gap-4 overflow-hidden cursor-grab"
-        {...listeners}
-      >
-        <span className="text-secondary shrink-0">
-          {task.completedPomodoros} / {task.estimatedPomodoros}
-        </span>
-        <span>{task.name}</span>
-      </div>
-      <button onClick={onRemove}>Done</button>
-    </li>
-  );
-};
 
 const notify = (message: string) => {
   if (Notification.permission === "granted") {
@@ -104,6 +52,7 @@ type PomodoroState = {
   tasks: TaskWithId[];
   completedTasks: number;
   lastUpdated: number;
+  currentTaskId?: string;
 };
 
 export default function Pomodoro() {
@@ -120,6 +69,7 @@ export default function Pomodoro() {
       tasks: [],
       completedTasks: 0,
       lastUpdated: Date.now(),
+      currentTaskId: undefined,
     };
   }, []);
 
@@ -132,7 +82,6 @@ export default function Pomodoro() {
       lastUpdated: Date.now(),
     }));
 
-  // load last state from local storage
   useEffect(() => {
     const saved = localStorage.getItem("pomodoro-state");
     if (saved) {
@@ -161,11 +110,10 @@ export default function Pomodoro() {
       }
     }
   }, [defaultState]);
+
   useEffect(() => {
     localStorage.setItem("pomodoro-state", JSON.stringify(pomodoroState));
   }, [pomodoroState]);
-
-  const sensors = useSensors(useSensor(PointerSensor));
 
   const getDuration = (m: Mode) => {
     if (m === "pomodoro") return POMODORO_DURATION;
@@ -217,9 +165,7 @@ export default function Pomodoro() {
     const interval = setInterval(() => {
       if (pomodoroState.isRunning && pomodoroState.timeLeft > 0) {
         updateState({
-          timeLeft: pomodoroState.isRunning
-            ? pomodoroState.timeLeft - 1
-            : pomodoroState.timeLeft,
+          timeLeft: pomodoroState.timeLeft - 1,
         });
       } else if (pomodoroState.isRunning && pomodoroState.timeLeft === 0) {
         switch (pomodoroState.mode) {
@@ -229,10 +175,7 @@ export default function Pomodoro() {
                 ? Mode.LONG_BREAK
                 : Mode.SHORT_BREAK;
             const updatedTasks = [...pomodoroState.tasks];
-            if (
-              pomodoroState.mode === Mode.POMODORO &&
-              updatedTasks.length > 0
-            ) {
+            if (updatedTasks.length > 0) {
               updatedTasks[0].completedPomodoros += 1;
             }
             updateState({
@@ -247,13 +190,6 @@ export default function Pomodoro() {
             );
             break;
           case Mode.SHORT_BREAK:
-            updateState({
-              mode: Mode.POMODORO,
-              isRunning: false,
-              timeLeft: getDuration(Mode.POMODORO),
-            });
-            notify("Back to work!");
-            break;
           case Mode.LONG_BREAK:
             updateState({
               mode: Mode.POMODORO,
@@ -266,7 +202,6 @@ export default function Pomodoro() {
       }
     }, 1000);
 
-    // Clean up the interval on unmount
     return () => clearInterval(interval);
   }, [
     pomodoroState.isRunning,
@@ -343,6 +278,18 @@ export default function Pomodoro() {
               <div className="text-6xl py-8 text-center">
                 {formatTime(pomodoroState.timeLeft)}
               </div>
+              {pomodoroState.currentTaskId && (
+                <div className="text-center text-sm text-muted-foreground mt-2">
+                  Working on:{" "}
+                  <span className="font-semibold">
+                    {
+                      pomodoroState.tasks.find(
+                        (task) => task.id === pomodoroState.currentTaskId,
+                      )!.name
+                    }
+                  </span>
+                </div>
+              )}
               <div className="flex justify-center">
                 <NotificationPermissionBar />
               </div>
@@ -351,38 +298,22 @@ export default function Pomodoro() {
 
           <div className="w-full space-y-2">
             <h2>Tasks</h2>
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={({ active, over }) => {
-                if (active.id !== over?.id) {
-                  const oldIndex = pomodoroState.tasks.findIndex(
-                    (t) => t.id === active.id,
-                  );
-                  const newIndex = pomodoroState.tasks.findIndex(
-                    (t) => t.id === over?.id,
-                  );
-                  updateState({
-                    tasks: arrayMove(pomodoroState.tasks, oldIndex, newIndex),
-                  });
-                }
-              }}
-            >
-              <SortableContext
-                items={pomodoroState.tasks.map((t) => t.id)}
-                strategy={verticalListSortingStrategy}
-              >
-                <ul className="space-y-2">
-                  {pomodoroState.tasks.map((task) => (
-                    <SortableTask
-                      key={task.id}
-                      task={task}
-                      onRemove={() => removeTask(task.id)}
-                    />
-                  ))}
-                </ul>
-              </SortableContext>
-            </DndContext>
+            <ul className="space-y-2">
+              {pomodoroState.tasks.map((task) => (
+                <li
+                  key={task.id}
+                  className="flex justify-between items-center p-2 border bg-background text-background-foreground"
+                >
+                  <div className="flex flex-1 items-center gap-4 overflow-hidden">
+                    <span className="text-secondary shrink-0">
+                      {task.completedPomodoros} / {task.estimatedPomodoros}
+                    </span>
+                    <span>{task.name}</span>
+                  </div>
+                  <button onClick={() => removeTask(task.id)}>Done</button>
+                </li>
+              ))}
+            </ul>
             {pomodoroState.tasks.length === 0 ? (
               <p>Slay. You&apos;re done for the day.</p>
             ) : (
