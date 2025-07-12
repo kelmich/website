@@ -71,7 +71,7 @@ export default function Pomodoro() {
       lastUpdated: Date.now(),
       currentTaskId: null,
     };
-  }, []);
+  }, [POMODORO_DURATION]);
 
   const [pomodoroState, setPomodoroState] =
     useState<PomodoroState>(defaultState);
