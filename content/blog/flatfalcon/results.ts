@@ -2,8 +2,8 @@ export const queryPerformance = {
   Dijkstra: 29.479,
   Dial: 11.07,
   SmartStupid: 0.011218,
-  CH: 0.70203,
-  CHLabel: 2.4345,
+  CH: 0.59038,
+  CHLabel: 0.34506,
 };
 
 export const setupPerformance = {
