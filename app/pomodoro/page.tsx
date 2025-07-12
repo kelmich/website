@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -56,10 +56,10 @@ type PomodoroState = {
 };
 
 export default function Pomodoro() {
-  const POMODORO_DURATION = 3; // 25 * 60;
+  const POMODORO_DURATION = 25 * 60;
   const POMODOROS_BEFORE_LONG_BREAK = 4;
-  const SHORT_BREAK_DURATION = 5; // 5 * 60;
-  const LONG_BREAK_DURATION = 7; // 15 * 60;
+  const SHORT_BREAK_DURATION = 5 * 60;
+  const LONG_BREAK_DURATION = 15 * 60;
 
   const defaultState: PomodoroState = useMemo(() => {
     return {
@@ -115,11 +115,14 @@ export default function Pomodoro() {
     localStorage.setItem("pomodoro-state", JSON.stringify(pomodoroState));
   }, [pomodoroState]);
 
-  const getDuration = (m: Mode) => {
-    if (m === "pomodoro") return POMODORO_DURATION;
-    if (m === "shortBreak") return SHORT_BREAK_DURATION;
-    return LONG_BREAK_DURATION;
-  };
+  const getDuration = useCallback(
+    (m: Mode) => {
+      if (m === "pomodoro") return POMODORO_DURATION;
+      if (m === "shortBreak") return SHORT_BREAK_DURATION;
+      return LONG_BREAK_DURATION;
+    },
+    [POMODORO_DURATION, SHORT_BREAK_DURATION, LONG_BREAK_DURATION],
+  );
 
   useEffect(() => {
     document.title = `${formatTime(pomodoroState.timeLeft)} | Pomodoro`;
@@ -174,8 +177,9 @@ export default function Pomodoro() {
       } else if (pomodoroState.isRunning && pomodoroState.timeLeft === 0) {
         switch (pomodoroState.mode) {
           case Mode.POMODORO:
+            const newCompletedTasks = pomodoroState.completedTasks + 1;
             const newMode =
-              pomodoroState.completedTasks % POMODOROS_BEFORE_LONG_BREAK === 0
+              newCompletedTasks % POMODOROS_BEFORE_LONG_BREAK === 0
                 ? Mode.LONG_BREAK
                 : Mode.SHORT_BREAK;
             const updatedTasks = [...pomodoroState.tasks];
@@ -186,7 +190,7 @@ export default function Pomodoro() {
               mode: newMode,
               isRunning: false,
               timeLeft: getDuration(newMode),
-              completedTasks: pomodoroState.completedTasks + 1,
+              completedTasks: newCompletedTasks,
               tasks: updatedTasks,
             });
             notify(
@@ -213,6 +217,7 @@ export default function Pomodoro() {
     pomodoroState.mode,
     pomodoroState.completedTasks,
     pomodoroState.tasks,
+    getDuration,
   ]);
 
   function computeCompletionTime(tasks: TaskWithId[]) {
