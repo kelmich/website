@@ -52,7 +52,7 @@ type PomodoroState = {
   tasks: TaskWithId[];
   completedTasks: number;
   lastUpdated: number;
-  currentTaskId?: string;
+  currentTaskId: string | null;
 };
 
 export default function Pomodoro() {
@@ -69,7 +69,7 @@ export default function Pomodoro() {
       tasks: [],
       completedTasks: 0,
       lastUpdated: Date.now(),
-      currentTaskId: undefined,
+      currentTaskId: null,
     };
   }, []);
 
@@ -158,6 +158,10 @@ export default function Pomodoro() {
   const removeTask = (taskId: string) => {
     updateState({
       tasks: pomodoroState.tasks.filter((task) => task.id !== taskId),
+      currentTaskId:
+        pomodoroState.currentTaskId === taskId
+          ? null
+          : pomodoroState.currentTaskId,
     });
   };
 
@@ -252,80 +256,85 @@ export default function Pomodoro() {
         <div className="w-full max-w-md space-y-4">
           <div className="w-full space-y-2">
             <h2>Pomodoro Timer</h2>
-            <div className="w-full bg-background text-background-foreground p-2 border">
-              <div className="flex justify-between items-center">
-                <div className="space-x-4">
-                  <button
-                    onClick={() =>
-                      updateState({ isRunning: !pomodoroState.isRunning })
-                    }
-                  >
-                    {pomodoroState.isRunning ? "Pause" : "Start"}
-                  </button>
-                  <button onClick={reset}>Reset</button>
+
+            <div className="flex flex-col space-y-2">
+              <div className="flex justify-center">
+                <div className="w-full bg-background text-background-foreground p-2 border">
+                  <div className="flex justify-between items-center">
+                    <div className="space-x-2">
+                      <button
+                        onClick={() =>
+                          updateState({ isRunning: !pomodoroState.isRunning })
+                        }
+                      >
+                        {pomodoroState.isRunning ? "Pause" : "Start"}
+                      </button>
+                      <button onClick={reset}>Reset</button>
+                    </div>
+                    <div className="relative w-max">
+                      <select
+                        className="appearance-none px-3 py-2 pr-8 bg-transparent text-sm cursor-pointer border"
+                        value={pomodoroState.mode}
+                        onChange={(e) => changeMode(e.target.value as Mode)}
+                      >
+                        <option value="pomodoro">Work</option>
+                        <option value="shortBreak">Short Break</option>
+                        <option value="longBreak">Long Break</option>
+                      </select>
+                      <div className="pointer-events-none absolute right-2 top-4 -translate-y-1/2 text-3xl">
+                        ▾
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <select
-                  value={pomodoroState.mode}
-                  onChange={(e) => changeMode(e.target.value as Mode)}
-                >
-                  <option value="pomodoro">Work</option>
-                  <option value="shortBreak">Short Break</option>
-                  <option value="longBreak">Long Break</option>
-                </select>
               </div>
-            </div>
-            <div className="flex flex-col">
               <div className="text-6xl py-8 text-center">
                 {formatTime(pomodoroState.timeLeft)}
               </div>
-              {pomodoroState.currentTaskId && (
-                <div className="text-center text-sm text-muted-foreground mt-2">
-                  Working on:{" "}
-                  <span className="font-semibold">
-                    {
-                      pomodoroState.tasks.find(
-                        (task) => task.id === pomodoroState.currentTaskId,
-                      )!.name
-                    }
-                  </span>
-                </div>
-              )}
-              <div className="flex justify-center">
-                <NotificationPermissionBar />
-              </div>
+              <NotificationPermissionBar />
             </div>
           </div>
 
           <div className="w-full space-y-2">
             <h2>Tasks</h2>
+            {pomodoroState.currentTaskId ? (
+              <div className="text-sm">
+                Working on:{" "}
+                <span className="font-semibold">
+                  {pomodoroState.tasks.find(
+                    (task) => task.id === pomodoroState.currentTaskId,
+                  )?.name || pomodoroState.currentTaskId}
+                </span>
+              </div>
+            ) : pomodoroState.tasks.length !== 0 ? (
+              <div className="text-sm">Click on a task to select it</div>
+            ) : (
+              <p>Slay. You&apos;re done for the day!</p>
+            )}
             <ul className="space-y-2">
               {pomodoroState.tasks.map((task) => (
                 <li
                   key={task.id}
-                  className="flex justify-between items-center p-2 border bg-background text-background-foreground"
+                  className="flex justify-between items-center p-2 border bg-background text-background-foreground cursor-pointer"
+                  onClick={() => updateState({ currentTaskId: task.id })}
                 >
                   <div className="flex flex-1 items-center gap-4 overflow-hidden">
-                    <span className="text-secondary shrink-0">
+                    <span className="text-muted-foreground shrink-0">
                       {task.completedPomodoros} / {task.estimatedPomodoros}
                     </span>
                     <span>{task.name}</span>
                   </div>
-                  <button onClick={() => removeTask(task.id)}>Done</button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeTask(task.id);
+                    }}
+                  >
+                    Done
+                  </button>
                 </li>
               ))}
             </ul>
-            {pomodoroState.tasks.length === 0 ? (
-              <p>Slay. You&apos;re done for the day.</p>
-            ) : (
-              <p>
-                Estimated Completion time{" "}
-                {computeCompletionTime(pomodoroState.tasks)}
-              </p>
-            )}
-          </div>
-
-          <div className="w-full">
-            <h2 className="mb-2">Add Task</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -346,24 +355,34 @@ export default function Pomodoro() {
                   form.reset();
                 }
               }}
-              className="flex flex-col space-y-2"
+              className="flex gap-2"
             >
               <input
                 type="text"
                 name="taskName"
                 placeholder="Task Name"
                 required
+                className="flex-1 px-2 py-1 border"
               />
               <input
                 type="number"
                 name="estimatedPomodoros"
-                placeholder="Estimated Pomodoros"
+                placeholder="Pomodoros"
                 min="1"
                 defaultValue={1}
                 required
+                className="w-20 px-2 py-1 border text-center"
               />
-              <button type="submit">Add Task</button>
+              <button type="submit" className="border">
+                Add Task
+              </button>
             </form>
+            {pomodoroState.tasks.length !== 0 && (
+              <div className="text-sm">
+                Estimated Completion time{" "}
+                {computeCompletionTime(pomodoroState.tasks)}
+              </div>
+            )}
           </div>
         </div>
       </main>
