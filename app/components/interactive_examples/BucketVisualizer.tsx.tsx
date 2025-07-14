@@ -13,10 +13,11 @@ export const BucketsVisualizer = ({
       {buckets.map((bucket, idx) => (
         <div
           key={idx}
-          className={`text-xs px-2 py-0.5 cursor-pointer transition-all ${activeIdx === idx
-            ? "bg-primary text-primary-foreground font-semibold"
-            : "hover:bg-muted"
-            }`}
+          className={`text-xs px-2 py-0.5 transition-all ${
+            activeIdx === idx
+              ? "bg-primary text-primary-foreground font-semibold"
+              : "hover:bg-muted"
+          }`}
         >
           <span className="font-mono">{idx}:</span>{" "}
           {bucket.map((n) => n.id).join(", ") || "-"}

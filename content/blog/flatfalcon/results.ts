@@ -13,3 +13,6 @@ export const setupPerformance = {
   CH: 4.9,
   CHLabel: 8.4,
 };
+
+export const testingMethodologyNotes = `The tests were run on a MacBook Pro with an M1 Pro Chip and 32GB RAM.
+  `;

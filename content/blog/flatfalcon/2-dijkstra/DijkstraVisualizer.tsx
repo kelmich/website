@@ -47,9 +47,9 @@ export const DijkstraVisualizer = () => {
 
           // { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
           // { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
-        ]
+        ],
       ),
-    []
+    [],
   );
   const listingNodes = initialGraph.nodes
     .filter((node) => node.data.shape === "rect")
@@ -57,7 +57,7 @@ export const DijkstraVisualizer = () => {
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -116,7 +116,10 @@ export const DijkstraVisualizer = () => {
             <div className="h-1/2">
               <ResultVisualizer
                 title="Min Heap"
-                results={stepData.state.minHeap.export()}
+                results={stepData.state.minHeap
+                  .export()
+                  .slice()
+                  .sort((a, b) => a.weight - b.weight)}
               />
             </div>
           )}

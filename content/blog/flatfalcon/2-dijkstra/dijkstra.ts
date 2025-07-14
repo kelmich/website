@@ -30,7 +30,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
   constructor(
     graph: Graph<unknown, unknown>,
     startNodeId: string,
-    incoming: boolean
+    incoming: boolean,
   ) {
     super();
     this.graph = graph.clone();
