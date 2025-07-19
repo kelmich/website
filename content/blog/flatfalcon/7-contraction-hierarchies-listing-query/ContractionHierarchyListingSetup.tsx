@@ -177,12 +177,12 @@ export const ContractionHierarchyListingSetupVisualizer = () => {
                   return (
                     <div className="flex flex-row items-center gap-2">
                       {valueA !== undefined && (
-                        <div className="px-2 py-1 bg-muted text-foreground border border-muted-foreground">
+                        <div className="px-2 py-1 bg-secondary text-secondary-foreground border">
                           <span>B</span> {valueA}
                         </div>
                       )}
                       {valueB !== undefined && (
-                        <div className="px-2 py-1 bg-muted text-foreground border border-muted-foreground">
+                        <div className="px-2 py-1 bg-secondary text-secondary-foreground border">
                           <span>E</span> {valueB}
                         </div>
                       )}

@@ -123,123 +123,132 @@ const GraphVisualizer: React.FC<
         </defs>
 
         {/* Edges */}
-        {graph.edges.map((edge) => {
-          const from = graph.nodes.find((n) => n.id === edge.from)!;
-          const to = graph.nodes.find((n) => n.id === edge.to)!;
+        {graph.edges
+          .sort((a, b) => {
+            const priority = { secondary: 0, success: 1, primary: 2 };
+            return (
+              (priority[a.data.variant ?? "primary"] ?? 2) -
+              (priority[b.data.variant ?? "primary"] ?? 2)
+            );
+          })
+          .map((edge) => {
+            const from = graph.nodes.find((n) => n.id === edge.from)!;
+            const to = graph.nodes.find((n) => n.id === edge.to)!;
 
-          const { x: x1, y: y1 } = mapNodePosition(from.data.x, from.data.y);
-          const { x: x2, y: y2 } = mapNodePosition(to.data.x, to.data.y);
+            const { x: x1, y: y1 } = mapNodePosition(from.data.x, from.data.y);
+            const { x: x2, y: y2 } = mapNodePosition(to.data.x, to.data.y);
 
-          const dx = x2 - x1;
-          const dy = y2 - y1;
-          const mx = (x1 + x2) / 2;
-          const my = (y1 + y2) / 2;
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const mx = (x1 + x2) / 2;
+            const my = (y1 + y2) / 2;
 
-          const cx = mx - dy * edgeBendAmount;
-          const cy = my + dx * edgeBendAmount;
+            const cx = mx - dy * edgeBendAmount;
+            const cy = my + dx * edgeBendAmount;
 
-          const dx1 = 2 * (cx - x1);
-          const dy1 = 2 * (cy - y1);
-          const dx2 = 2 * (x2 - cx);
-          const dy2 = 2 * (y2 - cy);
+            const dx1 = 2 * (cx - x1);
+            const dy1 = 2 * (cy - y1);
+            const dx2 = 2 * (x2 - cx);
+            const dy2 = 2 * (y2 - cy);
 
-          const tangentStart = Math.atan2(dy1, dx1);
-          const tangentEnd = Math.atan2(dy2, dx2);
+            const tangentStart = Math.atan2(dy1, dx1);
+            const tangentEnd = Math.atan2(dy2, dx2);
 
+            let x1Adj = x1;
+            let y1Adj = y1;
+            let x2Adj = x2;
+            let y2Adj = y2;
 
-          let x1Adj = x1;
-          let y1Adj = y1;
-          let x2Adj = x2;
-          let y2Adj = y2;
+            if (straightEdges) {
+              const angle = Math.atan2(y2 - y1, x2 - x1);
+              x1Adj = x1 + Math.cos(angle) * nodeRadius;
+              y1Adj = y1 + Math.sin(angle) * nodeRadius;
+              x2Adj = x2 - Math.cos(angle) * nodeRadius;
+              y2Adj = y2 - Math.sin(angle) * nodeRadius;
+            } else {
+              x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
+              y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
+              x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
+              y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
+            }
 
-          if (straightEdges) {
-            const angle = Math.atan2(y2 - y1, x2 - x1);
-            x1Adj = x1 + Math.cos(angle) * nodeRadius;
-            y1Adj = y1 + Math.sin(angle) * nodeRadius;
-            x2Adj = x2 - Math.cos(angle) * nodeRadius;
-            y2Adj = y2 - Math.sin(angle) * nodeRadius;
-          } else {
-            x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
-            y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
-            x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
-            y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
-          }
+            x1Adj = Math.fround(x1Adj);
+            y1Adj = Math.fround(y1Adj);
+            x2Adj = Math.fround(x2Adj);
+            y2Adj = Math.fround(y2Adj);
 
-          x1Adj = Math.fround(x1Adj);
-          y1Adj = Math.fround(y1Adj);
-          x2Adj = Math.fround(x2Adj);
-          y2Adj = Math.fround(y2Adj);
+            const pathD = straightEdges
+              ? `M ${x1Adj} ${y1Adj} L ${x2Adj} ${y2Adj}`
+              : `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
+            const markerId = `arrow-${id}-${edge.from}-${edge.to}`; // updated
 
+            const strokeClass = edgeStyles({ variant: edge.data.variant });
+            const fillClass = edgeTextStyles({ variant: edge.data.variant });
 
+            const t = 0.5;
 
-          const pathD = straightEdges
-            ? `M ${x1Adj} ${y1Adj} L ${x2Adj} ${y2Adj}`
-            : `M ${x1Adj} ${y1Adj} Q ${cx} ${cy}, ${x2Adj} ${y2Adj}`;
-          const markerId = `arrow-${id}-${edge.from}-${edge.to}`; // updated
+            const xt = straightEdges
+              ? (x1Adj + x2Adj) / 2
+              : (1 - t) * (1 - t) * x1Adj +
+                2 * (1 - t) * t * cx +
+                t * t * x2Adj;
 
-          const strokeClass = edgeStyles({ variant: edge.data.variant });
-          const fillClass = edgeTextStyles({ variant: edge.data.variant });
+            const yt = straightEdges
+              ? (y1Adj + y2Adj) / 2
+              : (1 - t) * (1 - t) * y1Adj +
+                2 * (1 - t) * t * cy +
+                t * t * y2Adj;
 
-          const t = 0.5;
+            return (
+              <g key={`${edge.from}-${edge.to}`}>
+                <defs>
+                  <marker
+                    id={markerId}
+                    viewBox="0 0 10 10"
+                    refX="11"
+                    refY="5"
+                    markerWidth="6"
+                    markerHeight="6"
+                    orient="auto"
+                  >
+                    <path
+                      d="M 0 0 L 10 5 L 0 10"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      className={strokeClass}
+                    />
+                  </marker>
+                </defs>
 
-          const xt = straightEdges
-            ? (x1Adj + x2Adj) / 2
-            : (1 - t) * (1 - t) * x1Adj + 2 * (1 - t) * t * cx + t * t * x2Adj;
+                <path
+                  d={pathD}
+                  className={strokeClass}
+                  markerEnd={`url(#${markerId})`}
+                />
 
-          const yt = straightEdges
-            ? (y1Adj + y2Adj) / 2
-            : (1 - t) * (1 - t) * y1Adj + 2 * (1 - t) * t * cy + t * t * y2Adj;
-
-          return (
-            <g key={`${edge.from}-${edge.to}`}>
-              <defs>
-                <marker
-                  id={markerId}
-                  viewBox="0 0 10 10"
-                  refX="11"
-                  refY="5"
-                  markerWidth="6"
-                  markerHeight="6"
-                  orient="auto"
+                <rect
+                  x={xt - 7.5}
+                  y={yt - 7.5}
+                  width={15}
+                  height={15}
+                  rx={7.5}
+                  ry={7.5}
+                  className="fill-background"
+                />
+                <text
+                  x={xt}
+                  y={yt + 4}
+                  textAnchor="middle"
+                  fontSize="12"
+                  fontWeight="bold"
+                  className={fillClass}
                 >
-                  <path
-                    d="M 0 0 L 10 5 L 0 10"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    className={strokeClass}
-                  />
-                </marker>
-              </defs>
-
-              <path
-                d={pathD}
-                className={strokeClass}
-                markerEnd={`url(#${markerId})`}
-              />
-
-              <rect
-                x={xt - 7.5}
-                y={yt - 7.5}
-                width={15}
-                height={15}
-                rx={7.5}
-                ry={7.5}
-                className="fill-background"
-              />
-              <text
-                x={xt}
-                y={yt + 4}
-                textAnchor="middle"
-                fontSize="12"
-                fontWeight="bold"
-                className={fillClass}
-              >
-                {edge.weight}
-              </text>
-            </g>
-          );
-        })}
+                  {edge.weight}
+                </text>
+              </g>
+            );
+          })}
 
         {/* Nodes */}
         {graph.nodes.map((node) => {
