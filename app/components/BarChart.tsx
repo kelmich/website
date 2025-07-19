@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 interface Props {
   title: string;
-  unit: string;
+  unit: string; // legacy; no longer used
   bars: Bar[];
   notes?: React.ReactNode;
 }
@@ -17,7 +17,27 @@ export type Bar = {
   };
 };
 
-// Find the max time to scale bars proportionally
+const timeUnits = [
+  { label: "µs", factor: 1e3 },
+  { label: "ms", factor: 1 },
+  { label: "s", factor: 1e-3 },
+  { label: "min", factor: 1 / (60 * 1000) },
+  { label: "h", factor: 1 / (60 * 60 * 1000) },
+];
+
+function chooseUnit(valueMs: number) {
+  for (const unit of timeUnits) {
+    const converted = valueMs * unit.factor;
+    if (converted >= 1 && converted < 1000) {
+      return unit;
+    }
+  }
+  return timeUnits[1]; // fallback to ms
+}
+
+function formatTime(value: number, factor: number): string {
+  return (value * factor).toFixed(3);
+}
 
 export default function BarChart(props: Props) {
   const maxTime = Math.max(...props.bars.map((b) => b.times.mean));
@@ -27,36 +47,41 @@ export default function BarChart(props: Props) {
     <div className="p-6 bg-background text-background-foreground border">
       <h2 className="text-xl font-bold mb-4">{props.title}</h2>
       <div className="space-y-4">
-        {props.bars.map((b) => (
-          <div key={b.name}>
-            <div className="flex justify-between text-sm mb-1">
-              <span className="font-mono">{b.name}</span>
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">
-                  [{b.times.ciLow.toFixed(3)}
-                  {props.unit}
-                </span>
-                <span className="text-background-foreground">
-                  {b.times.mean.toFixed(3)}
-                  {props.unit}
-                </span>
-                <span className="text-muted-foreground">
-                  {b.times.ciHigh.toFixed(3)}
-                  {props.unit}]
-                </span>
+        {props.bars.map((b) => {
+          const unit = chooseUnit(b.times.mean);
+          const scale = unit.factor;
+
+          return (
+            <div key={b.name}>
+              <div className="flex justify-between text-sm mb-1">
+                <span className="font-mono">{b.name}</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground">
+                    [{formatTime(b.times.ciLow, scale)}
+                    {unit.label}
+                  </span>
+                  <span className="text-background-foreground">
+                    {formatTime(b.times.mean, scale)}
+                    {unit.label}
+                  </span>
+                  <span className="text-muted-foreground">
+                    {formatTime(b.times.ciHigh, scale)}
+                    {unit.label}]
+                  </span>
+                </div>
+              </div>
+              <div className="bg-muted h-5 relative">
+                <div
+                  className="bg-primary h-5"
+                  style={{
+                    width: `${(b.times.mean / maxTime) * 100}%`,
+                    minWidth: "2px",
+                  }}
+                />
               </div>
             </div>
-            <div className="bg-muted h-5 relative">
-              <div
-                className="bg-primary h-5"
-                style={{
-                  width: `${(b.times.mean / maxTime) * 100}%`,
-                  minWidth: "2px",
-                }}
-              />
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Expandable Notes Section */}

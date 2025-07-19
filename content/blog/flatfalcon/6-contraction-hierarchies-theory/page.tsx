@@ -56,7 +56,7 @@ export default async function Page() {
         over classic routing algorithms.
       </p>
       <p>
-        The paper shows that if a graph has low highway dimension, you can use
+        The paper shows that if a graph has low highway dimension, one can use
         it to derive a multiscale hierarchy of important nodes, from which you
         can build an ordering for contraction hierarchies. The authors define a
         construct called a multiscale sparse path hitting set (SPHS). At each

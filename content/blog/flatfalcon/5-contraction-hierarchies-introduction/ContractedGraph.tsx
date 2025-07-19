@@ -37,18 +37,22 @@ export const ContractedGraph = () => {
           { from: "E", to: "C", weight: 7, data: { variant: "primary" } },
           { from: "E", to: "D", weight: 9, data: { variant: "primary" } },
         ],
-        () => { return { variant: "secondary" } }
+        () => {
+          return { variant: "secondary" };
+        },
       ),
-    []
+    [],
   );
 
   return (
     <div className="border">
-      <GraphVisualizer graph={initialGraph} id="contractedGraphWithAddedEdges" />
+      <GraphVisualizer
+        graph={initialGraph}
+        id="contractedGraphWithAddedEdges"
+      />
     </div>
   );
 };
-
 
 export const ContractedUpDownGraph = () => {
   const initialUpGraph = useMemo(
@@ -75,9 +79,11 @@ export const ContractedUpDownGraph = () => {
 
           { from: "B", to: "C", weight: 6, data: { variant: "primary" } },
         ],
-        () => { return { variant: "secondary" } }
+        () => {
+          return { variant: "secondary" };
+        },
       ),
-    []
+    [],
   );
   const initialDownGraph = useMemo(
     () =>
@@ -104,17 +110,25 @@ export const ContractedUpDownGraph = () => {
           { from: "E", to: "C", weight: 7, data: { variant: "primary" } },
           { from: "E", to: "D", weight: 9, data: { variant: "primary" } },
         ],
-        () => { return { variant: "secondary" } }
+        () => {
+          return { variant: "secondary" };
+        },
       ),
-    []
+    [],
   );
 
   return (
     <div className="flex flex-row border">
-      <GraphVisualizer graph={initialUpGraph} id="contractedGraphWithAddedEdges" edgeBendAmount={0.8} />
-      <GraphVisualizer graph={initialDownGraph} id="contractedGraphWithAddedEdges" edgeBendAmount={0.8} />
+      <GraphVisualizer
+        graph={initialUpGraph}
+        id="contractedGraphWithAddedEdges"
+        edgeBendAmount={0.8}
+      />
+      <GraphVisualizer
+        graph={initialDownGraph}
+        id="contractedGraphWithAddedEdges"
+        edgeBendAmount={0.8}
+      />
     </div>
   );
 };
-
-

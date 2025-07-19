@@ -14,7 +14,7 @@ export abstract class AlgorithmVisualizer<TState> {
 
   protected *breakpoint(
     message: string,
-    completed: boolean = false
+    completed: boolean = false,
   ): Generator<AlgorithmStep<TState>, void, unknown> {
     yield { message, state: this.getState(), completed };
   }
@@ -28,7 +28,7 @@ export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
 
   constructor(
     visualizerA: AlgorithmVisualizer<T1>,
-    visualizerB: AlgorithmVisualizer<T2>
+    visualizerB: AlgorithmVisualizer<T2>,
   ) {
     super();
     this.visA = visualizerA;
@@ -46,9 +46,19 @@ export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
     let doneA = false;
     let doneB = false;
 
+    let prevA: IteratorResult<AlgorithmStep<T1>, void> | null = null;
+    let prevB: IteratorResult<AlgorithmStep<T2>, void> | null = null;
+
     while (!doneA || !doneB) {
-      const nextA = doneA ? null : genA.next();
-      const nextB = doneB ? null : genB.next();
+      const nextA: IteratorResult<AlgorithmStep<T1>, void> | null = doneA
+        ? prevA
+        : genA.next();
+      const nextB: IteratorResult<AlgorithmStep<T2>, void> | null = doneB
+        ? prevB
+        : genB.next();
+
+      prevA = nextA;
+      prevB = nextB;
 
       if (nextA && (nextA.done || nextA.value.completed)) doneA = true;
       if (nextB && (nextB.done || nextB.value.completed)) doneB = true;
@@ -58,20 +68,16 @@ export class ConcurrentVisualizer<T1, T2> extends AlgorithmVisualizer<
 
       yield {
         message: [
-          ...(
-            stepA
-              ? Array.isArray(stepA.message)
-                ? stepA.message
-                : [stepA.message]
-              : ["Algorithm A completed"]
-          ),
-          ...(
-            stepB
-              ? Array.isArray(stepB.message)
-                ? stepB.message
-                : [stepB.message]
-              : ["Algorithm B completed"]
-          )
+          ...(stepA
+            ? Array.isArray(stepA.message)
+              ? stepA.message
+              : [stepA.message]
+            : ["Algorithm A completed"]),
+          ...(stepB
+            ? Array.isArray(stepB.message)
+              ? stepB.message
+              : [stepB.message]
+            : ["Algorithm B completed"]),
         ],
         state: this.getState(),
         completed: doneA && doneB,
