@@ -27,13 +27,17 @@ export default async function Home() {
         listings that are reachable from a vertex in the up DAG, by traversing
         the down DAG within the allowed maximum time budget.
       </p>
-
       <p>
         Again, this is a parallelizable problem, we can do this for listings
         concurrently using established shortest path algorithms.
       </p>
       <ContractionHierarchyListingSetupVisualizer />
-
+      <p>
+        Once we have computed all of the labels for each vertex in the up DAG,
+        we can use them when we perform our regular shortest path algorithm on
+        the up DAG. Whenever we visit a vertex we now use the vertex's label to
+        update our results.
+      </p>
       <ContractionHierarchyListingQueryVisualizer />
 
       <BarChart

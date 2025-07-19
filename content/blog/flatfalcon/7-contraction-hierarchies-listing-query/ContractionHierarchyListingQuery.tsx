@@ -16,6 +16,7 @@ import {
 } from "@/content/blog/flatfalcon/2-dijkstra/dijkstra";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
+import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
 
 export const ContractionHierarchyListingQueryVisualizer = () => {
   const initialGraph = useMemo(
@@ -25,13 +26,13 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
           { id: "A", data: { x: 0, y: 200, variant: "secondary" } },
           {
             id: "B",
-            data: { x: 50, y: 150, variant: "secondary" },
+            data: { x: 50, y: 150, variant: "secondary", shape: "rect" },
           },
           { id: "C", data: { x: 100, y: 100, variant: "secondary" } },
           { id: "D", data: { x: 150, y: 50, variant: "secondary" } },
           {
             id: "E",
-            data: { x: 200, y: 0, variant: "secondary" },
+            data: { x: 200, y: 0, variant: "secondary", shape: "rect" },
           },
         ],
         [
@@ -50,6 +51,9 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
+  const listingNodes = initialGraph.nodes
+    .filter((node) => node.data.shape === "rect")
+    .map((node) => node.id);
   const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
     null,
   );
@@ -91,45 +95,88 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
     });
   }, [stepData]);
 
+  const downLabels: Record<string, Record<string, number>> = {
+    A: {
+      B: 5,
+      E: 6,
+    },
+    B: {
+      B: 0,
+      E: 1,
+    },
+    C: {
+      E: 7,
+    },
+    D: {
+      E: 9,
+    },
+    E: {
+      E: 0,
+    },
+  };
+
   return (
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Dijkstra(initialGraph, "B", false);
+          return new Dijkstra(initialGraph, "A", false);
         }}
         onStep={setStepData}
       />
       <div className="flex flex-col divide-y">
-        <div className="flex flex-col flex-1 overflow-auto">
-          <div className="flex flex-row">
-            <div className="w-1/2">
+        <div className="flex flex-col flex-1 overflow-auto bg-background">
+          <div className="flex flex-row divide-x">
+            <div className="w-2/3">
               <GraphVisualizer graph={graph} id="graphA" edgeBendAmount={0.8} />
+              <GraphLegend />
+            </div>
+            <div className="w-1/3 flex flex-col divide-y">
+              <div>
+                {Array.from(initialGraph.nodes).map((node) => (
+                  <div
+                    key={node.id}
+                    className="flex flex-row items-center gap-2 w-full p-2"
+                  >
+                    <div className="font-bold">{node.id}</div>
+                    <div className="flex flex-row gap-2">
+                      {(() => {
+                        const valueA = downLabels[node.id]["B"];
+                        const valueB = downLabels[node.id]["E"];
+                        return (
+                          <div className="flex flex-row items-center gap-2">
+                            {valueA !== undefined && (
+                              <div className="px-2 py-1 bg-secondary text-secondary-foreground border">
+                                <span>B</span> {valueA}
+                              </div>
+                            )}
+                            {valueB !== undefined && (
+                              <div className="px-2 py-1 bg-secondary text-secondary-foreground border">
+                                <span>E</span> {valueB}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {stepData?.state.minHeap && (
+                <ResultVisualizer
+                  title="Results"
+                  results={Object.entries(stepData.state.visited)
+                    .map(([id, [weight]]) => ({
+                      id,
+                      weight,
+                    }))
+                    .filter((item) => listingNodes.includes(item.id))}
+                />
+              )}
             </div>
           </div>
         </div>
-        <GraphLegend />
       </div>
-      <div className="flex flex-row w-full justify-between">
-        {Array.from(initialGraph.nodes).map((node) => (
-          <div key={node.id} className="w-full p-2 bg-background">
-            <div className="font-bold mb-2">{node.id}</div>
-            <div className="flex flex-row gap-2">
-              {(() => {
-                const valueA = stepData?.state.visited[node.id]?.[0];
-                return (
-                  <div className="flex flex-row items-center gap-2">
-                    {valueA !== undefined && (
-                      <div className="px-2 py-1 bg-muted text-foreground border border-muted-foreground">
-                        <span>B</span> {valueA}
-                      </div>
-                    )}
-                  </div>
-                );
-              })()}
-            </div>
-          </div>
-        ))}
-      </div>
+
       {stepData?.message && <MessageRenderer message={stepData.message} />}
     </div>
   );
