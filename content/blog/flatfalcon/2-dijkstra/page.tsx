@@ -1,11 +1,9 @@
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/Header";
 import { DijkstraVisualizer } from "@/content/blog/flatfalcon/2-dijkstra/DijkstraVisualizer";
 import CodeBlock from "@/app/components/CodeBlock";
 import BarChart from "@/app/components/BarChart";
 import {
   queryPerformance,
-  testingMethodologyNotes,
+  TestingMethodologyNotes,
 } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
@@ -66,9 +64,12 @@ export default async function Home() {
         unit="ms"
         title="Average Query Time (NYC)"
         bars={[
-          { name: "DijkstraSearcher", time: queryPerformance["Dijkstra"] },
+          {
+            name: "DijkstraSearcher",
+            times: queryPerformance["Dijkstra"],
+          },
         ]}
-        notes={testingMethodologyNotes}
+        notes={<TestingMethodologyNotes />}
       />
     </>
   );

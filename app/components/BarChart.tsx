@@ -5,18 +5,22 @@ interface Props {
   title: string;
   unit: string;
   bars: Bar[];
-  notes?: string;
+  notes?: React.ReactNode;
 }
 
 export type Bar = {
   name: string;
-  time: number; // Time in milliseconds
+  times: {
+    ciLow: number;
+    mean: number;
+    ciHigh: number;
+  };
 };
 
 // Find the max time to scale bars proportionally
 
 export default function BarChart(props: Props) {
-  const maxTime = Math.max(...props.bars.map((b) => b.time));
+  const maxTime = Math.max(...props.bars.map((b) => b.times.mean));
   const [showNotes, setShowNotes] = useState(false);
 
   return (
@@ -27,15 +31,26 @@ export default function BarChart(props: Props) {
           <div key={b.name}>
             <div className="flex justify-between text-sm mb-1">
               <span className="font-mono">{b.name}</span>
-              <span className="text-gray-600">
-                {b.time.toFixed(3)} {props.unit}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-muted-foreground">
+                  [{b.times.ciLow.toFixed(3)}
+                  {props.unit}
+                </span>
+                <span className="text-background-foreground">
+                  {b.times.mean.toFixed(3)}
+                  {props.unit}
+                </span>
+                <span className="text-muted-foreground">
+                  {b.times.ciHigh.toFixed(3)}
+                  {props.unit}]
+                </span>
+              </div>
             </div>
             <div className="bg-muted h-5 relative">
               <div
                 className="bg-primary h-5"
                 style={{
-                  width: `${(b.time / maxTime) * 100}%`,
+                  width: `${(b.times.mean / maxTime) * 100}%`,
                   minWidth: "2px",
                 }}
               />

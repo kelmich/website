@@ -5,7 +5,7 @@ import { DialVisualizer } from "./DialVisualizer";
 import BarChart from "@/app/components/BarChart";
 import {
   queryPerformance,
-  testingMethodologyNotes,
+  TestingMethodologyNotes,
 } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
@@ -60,10 +60,10 @@ export default async function Home() {
         unit="ms"
         title="Average Query Time (NYC)"
         bars={[
-          { name: "DijkstraSearcher", time: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", time: queryPerformance["Dial"] },
+          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
+          { name: "DialSearcher", times: queryPerformance["Dial"] },
         ]}
-        notes={testingMethodologyNotes}
+        notes={<TestingMethodologyNotes />}
       />
     </>
   );

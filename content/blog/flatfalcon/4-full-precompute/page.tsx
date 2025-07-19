@@ -1,11 +1,9 @@
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/Header";
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
 import BarChart from "@/app/components/BarChart";
 import {
   queryPerformance,
   setupPerformance,
-  testingMethodologyNotes,
+  TestingMethodologyNotes,
 } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
@@ -43,13 +41,14 @@ export default async function Home() {
         unit="s"
         title="Precomputation Time (NYC)"
         bars={[
-          { name: "DijkstraSearcher", time: setupPerformance["Dijkstra"] },
-          { name: "DialSearcher", time: setupPerformance["Dial"] },
+          { name: "DijkstraSearcher", times: setupPerformance["Dijkstra"] },
+          { name: "DialSearcher", times: setupPerformance["Dial"] },
           {
             name: "SmartStupidSearcher",
-            time: setupPerformance["SmartStupid"],
+            times: setupPerformance["SmartStupid"],
           },
         ]}
+        notes={<TestingMethodologyNotes />}
       />
 
       <p>
@@ -71,14 +70,14 @@ export default async function Home() {
         unit="ms"
         title="Average Query Time (NYC)"
         bars={[
-          { name: "DijkstraSearcher", time: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", time: queryPerformance["Dial"] },
+          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
+          { name: "DialSearcher", times: queryPerformance["Dial"] },
           {
             name: "SmartStupidSearcher",
-            time: queryPerformance["SmartStupid"],
+            times: queryPerformance["SmartStupid"],
           },
         ]}
-        notes={testingMethodologyNotes}
+        notes={<TestingMethodologyNotes />}
       />
 
       <p>
