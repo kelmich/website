@@ -27,7 +27,11 @@ export default async function Home() {
         though? We will give this more theortical backing later, but for now
         consider the following: Usually when you use a road network you go from
         an unimportant point (e.g. your house), to a more important point (e.g.
-        entry to a highway), to an unimportant point again (your workplace).
+        entry to a highway), to an unimportant point again (e.g. your
+        workplace). By precomputing a shortcut from your house to the highway
+        entry point, and from the highway entry point to your workplace, we can
+        significantly reduce the number of edges we need to traverse during a
+        query.
       </p>
 
       <p>
@@ -98,8 +102,15 @@ export default async function Home() {
       </p>
 
       <p>
-        Using this technique point to point shortest path queries can take as
-        little as 0.026ms on average in our New York City graph.
+        Using this technique point to point shortest path queries can take{" "}
+        <a
+          href="https://github.com/easbar/fast_paths/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          as little as 0.026ms
+        </a>{" "}
+        on average in our New York City graph.
       </p>
 
       <p>Now two questions remain:</p>

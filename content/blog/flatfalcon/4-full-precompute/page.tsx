@@ -44,7 +44,7 @@ export default async function Home() {
           { name: "DijkstraSearcher", times: setupPerformance["Dijkstra"] },
           { name: "DialSearcher", times: setupPerformance["Dial"] },
           {
-            name: "SmartStupidSearcher",
+            name: "SmartStupidSearcher (Parallelized Construction)",
             times: setupPerformance["SmartStupid"],
           },
         ]}

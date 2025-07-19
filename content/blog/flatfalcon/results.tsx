@@ -119,6 +119,22 @@ export const TestingMethodologyNotes = () => (
     </p>
     <br />
     <p>
+      The benchmark consists of querying random vertices in a graph of New York
+      City provided by the{" "}
+      <a
+        href="http://www.dis.uniroma1.it/~challenge9"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        9th DIMACS Implementation Challenge: Shortest Paths
+        http://www.dis.uniroma1.it/~challenge9
+      </a>{" "}
+      (264346 vertices and 733846 edges) and asking the benchmarked algorithm to
+      find all listings within 60min of the queried vertex. We pick 1% of the
+      vertices in the graph to be listings (2643 for the NYC graph).
+    </p>
+    <br />
+    <p>
       The three shown numbers per algorithm are the lower 95% confidence
       interval, mean execution time, and upper 95% confidence interval. These
       values were calculated using the{" "}

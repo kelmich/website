@@ -10,7 +10,9 @@ export type ContractorState<T1, T2> = {
   outEdge?: Edge<T2>;
 };
 
-export class Contractor<T1, T2> extends AlgorithmVisualizer<ContractorState<T1, T2>> {
+export class Contractor<T1, T2> extends AlgorithmVisualizer<
+  ContractorState<T1, T2>
+> {
   private graph: Graph<T1, T2>;
   private nodeOrder: string[];
   private inEdge?: Edge<T2>;
@@ -26,11 +28,15 @@ export class Contractor<T1, T2> extends AlgorithmVisualizer<ContractorState<T1, 
     return {
       graph: this.graph.clone(),
       inEdge: this.inEdge,
-      outEdge: this.outEdge
+      outEdge: this.outEdge,
     };
   }
 
-  private shortestPathViaContractNode(from: string, to: string, contractNode: string) {
+  private shortestPathViaContractNode(
+    from: string,
+    to: string,
+    contractNode: string,
+  ) {
     const dijkstra = new Dijkstra(this.graph, from, false);
     for (const step of dijkstra.run()) {
       continue;
@@ -47,11 +53,11 @@ export class Contractor<T1, T2> extends AlgorithmVisualizer<ContractorState<T1, 
 
   *run(): Generator<AlgorithmStep<ContractorState<T1, T2>>, void, unknown> {
     for (const contractNode of this.nodeOrder) {
-      yield* this.breakpoint(`Contracting ${contractNode}`)
+      yield* this.breakpoint(`Contracting ${contractNode}`);
 
       // kelmich-highlight-start
-      const inEdges = this.graph.edges.filter((edge) => edge.to === contractNode)
-      const outEdges = this.graph.edges.filter((edge) => edge.from === contractNode)
+      const inEdges = this.graph.edges.filter((e) => e.to === contractNode);
+      const outEdges = this.graph.edges.filter((e) => e.from === contractNode);
 
       for (this.inEdge of inEdges) {
         for (this.outEdge of outEdges) {
@@ -64,18 +70,24 @@ export class Contractor<T1, T2> extends AlgorithmVisualizer<ContractorState<T1, 
           if (this.shortestPathViaContractNode(u, v, contractNode)) {
             if (this.graph.hasEdge(u, v)) {
               this.graph.updateEdge(u, v, w);
-              yield* this.breakpoint(`Updating edge weight between ${u} -> ${v}.`);
+              yield* this.breakpoint(
+                `Updating edge weight between ${u} -> ${v}.`,
+              );
             } else {
               this.graph.createEdge(u, v, w);
-              yield* this.breakpoint(`Creating shortcut edge between ${u} -> ${v}.`);
+              yield* this.breakpoint(
+                `Creating shortcut edge between ${u} -> ${v}.`,
+              );
             }
           }
         }
       }
 
-      this.graph.nodes = this.graph.nodes.filter((node) => node.id !== contractNode);
-      this.graph.edges = this.graph.edges.filter((edge) =>
-        edge.from !== contractNode && edge.to !== contractNode
+      this.graph.nodes = this.graph.nodes.filter(
+        (node) => node.id !== contractNode,
+      );
+      this.graph.edges = this.graph.edges.filter(
+        (edge) => edge.from !== contractNode && edge.to !== contractNode,
       );
       // kelmich-highlight-end
     }
