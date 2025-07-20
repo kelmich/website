@@ -105,7 +105,7 @@ export class DAGShortestPath extends AlgorithmVisualizer<DAGShortestPathState> {
 
     yield* this.breakpoint("Initialized distances.");
 
-    // Step 3: Process nodes in topological order
+    // Process nodes in topological order
     for (
       this.currentIndex = 0;
       this.currentIndex < this.topologicalOrder.length;
@@ -146,6 +146,6 @@ export class DAGShortestPath extends AlgorithmVisualizer<DAGShortestPathState> {
     // kelmich-highlight-end
 
     this.currentNode = undefined;
-    yield* this.breakpoint("DAG shortest path algorithm completed.", true);
+    yield* this.breakpoint("Algorithm completed.", true);
   }
 }

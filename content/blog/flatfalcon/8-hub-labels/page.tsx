@@ -1,4 +1,6 @@
+import { ContractionHierarchyListingSetupVisualizer } from "../7-contraction-hierarchies-listing-query/ContractionHierarchyListingSetup";
 import { FlatfalconBarChart } from "../results";
+import { ContractionHierarchyListingUpSetupVisualizer } from "./ContractionHierarchyListingUpSetup";
 
 export default async function Home() {
   return (
@@ -14,6 +16,14 @@ export default async function Home() {
         assignment.
       </p>
 
+      <p>Recall that we computed labels for each node in the down DAG.</p>
+      <ContractionHierarchyListingSetupVisualizer />
+      <p>
+        We can now do the same for the up DAG, but we store all vertices in the
+        label that are reachable in our maximum time budget.
+      </p>
+      <ContractionHierarchyListingUpSetupVisualizer />
+
       <FlatfalconBarChart
         dataType="Setup"
         algorithms={[
@@ -21,6 +31,7 @@ export default async function Home() {
           "Dial",
           "FullPrecompute",
           "ContractionHierarchy",
+          "HubLabel",
         ]}
       />
 
@@ -31,6 +42,7 @@ export default async function Home() {
           "Dial",
           "FullPrecompute",
           "ContractionHierarchy",
+          "HubLabel",
         ]}
       />
     </>

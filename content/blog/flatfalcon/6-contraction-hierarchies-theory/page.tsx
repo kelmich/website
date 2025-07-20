@@ -80,10 +80,11 @@ export default async function Page() {
       <p>
         Unfortunately constructing the hierarchy in this manner is
         computationally quite expensive (however still polynomial in the graph
-        size). For this reason most implementations use heuristics and forego
-        the theoretical guarantees of the algorithm. However, the algorithm
-        provides a solid foundation for understanding why Contraction
-        Hierarchies are so effective.
+        size). So expensive in fact that our previous &quot;Precomputing
+        Everything&quot; approach is more efficient. For this reason most
+        implementations use heuristics and forego the theoretical guarantees of
+        the algorithm. However, the algorithm provides a solid foundation for
+        understanding why Contraction Hierarchies are so effective.
       </p>
     </>
   );

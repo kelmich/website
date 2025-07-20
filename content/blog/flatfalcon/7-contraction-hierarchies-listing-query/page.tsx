@@ -14,7 +14,7 @@ export default async function Home() {
       <p>
         Now that we have a good understand of contraction hierarchies we can get
         to how they can help us for our listing problem. Recall that we have our
-        up and down DAG
+        up and down DAG (darker edges are shortcuts we added).
       </p>
       <ContractedUpDownGraph />
       <p>
