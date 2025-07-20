@@ -1,10 +1,7 @@
 import { DijkstraVisualizer } from "@/content/blog/flatfalcon/2-dijkstra/DijkstraVisualizer";
 import CodeBlock from "@/app/components/CodeBlock";
 import BarChart from "@/app/components/BarChart";
-import {
-  queryPerformance,
-  TestingMethodologyNotes,
-} from "@/content/blog/flatfalcon/results";
+import { FlatfalconBarChart } from "../results";
 
 export default async function Home() {
   return (
@@ -60,17 +57,7 @@ export default async function Home() {
         this use case. More on that in Chapter 3
       </p>
 
-      <BarChart
-        unit="ms"
-        title="Average Query Time (NYC)"
-        bars={[
-          {
-            name: "DijkstraSearcher",
-            times: queryPerformance["Dijkstra"],
-          },
-        ]}
-        notes={<TestingMethodologyNotes />}
-      />
+      <FlatfalconBarChart dataType="Query" algorithms={["Dijkstra"]} />
     </>
   );
 }

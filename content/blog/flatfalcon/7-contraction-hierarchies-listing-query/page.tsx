@@ -1,10 +1,6 @@
 import BarChart from "@/app/components/BarChart";
 import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction/ContractedGraph";
-import {
-  queryPerformance,
-  setupPerformance,
-  TestingMethodologyNotes,
-} from "../results";
+import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingSetupVisualizer } from "./ContractionHierarchyListingSetup";
 import { ContractionHierarchyListingQueryVisualizer } from "./ContractionHierarchyListingQuery";
 
@@ -40,40 +36,24 @@ export default async function Home() {
       </p>
       <ContractionHierarchyListingQueryVisualizer />
 
-      <BarChart
-        unit="ms"
-        title="Average Setup Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: setupPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: setupPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher",
-            times: setupPerformance["SmartStupid"],
-          },
-          {
-            name: "ContractionHierarchiesSearcher",
-            times: setupPerformance["CH"],
-          },
+      <FlatfalconBarChart
+        dataType="Setup"
+        algorithms={[
+          "Dijkstra",
+          "Dial",
+          "FullPrecompute",
+          "ContractionHierarchy",
         ]}
-        notes={<TestingMethodologyNotes />}
       />
 
-      <BarChart
-        unit="ms"
-        title="Average Query Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: queryPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher",
-            times: queryPerformance["SmartStupid"],
-          },
-          {
-            name: "ContractionHierarchiesSearcher",
-            times: queryPerformance["CH"],
-          },
+      <FlatfalconBarChart
+        dataType="Query"
+        algorithms={[
+          "Dijkstra",
+          "Dial",
+          "FullPrecompute",
+          "ContractionHierarchy",
         ]}
-        notes={<TestingMethodologyNotes />}
       />
     </>
   );

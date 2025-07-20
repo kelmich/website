@@ -1,10 +1,4 @@
-import BarChart from "@/app/components/BarChart";
-import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction/ContractedGraph";
-import {
-  queryPerformance,
-  setupPerformance,
-  TestingMethodologyNotes,
-} from "../results";
+import { FlatfalconBarChart } from "../results";
 
 export default async function Home() {
   return (
@@ -20,48 +14,24 @@ export default async function Home() {
         assignment.
       </p>
 
-      <BarChart
-        unit="ms"
-        title="Average Setup Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: setupPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: setupPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher",
-            times: setupPerformance["SmartStupid"],
-          },
-          {
-            name: "ContractionHierarchiesSearcher",
-            times: setupPerformance["CH"],
-          },
-          {
-            name: "HubLabelsSearcher",
-            times: setupPerformance["CHLabel"],
-          },
+      <FlatfalconBarChart
+        dataType="Setup"
+        algorithms={[
+          "Dijkstra",
+          "Dial",
+          "FullPrecompute",
+          "ContractionHierarchy",
         ]}
-        notes={<TestingMethodologyNotes />}
       />
 
-      <BarChart
-        unit="ms"
-        title="Average Query Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: queryPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher",
-            times: queryPerformance["SmartStupid"],
-          },
-          {
-            name: "ContractionHierarchiesSearcher",
-            times: queryPerformance["CH"],
-          },
-          {
-            name: "HubLabelsSearcher",
-            times: queryPerformance["CHLabel"],
-          },
+      <FlatfalconBarChart
+        dataType="Query"
+        algorithms={[
+          "Dijkstra",
+          "Dial",
+          "FullPrecompute",
+          "ContractionHierarchy",
         ]}
-        notes={<TestingMethodologyNotes />}
       />
     </>
   );

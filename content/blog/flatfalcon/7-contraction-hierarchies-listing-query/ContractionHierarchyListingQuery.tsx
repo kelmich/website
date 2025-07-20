@@ -119,7 +119,7 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Dijkstra(initialGraph, "A", false);
+          return new Dijkstra(initialGraph, "C", false);
         }}
         onStep={setStepData}
       />
@@ -131,11 +131,12 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
               <GraphLegend />
             </div>
             <div className="w-1/3 flex flex-col divide-y">
-              <div>
+              <div className="p-2">
+                <h4 className="text-sm font-bold mb-1">Labels</h4>
                 {Array.from(initialGraph.nodes).map((node) => (
                   <div
                     key={node.id}
-                    className="flex flex-row items-center gap-2 w-full p-2"
+                    className="flex flex-row items-center gap-2 w-full p-1"
                   >
                     <div className="font-bold">{node.id}</div>
                     <div className="flex flex-row gap-2">

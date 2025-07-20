@@ -1,12 +1,6 @@
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/Header";
 import CodeBlock from "@/app/components/CodeBlock";
 import { DialVisualizer } from "./DialVisualizer";
-import BarChart from "@/app/components/BarChart";
-import {
-  queryPerformance,
-  TestingMethodologyNotes,
-} from "@/content/blog/flatfalcon/results";
+import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
   return (
@@ -56,15 +50,7 @@ export default async function Home() {
         more traditional MinHeap.
       </p>
 
-      <BarChart
-        unit="ms"
-        title="Average Query Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: queryPerformance["Dial"] },
-        ]}
-        notes={<TestingMethodologyNotes />}
-      />
+      <FlatfalconBarChart dataType="Query" algorithms={["Dijkstra", "Dial"]} />
     </>
   );
 }

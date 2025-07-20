@@ -1,10 +1,6 @@
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
 import BarChart from "@/app/components/BarChart";
-import {
-  queryPerformance,
-  setupPerformance,
-  TestingMethodologyNotes,
-} from "@/content/blog/flatfalcon/results";
+import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
   return (
@@ -37,18 +33,9 @@ export default async function Home() {
         entire graph again for every listing we have.
       </p>
 
-      <BarChart
-        unit="s"
-        title="Precomputation Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: setupPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: setupPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher (Parallelized Construction)",
-            times: setupPerformance["SmartStupid"],
-          },
-        ]}
-        notes={<TestingMethodologyNotes />}
+      <FlatfalconBarChart
+        dataType="Setup"
+        algorithms={["Dijkstra", "Dial", "FullPrecompute"]}
       />
 
       <p>
@@ -66,18 +53,9 @@ export default async function Home() {
         = 61'200MB &asymp; 60GB.
       </p>
 
-      <BarChart
-        unit="ms"
-        title="Average Query Time (NYC)"
-        bars={[
-          { name: "DijkstraSearcher", times: queryPerformance["Dijkstra"] },
-          { name: "DialSearcher", times: queryPerformance["Dial"] },
-          {
-            name: "SmartStupidSearcher",
-            times: queryPerformance["SmartStupid"],
-          },
-        ]}
-        notes={<TestingMethodologyNotes />}
+      <FlatfalconBarChart
+        dataType="Query"
+        algorithms={["Dijkstra", "Dial", "FullPrecompute"]}
       />
 
       <p>

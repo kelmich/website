@@ -1,11 +1,3 @@
-import BarChart from "@/app/components/BarChart";
-import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction/ContractedGraph";
-import {
-  queryPerformance,
-  setupPerformance,
-  TestingMethodologyNotes,
-} from "../results";
-
 export default async function Home() {
   return (
     <>
