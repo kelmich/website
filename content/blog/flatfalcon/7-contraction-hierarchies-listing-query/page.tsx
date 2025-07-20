@@ -3,6 +3,7 @@ import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction
 import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingSetupVisualizer } from "./ContractionHierarchyListingSetup";
 import { ContractionHierarchyListingQueryVisualizer } from "./ContractionHierarchyListingQuery";
+import CodeBlock from "@/app/components/CodeBlock";
 
 export default async function Home() {
   return (
@@ -25,8 +26,18 @@ export default async function Home() {
       </p>
       <p>
         Again, this is a parallelizable problem, we can do this for listings
-        concurrently using established shortest path algorithms.
+        concurrently.
       </p>
+      <p>
+        Another interesting thing we can do is use the fact that our graph is a
+        DAG, and we can use a topological sort to visit all vertices in the up
+        DAG in order. This way we avoid having to use a min heap and can gain
+        some performance.
+      </p>
+      <CodeBlock
+        lang="ts"
+        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/dagShortestPath.ts"
+      />
       <ContractionHierarchyListingSetupVisualizer />
       <p>
         Once we have computed all of the labels for each vertex in the up DAG,
@@ -34,6 +45,10 @@ export default async function Home() {
         the up DAG. Whenever we visit a vertex we now use the vertex's label to
         update our results.
       </p>
+      <CodeBlock
+        lang="ts"
+        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx"
+      />
       <ContractionHierarchyListingQueryVisualizer />
 
       <FlatfalconBarChart

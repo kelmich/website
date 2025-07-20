@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import GraphVisualizer, {
   VisualizationEdgeData,
   VisualizationNodeData,
@@ -17,6 +17,7 @@ import {
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
+import { DAGShortestPath, DAGShortestPathState } from "./dagShortestPath";
 
 export const ContractionHierarchyListingQueryVisualizer = () => {
   const initialGraph = useMemo(
@@ -54,9 +55,8 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
   const listingNodes = initialGraph.nodes
     .filter((node) => node.data.shape === "rect")
     .map((node) => node.id);
-  const [stepData, setStepData] = useState<AlgorithmStep<DijkstraState> | null>(
-    null,
-  );
+  const [stepData, setStepData] =
+    useState<AlgorithmStep<DAGShortestPathState> | null>(null);
 
   useEffect(() => {
     if (!stepData) return;
@@ -65,7 +65,7 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
       const newGraph = prevGraph.clone();
 
       newGraph.nodes.forEach((node) => {
-        if (node.id in state.visited) {
+        if (state.distances[node.id][0] !== Infinity) {
           node.data.variant = "success";
         } else if (state.currentNode === node.id) {
           node.data.variant = "primary";
@@ -75,7 +75,7 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
       });
 
       const usedEdges = new Set<string>();
-      Object.entries(state.visited).forEach(([nodeId, [, parentId]]) => {
+      Object.entries(state.distances).forEach(([nodeId, [, parentId]]) => {
         if (parentId !== null && parentId !== undefined) {
           usedEdges.add(`${parentId}-${nodeId}`);
         }
@@ -96,30 +96,44 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
   }, [stepData]);
 
   const downLabels: Record<string, Record<string, number>> = {
-    A: {
-      B: 5,
-      E: 6,
-    },
+    A: {},
     B: {
       B: 0,
-      E: 1,
     },
-    C: {
-      E: 7,
-    },
-    D: {
-      E: 9,
-    },
+    C: {},
+    D: {},
     E: {
       E: 0,
+      B: 1,
     },
   };
+
+  const result = useRef<Record<string, number>>({});
 
   return (
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Dijkstra(initialGraph, "C", false);
+          // kelmich-highlight-start
+          const visit: (
+            nodeId: string,
+            weight: number,
+            parent: string | undefined,
+          ) => void = (nodeId, weight, _) => {
+            for (const [listing, distanceToListing] of Object.entries(
+              downLabels[nodeId],
+            )) {
+              const timeViaNode = distanceToListing + weight;
+              if (
+                !result.current[listing] ||
+                timeViaNode < result.current[listing]
+              ) {
+                result.current[listing] = timeViaNode;
+              }
+            }
+          };
+          // kelmich-highlight-end
+          return new DAGShortestPath(initialGraph, "C", false, visit);
         }}
         onStep={setStepData}
       />
@@ -162,17 +176,15 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
                   </div>
                 ))}
               </div>
-              {stepData?.state.minHeap && (
-                <ResultVisualizer
-                  title="Results"
-                  results={Object.entries(stepData.state.visited)
-                    .map(([id, [weight]]) => ({
-                      id,
-                      weight,
-                    }))
-                    .filter((item) => listingNodes.includes(item.id))}
-                />
-              )}
+              <ResultVisualizer
+                title="Results"
+                results={Object.entries(result.current).map(([id, weight]) => {
+                  return {
+                    id,
+                    weight,
+                  };
+                })}
+              />
             </div>
           </div>
         </div>

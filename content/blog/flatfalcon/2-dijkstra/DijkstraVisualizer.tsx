@@ -44,9 +44,6 @@ export const DijkstraVisualizer = () => {
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
-
-          // { from: "A", to: "C", weight: 1, data: { variant: "secondary" } },
-          // { from: "C", to: "A", weight: 1, data: { variant: "secondary" } },
         ],
       ),
     [],

@@ -121,7 +121,7 @@ export const ContractionHierarchyListingSetupVisualizer = () => {
         });
 
         newGraph.edges.forEach((edge) => {
-          if (state.currentNode === edge.from) {
+          if (state.currentNode === edge.to) {
             edge.data.variant = "primary";
           } else if (usedEdges.has(`${edge.from}-${edge.to}`)) {
             edge.data.variant = "success";
@@ -140,8 +140,8 @@ export const ContractionHierarchyListingSetupVisualizer = () => {
       <ControlBar
         executorFactory={() => {
           return new ConcurrentVisualizer<DijkstraState, DijkstraState>(
-            new Dijkstra(initialGraphA, "B", false),
-            new Dijkstra(initialGraphB, "E", false),
+            new Dijkstra(initialGraphA, "B", true),
+            new Dijkstra(initialGraphB, "E", true),
           );
         }}
         onStep={setStepData}
