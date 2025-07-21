@@ -26,17 +26,18 @@ const timeUnits = [
 ];
 
 function chooseUnit(valueMs: number) {
+  let unitIdx = -1;
   for (const unit of timeUnits) {
     const converted = valueMs * unit.factor;
-    if (converted >= 1 && converted < 1000) {
-      return unit;
+    if (converted >= 1) {
+      unitIdx += 1;
     }
   }
-  return timeUnits[1]; // fallback to ms
+  return timeUnits[unitIdx];
 }
 
 function formatTime(value: number, factor: number): string {
-  return (value * factor).toFixed(3);
+  return (value * factor).toFixed(1);
 }
 
 export default function BarChart(props: Props) {
@@ -55,7 +56,7 @@ export default function BarChart(props: Props) {
             <div key={b.name}>
               <div className="flex justify-between text-sm mb-1">
                 <span className="font-mono">{b.name}</span>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-between gap-2 w-54">
                   <span className="text-muted-foreground">
                     [{formatTime(b.times.ciLow, scale)}
                     {unit.label}

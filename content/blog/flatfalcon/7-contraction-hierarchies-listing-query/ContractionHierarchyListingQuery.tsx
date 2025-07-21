@@ -6,14 +6,7 @@ import GraphVisualizer, {
 } from "@/app/components/interactive_examples/GraphVisualizer";
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
-import {
-  AlgorithmStep,
-  ConcurrentVisualizer,
-} from "@/app/components/interactive_examples/AlgorithmVisualizer";
-import {
-  Dijkstra,
-  DijkstraState,
-} from "@/content/blog/flatfalcon/2-dijkstra/dijkstra";
+import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
 import { ResultVisualizer } from "@/app/components/interactive_examples/ResultVisualizer";
@@ -52,9 +45,6 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
   );
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
-  const listingNodes = initialGraph.nodes
-    .filter((node) => node.data.shape === "rect")
-    .map((node) => node.id);
   const [stepData, setStepData] =
     useState<AlgorithmStep<DAGShortestPathState> | null>(null);
 
@@ -119,7 +109,7 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
             nodeId: string,
             weight: number,
             parent: string | undefined,
-          ) => void = (nodeId, weight, _) => {
+          ) => void = (nodeId, weight) => {
             for (const [listing, distanceToListing] of Object.entries(
               downLabels[nodeId],
             )) {

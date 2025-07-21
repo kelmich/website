@@ -1,4 +1,3 @@
-import BarChart from "@/app/components/BarChart";
 import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction/ContractedGraph";
 import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingSetupVisualizer } from "./ContractionHierarchyListingSetup";
@@ -50,6 +49,14 @@ export default async function Home() {
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx"
       />
       <ContractionHierarchyListingQueryVisualizer />
+
+      <p>
+        The performance results are quite encouraging. We have now reached a
+        level of performance where the query time is negligible in comparison to
+        the time it takes for a request to traverse the network. Further we
+        didn&apos;t have to wait minutes to compute the data structure. We were
+        ready in seconds.
+      </p>
 
       <FlatfalconBarChart
         dataType="Setup"

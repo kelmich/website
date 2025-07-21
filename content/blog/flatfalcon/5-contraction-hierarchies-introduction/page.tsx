@@ -26,12 +26,13 @@ export default async function Home() {
         shortcuts in our graph. What are &quot;commonly used shortcuts&quot;
         though? We will give this more theortical backing later, but for now
         consider the following: Usually when you use a road network you go from
-        an unimportant point (e.g. your house), to a more important point (e.g.
-        entry to a highway), to an unimportant point again (e.g. your
-        workplace). By precomputing a shortcut from your house to the highway
-        entry point, and from the highway entry point to your workplace, we can
-        significantly reduce the number of edges we need to traverse during a
-        query.
+        a vertex that isn&apos;t contained in many shortest paths (e.g. your
+        house), to a vertex that is contained in many shortest paths (e.g. entry
+        to a highway), to a vertex that isn&apos;t contained in many shortest
+        paths again (e.g. your workplace). By precomputing a shortcut from your
+        house to the highway entry point, and from the highway entry point to
+        your workplace, we can significantly reduce the number of edges we need
+        to traverse during a query.
       </p>
 
       <p>
@@ -52,6 +53,8 @@ export default async function Home() {
         lang="ts"
         filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contractor.ts"
       />
+
+      <p>Below you can see the result of contracting the vertex C.</p>
 
       <ContractionVisualizer />
 
@@ -96,9 +99,12 @@ export default async function Home() {
       <ContractedUpDownGraph />
 
       <p>
-        To navigate between any two vertices we can now run any shortest path
-        finding algorithm from the source in the up graph and the target in the
-        down graph. When the two processes meet we have found a shortest path.
+        To navigate between any two vertices optimally we can now run any
+        shortest path finding algorithm from the source (using outgoing edges)
+        in the up graph and the target (using incoming edges) in the down graph.
+        When the two processes meet we have found a shortest path. Note that the
+        processes must meet at some point, because some node on the shortest
+        path must have the highest assigned importance in our order.
       </p>
 
       <p>

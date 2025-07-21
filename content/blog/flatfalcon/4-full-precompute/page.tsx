@@ -1,5 +1,4 @@
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
-import BarChart from "@/app/components/BarChart";
 import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 
 export default async function Home() {
@@ -33,30 +32,45 @@ export default async function Home() {
         entire graph again for every listing we have.
       </p>
 
+      <p>
+        Consider the following back of the envolope calculation for New York.
+        Zillow lists approximately 17000 listings for New York City. The Graph
+        of New York City we use for testing is 3.6MB large. So storing the
+        entire shortest path for every listing would mean needing 3.6MB * 17000
+        = 61&apos;200MB &asymp; 60GB.
+      </p>
+
+      <p>
+        Note: The Confidence Interval is not yet precise for FullPrecompute
+        because my computer is still computing them (it takes days
+        unfortunately).
+      </p>
+
       <FlatfalconBarChart
         dataType="Setup"
         algorithms={["Dijkstra", "Dial", "FullPrecompute"]}
       />
 
       <p>
-        What is really nice however is the query performance. We are 1000x
-        faster at query time in comparison to our Dial approach. So depending on
-        your needs and your tolarance for memory usage this approach might very
-        well be a viable option.
-      </p>
-
-      <p>
-        Consider the following back of the envolope calculation for New York.
-        Zillow lists approximately 17000 listings for New York City. The Graph
-        of New York City we use for testing is 3.6MB large. So storing the
-        entire shortest path for every listing would mean needing 3.6MB * 17000
-        = 61'200MB &asymp; 60GB.
+        What is really nice however is the query performance. We are around
+        1000x faster at query time in comparison to our Dial approach. So
+        depending on your needs and your tolarance for memory usage this
+        approach might very well be a viable option.
       </p>
 
       <FlatfalconBarChart
         dataType="Query"
         algorithms={["Dijkstra", "Dial", "FullPrecompute"]}
       />
+
+      <p>
+        Wether one needs this much fantastic query performance depends on the
+        specific use case. While there may be cases where this query is a
+        subroutine that is called often and needs to be this fast, our use case
+        that simply returns the results over a network does not require this
+        level of performance. Keep in mind that most round trip times from a
+        user to a server and back will take milliseconds anyway.
+      </p>
 
       <p>
         For the use cases we have in mind we prefer to have more efficient

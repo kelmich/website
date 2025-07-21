@@ -13,6 +13,9 @@ type PerformanceData = {
   ciHigh: number;
 };
 
+// SmartStupidSearcher construction took: 267.499520709s
+// SmartStupidSearcher     time:   [10.922 µs 11.218 µs 11.572 µs]
+
 const queryPerformance: Record<AlgorithmType, PerformanceData> = {
   Dijkstra: {
     ciLow: 30.981,
@@ -25,9 +28,9 @@ const queryPerformance: Record<AlgorithmType, PerformanceData> = {
     ciHigh: 12.434,
   },
   FullPrecompute: {
-    ciLow: 0,
-    mean: 0,
-    ciHigh: 0,
+    ciLow: 0.010922,
+    mean: 0.011218,
+    ciHigh: 0.011572,
   },
   ContractionHierarchy: {
     ciLow: 1.2877,
@@ -44,31 +47,31 @@ const queryPerformance: Record<AlgorithmType, PerformanceData> = {
 const setupPerformance: Record<AlgorithmType, PerformanceData> = {
   Dijkstra: {
     // [1.3643 ms 1.3754 ms 1.3865 ms]
-    mean: 1.3643,
-    ciLow: 1.3754,
+    ciLow: 1.3643,
+    mean: 1.3754,
     ciHigh: 1.3865,
   },
   Dial: {
     // [1.2650 ms 1.2736 ms 1.2817 ms]
-    mean: 1.265,
-    ciLow: 1.2736,
+    ciLow: 1.265,
+    mean: 1.2736,
     ciHigh: 1.2817,
   },
   FullPrecompute: {
-    mean: 0,
     ciLow: 0,
-    ciHigh: 0,
+    mean: 267499.520709,
+    ciHigh: 999999.0,
   },
   ContractionHierarchy: {
     // [4.6895 s 4.7024 s 4.7166 s]
-    mean: 4689.5,
-    ciLow: 4702.4,
+    ciLow: 4689.5,
+    mean: 4702.4,
     ciHigh: 4716.6,
   },
   HubLabel: {
     // [7.9664 s 8.0040 s 8.0438 s]
-    mean: 7966.4,
-    ciLow: 8004.0,
+    ciLow: 7966.4,
+    mean: 8004.0,
     ciHigh: 8043.8,
   },
 };

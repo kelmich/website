@@ -17,8 +17,8 @@ export default async function Page() {
       <ContractionNightmare />
       <p>
         By picking E as our lowest priority node we created 12 additional
-        shortcut edges. If we by contrast pick E as the last vertex we add zero
-        additional edges.
+        shortcut edges. If we by contrast pick E as the last vertex to contract
+        (i.e. highest priority) we add zero additional edges.
       </p>
       <ContractionDream />
       <p>
@@ -47,8 +47,8 @@ export default async function Page() {
       <p>
         Formally, a graph has highway dimension h if, for every radius r and
         every vertex v, all long shortest paths within distance 2r of v (but
-        longer than r) pass through at most h "access vertices." These access
-        vertices effectively "hit" all those paths.
+        longer than r) pass through at most h &quot;access vertices.&quot; These
+        access vertices effectively &quot;hit&quot; all those paths.
       </p>
       <p>
         If we assume that our road network has a small highway dimension h, then
@@ -60,15 +60,16 @@ export default async function Page() {
         it to derive a multiscale hierarchy of important nodes, from which you
         can build an ordering for contraction hierarchies. The authors define a
         construct called a multiscale sparse path hitting set (SPHS). At each
-        scale r=2^i, they select a small set of nodes that "cover" all long
-        paths nearby. By stacking these sets from coarsest to finest scales,
-        they define levels Q_i, and order the nodes so that lower-level (less
-        important) nodes are contracted before higher-level ones. The result:
+        scale r=2^i, they select a small set of nodes that &quot;cover&quot; all
+        long paths nearby. By stacking these sets from coarsest to finest
+        scales, they define levels Q_i, and order the nodes so that lower-level
+        (less important) nodes are contracted before higher-level ones. The
+        result:
       </p>
       <ol>
         <li>
           The number of shortcuts added is provably small: 𝑂(n * h * log D),
-          where D is the diameter.
+          where D is the graph diameter.
         </li>
         <li>The maximum degree in the final augmented graph is bounded.</li>
         <li>CH queries on such a graph run in O((h * log D)^2) time.</li>
@@ -83,8 +84,23 @@ export default async function Page() {
         size). So expensive in fact that our previous &quot;Precomputing
         Everything&quot; approach is more efficient. For this reason most
         implementations use heuristics and forego the theoretical guarantees of
-        the algorithm. However, the algorithm provides a solid foundation for
+        the algorithm. However, the theorem provides a solid foundation for
         understanding why Contraction Hierarchies are so effective.
+      </p>
+      <p>
+        We will build on the contraction hierarchy from{" "}
+        <a
+          href="https://github.com/easbar/fast_paths"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          https://github.com/easbar/fast_paths
+        </a>{" "}
+        . They use a heuristic approach to construct the hierarchy, which is
+        more efficient than the theoretical construction but may not provide the
+        same guarantees. The heuristic approach computes an importance score for
+        each vertex and uses this score to guide the construction of the
+        hierarchy.
       </p>
     </>
   );
