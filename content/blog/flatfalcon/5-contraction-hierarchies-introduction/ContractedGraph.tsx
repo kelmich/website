@@ -49,6 +49,7 @@ export const ContractedGraph = () => {
       <GraphVisualizer
         graph={initialGraph}
         id="contractedGraphWithAddedEdges"
+        edgeBendAmount={0.15}
       />
     </div>
   );

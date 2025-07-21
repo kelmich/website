@@ -37,18 +37,19 @@ export const ContractionHierarchyVisualizer = () => {
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
         ],
-        () => { return { variant: "secondary" } }
+        () => {
+          return { variant: "secondary" };
+        },
       ),
-    []
+    [],
   );
-
 
   const [graph, setGraph] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
 
-  const [stepData, setStepData] = useState<AlgorithmStep<ContractorState<VisualizationNodeData, VisualizationEdgeData>> | null>(
-    null
-  );
+  const [stepData, setStepData] = useState<AlgorithmStep<
+    ContractorState<VisualizationNodeData, VisualizationEdgeData>
+  > | null>(null);
 
   useEffect(() => {
     if (!stepData) return;
@@ -60,7 +61,10 @@ export const ContractionHierarchyVisualizer = () => {
       newGraph.edges.forEach((edge) => {
         if (state.inEdge?.from === edge.from && state.inEdge?.to === edge.to) {
           edge.data.variant = "primary";
-        } else if (state.outEdge?.from === edge.from && state.outEdge?.to === edge.to) {
+        } else if (
+          state.outEdge?.from === edge.from &&
+          state.outEdge?.to === edge.to
+        ) {
           edge.data.variant = "primary";
         } else {
           edge.data.variant = "secondary";
@@ -75,12 +79,16 @@ export const ContractionHierarchyVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          return new Contractor(initialGraph, ["A", "B", "C", "D", "E"])
+          return new Contractor(initialGraph, ["A", "B", "C", "D", "E"]);
         }}
         onStep={setStepData}
       />
       <div className="flex flex-col">
-        <GraphVisualizer graph={graph} id="contractionHierarchy" />
+        <GraphVisualizer
+          graph={graph}
+          id="contractionHierarchy"
+          edgeBendAmount={0.15}
+        />
       </div>
 
       {stepData?.message && <MessageRenderer message={stepData.message} />}

@@ -6,10 +6,7 @@ import GraphVisualizer, {
 } from "@/app/components/interactive_examples/GraphVisualizer";
 import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
-import {
-  AlgorithmStep,
-  ConcurrentVisualizer,
-} from "@/app/components/interactive_examples/AlgorithmVisualizer";
+import { AlgorithmStep } from "@/app/components/interactive_examples/AlgorithmVisualizer";
 import {
   Dijkstra,
   DijkstraState,
