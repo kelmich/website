@@ -41,9 +41,15 @@ export default async function Home() {
       </p>
 
       <p>
-        Note: The Confidence Interval is not yet precise for FullPrecompute
-        because my computer is still computing them (it takes days
-        unfortunately).
+        Note that when running the FullPrecompute setup as a one off task it
+        would usually take around 5 minutes to complete. The benchmarking runs
+        the setup task 100 times and uses this to calculate the confidence
+        intervals. Most likely FullPrecompute was throttled at some point
+        (running the entire benchmark took around 24h, mostly due to the
+        FullPrecompute setup phase). So this may be somewhat unfair to
+        FullPrecompute, but in the end this is what the benchmarking gave us.
+        Even at 5min it will be the slowest to setup of all algorithms we will
+        examine.
       </p>
 
       <FlatfalconBarChart

@@ -28,9 +28,9 @@ const queryPerformance: Record<AlgorithmType, PerformanceData> = {
     ciHigh: 12.434,
   },
   FullPrecompute: {
-    ciLow: 0.010922,
-    mean: 0.011218,
-    ciHigh: 0.011572,
+    ciLow: 0.011593,
+    mean: 0.0119318,
+    ciHigh: 0.012322,
   },
   ContractionHierarchy: {
     ciLow: 1.2877,
@@ -58,9 +58,9 @@ const setupPerformance: Record<AlgorithmType, PerformanceData> = {
     ciHigh: 1.2817,
   },
   FullPrecompute: {
-    ciLow: 0,
-    mean: 267499.520709,
-    ciHigh: 999999.0,
+    ciLow: 887590,
+    mean: 918770,
+    ciHigh: 949230,
   },
   ContractionHierarchy: {
     // [4.6895 s 4.7024 s 4.7166 s]
