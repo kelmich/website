@@ -59,10 +59,10 @@ type PomodoroState = {
 };
 
 export default function Pomodoro() {
-  const POMODORO_DURATION = 25;
+  const POMODORO_DURATION = 25 * 60;
   const POMODOROS_BEFORE_LONG_BREAK = 4;
-  const SHORT_BREAK_DURATION = 5;
-  const LONG_BREAK_DURATION = 15;
+  const SHORT_BREAK_DURATION = 5 * 60;
+  const LONG_BREAK_DURATION = 15 * 60;
 
   const defaultState: PomodoroState = useMemo(() => {
     return {
