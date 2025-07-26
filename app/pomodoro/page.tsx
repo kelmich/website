@@ -19,6 +19,9 @@ enum Mode {
 
 const notify = (message: string) => {
   if (Notification.permission === "granted") {
+    new Audio("/notification.mp3")
+      .play()
+      .catch((err) => console.error("Playback failed:", err));
     new Notification(message);
   } else {
     console.warn("Notification permission not granted");
@@ -56,10 +59,10 @@ type PomodoroState = {
 };
 
 export default function Pomodoro() {
-  const POMODORO_DURATION = 25 * 60;
+  const POMODORO_DURATION = 25;
   const POMODOROS_BEFORE_LONG_BREAK = 4;
-  const SHORT_BREAK_DURATION = 5 * 60;
-  const LONG_BREAK_DURATION = 15 * 60;
+  const SHORT_BREAK_DURATION = 5;
+  const LONG_BREAK_DURATION = 15;
 
   const defaultState: PomodoroState = useMemo(() => {
     return {
