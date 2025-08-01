@@ -1,18 +1,18 @@
-// import path from "path";
-// import { headers } from "next/headers";
 import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 import { readFileSync } from "fs";
+import { CodeBlockClient } from "./CodeBlock.client";
 
 interface Props {
   filepath: string;
   lang: BundledLanguage;
+  defaultCollapsed?: boolean;
 }
 
 function extractInterestingCode(content: string): string {
   const lines = content.split("\n");
   const start = lines.findIndex((line) =>
-    line.includes("kelmich-highlight-start")
+    line.includes("kelmich-highlight-start"),
   );
   const end = lines.findIndex((line) => line.includes("kelmich-highlight-end"));
 
@@ -20,7 +20,7 @@ function extractInterestingCode(content: string): string {
     return lines.slice(start + 1, end).join("\n");
   }
 
-  return content; // fallback to full content
+  return content;
 }
 
 function removeLeadingWhitespace(code: string): string {
@@ -38,10 +38,11 @@ function removeLeadingWhitespace(code: string): string {
     .trim();
 }
 
-export default async function CodeBlock({ lang, filepath }: Props) {
-  // const headersList = await headers();
-  // const pathname = headersList.get("x-pathname") || "";
-  // const fullPath = path.join("app", pathname, filename);
+export async function CodeBlock({
+  filepath,
+  lang,
+  defaultCollapsed = false,
+}: Props) {
   const fileContent = readFileSync(filepath, "utf8");
   const interestingPart = extractInterestingCode(fileContent);
   const cleanedCode = removeLeadingWhitespace(interestingPart);
@@ -49,20 +50,7 @@ export default async function CodeBlock({ lang, filepath }: Props) {
   const html = await codeToHtml(cleanedCode, {
     lang,
     theme: "github-light",
-    transformers: [
-      {
-        pre(node) {
-          // Add padding via inline style
-          node.properties.style = ""; // "padding: 1rem;";
-        },
-      },
-    ],
   });
 
-  return (
-    <div
-      dangerouslySetInnerHTML={{ __html: html }}
-      className="p-4 border bg-background overflow-auto"
-    />
-  );
+  return <CodeBlockClient html={html} defaultCollapsed={defaultCollapsed} />;
 }

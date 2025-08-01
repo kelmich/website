@@ -17,7 +17,11 @@ export class Graph<T, U> {
 
   defaultEdgeDataFactory?: () => U;
 
-  constructor(nodes: Node<T>[], edges: Edge<U>[], defaultEdgeDataFactory?: () => U) {
+  constructor(
+    nodes: Node<T>[],
+    edges: Edge<U>[],
+    defaultEdgeDataFactory?: () => U,
+  ) {
     this.nodes = nodes;
     this.edges = edges;
     this.defaultEdgeDataFactory = defaultEdgeDataFactory;
@@ -40,37 +44,51 @@ export class Graph<T, U> {
   }
 
   hasEdge(source: NodeId, target: NodeId) {
-    return this.edges.some((edge) => source === edge.from && edge.to === target);
+    return this.edges.some(
+      (edge) => source === edge.from && edge.to === target,
+    );
   }
 
   createEdge(source: NodeId, target: NodeId, weight: number) {
     if (!this.defaultEdgeDataFactory) {
-      throw "You must specify a defaultEdgeDataFactory to create Edges"
+      throw "You must specify a defaultEdgeDataFactory to create Edges";
     }
     this.edges.push({
       from: source,
       to: target,
       weight,
-      data: this.defaultEdgeDataFactory()
-    })
+      data: this.defaultEdgeDataFactory(),
+    });
   }
 
   updateEdge(source: NodeId, target: NodeId, weight: number) {
-    const edge = this.edges.find((edge) => source === edge.from && edge.to === target);
+    const edge = this.edges.find(
+      (edge) => source === edge.from && edge.to === target,
+    );
     if (edge) {
       edge.weight = weight;
     } else {
-      throw "Edge does not exist!"
+      throw "Edge does not exist!";
     }
   }
 
   neighbors(nodeId: NodeId, incoming?: boolean): Edge<U>[] {
-    return this.edges.filter((edge) => {
-      if (incoming) {
-        return edge.to === nodeId;
-      } else {
-        return edge.from === nodeId;
-      }
-    });
+    return this.edges
+      .filter((edge) => {
+        if (incoming) {
+          return edge.to === nodeId;
+        } else {
+          return edge.from === nodeId;
+        }
+      })
+      .map((edge) => {
+        return edge;
+        // const clonedEdge = structuredClone(edge);
+        // if (incoming) {
+        //   clonedEdge.from = clonedEdge.to;
+        //   clonedEdge.to = nodeId;
+        // }
+        // return clonedEdge;
+      });
   }
 }

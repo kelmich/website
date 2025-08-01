@@ -1,0 +1,14 @@
+# Input: Graph G = (V, E), query node q
+# Output: Distance map d[v] for all reachable v ∈ V
+
+for v in V:
+    d[v] = ∞
+d[q] = 0
+queue.insert(q, priority=0)
+
+while queue is not empty:
+    u = queue.extract_min()
+    for (v, u) in incoming_edges(E, u):
+        if d[v] > d[u] + w(v, u):
+            d[v] = d[u] + w(v, u)
+            queue.insert_or_update(v, priority=d[v])

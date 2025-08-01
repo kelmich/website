@@ -1,4 +1,4 @@
-import CodeBlock from "@/app/components/CodeBlock";
+import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 import { ContractionHierarchyListingSetupVisualizer } from "../7-contraction-hierarchies-listing-query/ContractionHierarchyListingSetup";
 import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingUpSetupVisualizer } from "./ContractionHierarchyListingUpSetup";

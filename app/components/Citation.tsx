@@ -7,8 +7,8 @@ export type WebCitation = {
   lastAccessed: Date;
 };
 
-export type BookCitation = {
-  type: "book";
+export type JournalCitation = {
+  type: "journal";
   id: string;
   author: string;
   title: string;
@@ -20,18 +20,34 @@ export type BookCitation = {
   url?: string;
 };
 
-type Citation = WebCitation | BookCitation;
+export type BookCitation = {
+  type: "book";
+  id: string;
+  author: string;
+  title: string;
+  publisher: string;
+  edition: string;
+  year: number;
+  isbn?: string;
+  url?: string;
+};
+
+type Citation = WebCitation | JournalCitation | BookCitation;
 
 type InlineCitationProps = {
   citation: Citation;
+  page: number;
 };
 
-export const InlineCitation: React.FC<InlineCitationProps> = ({ citation }) => {
+export const InlineCitation: React.FC<InlineCitationProps> = ({
+  citation,
+  page,
+}) => {
   return (
     <span>
       [
       <a href={`./bibliography#${citation.id}`} data-citation-id={citation.id}>
-        {citation.id}
+        {citation.id}, {`page ${page}`}
       </a>
       ]
     </span>
@@ -60,7 +76,7 @@ export const Bibliography: React.FC<BibliographyProps> = ({
           Last Accessed: {citation.lastAccessed.toLocaleDateString()}
         </>
       );
-    } else if (citation.type === "book") {
+    } else if (citation.type === "journal") {
       // BookCitation
       return (
         <>
@@ -69,6 +85,19 @@ export const Bibliography: React.FC<BibliographyProps> = ({
           Title: {citation.title}
           <br />
           Publisher: {citation.journal}
+          <br />
+          Year: {citation.year}
+        </>
+      );
+    } else if (citation.type === "book") {
+      // BookCitation
+      return (
+        <>
+          Author: {citation.author}
+          <br />
+          Title: {citation.title}
+          <br />
+          Publisher: {citation.publisher}
           <br />
           Year: {citation.year}
         </>
@@ -85,6 +114,7 @@ export const Bibliography: React.FC<BibliographyProps> = ({
               width: `${Math.max(...citations.map((c) => c.id.length)) + 4}ch`,
               fontWeight: "bold",
               position: "relative",
+              flexShrink: 0,
             }}
           >
             {highlightedCitationId === citation.id && (

@@ -1,4 +1,4 @@
-import CodeBlock from "@/app/components/CodeBlock";
+import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 import { DialVisualizer } from "./DialVisualizer";
 import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 

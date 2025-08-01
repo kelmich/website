@@ -1,5 +1,5 @@
 import { ContractionVisualizer } from "@/content/blog/flatfalcon/5-contraction-hierarchies-introduction/ContractionVisualizer";
-import CodeBlock from "@/app/components/CodeBlock";
+import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 import { ContractionHierarchyVisualizer } from "./ContractionHierarchyVisualizer";
 import { ContractedGraph, ContractedUpDownGraph } from "./ContractedGraph";
 

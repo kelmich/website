@@ -2,7 +2,7 @@ import { ContractedUpDownGraph } from "../5-contraction-hierarchies-introduction
 import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingSetupVisualizer } from "./ContractionHierarchyListingSetup";
 import { ContractionHierarchyListingQueryVisualizer } from "./ContractionHierarchyListingQuery";
-import CodeBlock from "@/app/components/CodeBlock";
+import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 
 export default async function Home() {
   return (
