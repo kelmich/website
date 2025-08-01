@@ -1,4 +1,6 @@
+import { InlineCitation } from "@/app/components/Citation";
 import { InlineMath, DisplayMath } from "@/app/components/Math";
+import { Allen2018 } from "../references";
 
 export default function ProjectProposal() {
   return (
@@ -64,12 +66,12 @@ export default function ProjectProposal() {
             Newhome
           </a>{" "}
           precomputes all regions of the map that are reachable within a certain
-          time from a given point. This method (commonly referred to as
-          isochrone maps) is more accurate than radius-based filtering, as it
-          takes into account the actual travel time between locations. As can be
-          seen in the image below, the isochrone map provides a more accurate
-          representation of the reachable areas compared to the radius-based
-          filtering.
+          time from a given point. This method, commonly referred to as
+          isochrone maps <InlineCitation citation={Allen2018} />, is more
+          accurate than radius-based filtering, as it takes into account the
+          actual travel time between locations. As can be seen in the image
+          below, the isochrone map provides a more accurate representation of
+          the reachable areas compared to the radius-based filtering.
           <img
             src="/flatfalcon/1/newhome-location-filtering.png"
             alt="Newhome Isochrone Map based location filtering"

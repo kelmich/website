@@ -1,18 +1,23 @@
-import clsx from "clsx";
 import React from "react";
 
 export type WebCitation = {
+  type: "web";
   id: string;
   url: string;
   lastAccessed: Date;
 };
 
 export type BookCitation = {
+  type: "book";
   id: string;
   author: string;
   title: string;
-  publisher: string;
+  journal: string;
+  volume: string;
+  number: string;
   year: number;
+  doi?: string;
+  url?: string;
 };
 
 type Citation = WebCitation | BookCitation;
@@ -43,7 +48,7 @@ export const Bibliography: React.FC<BibliographyProps> = ({
   highlightedCitationId,
 }) => {
   const renderCitationContent = (citation: Citation) => {
-    if ("url" in citation) {
+    if (citation.type === "web") {
       // WebCitation
       return (
         <>
@@ -55,7 +60,7 @@ export const Bibliography: React.FC<BibliographyProps> = ({
           Last Accessed: {citation.lastAccessed.toLocaleDateString()}
         </>
       );
-    } else {
+    } else if (citation.type === "book") {
       // BookCitation
       return (
         <>
@@ -63,7 +68,7 @@ export const Bibliography: React.FC<BibliographyProps> = ({
           <br />
           Title: {citation.title}
           <br />
-          Publisher: {citation.publisher}
+          Publisher: {citation.journal}
           <br />
           Year: {citation.year}
         </>
