@@ -133,14 +133,30 @@ export default function ProjectProposal() {
           <InlineMath math="t: \mathcal{G} \times \mathcal{G} \to \mathbb{N}_0" />{" "}
           defined as:
           <DisplayMath
-            math={`t(x, y) := \\min \\left\\{ \\sum_{e \\in r} w(e) + d(x, r) + d(y, r) \\mid r \\text{ is a path in } G \\text{ connecting vertices closest to } x, y \\right\\}`}
+            math={`
+              \\begin{aligned}
+                &\\text{Define } u_x, v_x, u_y, v_y \\in V \\text{ as follows:} \\\\
+                &\\quad
+                \\begin{cases}
+                  u_x = v_x = x, & \\text{if } x \\in V \\\\
+                  u_x, v_x = \\text{vertices bounding the edge containing } x, & \\text{otherwise}
+                \\end{cases} \\\\
+                &\\quad \\text{and similarly for } y. \\\\[10pt]
+                &t(x,y) := \\min_{\\substack{
+                \\\\[1pt]
+                  u \\in \\{u_x, v_x\\} \\\\[3pt]
+                  v \\in \\{u_y, v_y\\} \\\\[3pt]
+                  r: u \\to v \\text{ is a path in } G
+                }}
+                \\left( \\sum_{e \\in r} w(e) + d(x,u) + d(y,v) \\right)
+              \\end{aligned}
+            `}
           />
           <p>
-            Here, <InlineMath math="d(x, r)" /> and{" "}
-            <InlineMath math="d(y, r)" /> represent the partial travel times
-            along edges from points <InlineMath math="x" /> and{" "}
-            <InlineMath math="y" /> to the nearest vertices incident to the path{" "}
-            <InlineMath math="r" />.
+            Here, <InlineMath math="d(x,u)" /> and <InlineMath math="d(y,v)" />{" "}
+            denote the partial travel times along the edges containing{" "}
+            <InlineMath math="x" /> and <InlineMath math="y" /> to vertices{" "}
+            <InlineMath math="u" /> and <InlineMath math="v" />, respectively.
           </p>
         </li>
         <li>
