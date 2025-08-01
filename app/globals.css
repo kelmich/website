@@ -92,6 +92,10 @@ ol {
     @apply list-decimal ml-10;
 }
 
+ul {
+    @apply list-disc ml-10;
+}
+
 p {
     @apply text-base leading-relaxed;
 }
