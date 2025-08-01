@@ -159,17 +159,74 @@ const GraphVisualizer: React.FC<
             let x2Adj = x2;
             let y2Adj = y2;
 
+            function adjustPosition(
+              x: number,
+              y: number,
+              angle: number,
+              shape: "circle" | "rect",
+            ) {
+              if (shape === "rect") {
+                const halfSize = nodeRadius;
+                const cos = Math.cos(angle);
+                const sin = Math.sin(angle);
+                const tanTheta = Math.abs(sin / cos);
+
+                let dx = halfSize;
+                let dy = halfSize;
+
+                if (tanTheta > 1) {
+                  dx = halfSize / tanTheta;
+                } else {
+                  dy = halfSize * tanTheta;
+                }
+
+                return {
+                  x: x + Math.sign(cos) * dx,
+                  y: y + Math.sign(sin) * dy,
+                };
+              } else {
+                return {
+                  x: x + Math.cos(angle) * nodeRadius,
+                  y: y + Math.sin(angle) * nodeRadius,
+                };
+              }
+            }
+
             if (straightEdges) {
               const angle = Math.atan2(y2 - y1, x2 - x1);
-              x1Adj = x1 + Math.cos(angle) * nodeRadius;
-              y1Adj = y1 + Math.sin(angle) * nodeRadius;
-              x2Adj = x2 - Math.cos(angle) * nodeRadius;
-              y2Adj = y2 - Math.sin(angle) * nodeRadius;
+              const startAdj = adjustPosition(
+                x1,
+                y1,
+                angle,
+                from.data.shape ?? "circle",
+              );
+              const endAdj = adjustPosition(
+                x2,
+                y2,
+                angle + Math.PI,
+                to.data.shape ?? "circle",
+              );
+              x1Adj = startAdj.x;
+              y1Adj = startAdj.y;
+              x2Adj = endAdj.x;
+              y2Adj = endAdj.y;
             } else {
-              x1Adj = x1 + Math.cos(tangentStart) * nodeRadius;
-              y1Adj = y1 + Math.sin(tangentStart) * nodeRadius;
-              x2Adj = x2 - Math.cos(tangentEnd) * nodeRadius;
-              y2Adj = y2 - Math.sin(tangentEnd) * nodeRadius;
+              const startAdj = adjustPosition(
+                x1,
+                y1,
+                tangentStart,
+                from.data.shape ?? "circle",
+              );
+              const endAdj = adjustPosition(
+                x2,
+                y2,
+                tangentEnd + Math.PI,
+                to.data.shape ?? "circle",
+              );
+              x1Adj = startAdj.x;
+              y1Adj = startAdj.y;
+              x2Adj = endAdj.x;
+              y2Adj = endAdj.y;
             }
 
             x1Adj = Math.fround(x1Adj);
