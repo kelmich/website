@@ -134,8 +134,8 @@ export default function ProjectProposal() {
         </li>{" "}
         <li>
           {" "}
-          A finite set <InlineMath math="P \subseteq V" /> representing the
-          locations of apartments or houses on offer.{" "}
+          A finite set <InlineMath math="L \subseteq V" /> representing the
+          locations of apartments or houses on offer (listings).{" "}
         </li>{" "}
         <li>
           {" "}
@@ -159,20 +159,20 @@ export default function ProjectProposal() {
       </ul>{" "}
       <p>The goal is to compute the set of pairs:</p>{" "}
       <DisplayMath
-        math={`S := \\left\\{\\, (p,\\ t(p, q))\\; \\middle| \\;
+        math={`S := \\left\\{\\, (l,\\ t(l, q))\\; \\middle| \\;
         \\begin{aligned}
-          &p \\in P, \\\\
-          &t(p, q) \\leq b
+          &l \\in L, \\\\
+          &t(l, q) \\leq b
         \\end{aligned}
         \\right\\}`}
       />
       <p>
         {" "}
-        In other words: For each listing location <InlineMath math="p \in P" />{" "}
+        In other words: For each listing location <InlineMath math="l \in L" />{" "}
         that can reach the query point <InlineMath math="q" /> within the time
         budget <InlineMath math="b" />, compute both the listing{" "}
-        <InlineMath math="p" /> and the travel time{" "}
-        <InlineMath math="t(p, q)" />.{" "}
+        <InlineMath math="l" /> and the travel time{" "}
+        <InlineMath math="t(l, q)" />.{" "}
       </p>
     </>
   );

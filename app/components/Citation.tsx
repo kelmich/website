@@ -36,7 +36,7 @@ type Citation = WebCitation | JournalCitation | BookCitation;
 
 type InlineCitationProps = {
   citation: Citation;
-  page: number;
+  page?: number;
 };
 
 export const InlineCitation: React.FC<InlineCitationProps> = ({
@@ -47,7 +47,8 @@ export const InlineCitation: React.FC<InlineCitationProps> = ({
     <span>
       [
       <a href={`./bibliography#${citation.id}`} data-citation-id={citation.id}>
-        {citation.id}, {`page ${page}`}
+        {citation.id}
+        {page ? `, page ${page}` : ""}
       </a>
       ]
     </span>

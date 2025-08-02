@@ -1,4 +1,6 @@
 import BarChart from "@/app/components/BarChart";
+import { InlineCitation } from "@/app/components/Citation";
+import { Criterion, Dimacs9thChallenge, Keller2025 } from "./references";
 
 type DataType = "Query" | "Setup";
 type AlgorithmType =
@@ -78,15 +80,7 @@ const TestingMethodologyNotes = () => (
     <br />
     <p>
       The benchmark consists of querying random vertices in a graph of New York
-      City provided by the{" "}
-      <a
-        href="http://www.dis.uniroma1.it/~challenge9"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        9th DIMACS Implementation Challenge: Shortest Paths
-        http://www.dis.uniroma1.it/~challenge9
-      </a>{" "}
+      City provided by the <InlineCitation citation={Dimacs9thChallenge} />
       (264346 vertices and 733846 edges) and asking the benchmarked algorithm to
       find all listings within 60min of the queried vertex. We pick 1% of the
       vertices in the graph to be listings (2643 for the NYC graph).
@@ -95,28 +89,13 @@ const TestingMethodologyNotes = () => (
     <p>
       The three shown numbers per algorithm are the lower 95% confidence
       interval, mean execution time, and upper 95% confidence interval. These
-      values were calculated using the{" "}
-      <a
-        href="https://docs.rs/criterion/latest/criterion/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Criterion.rs
-      </a>{" "}
+      values were calculated using the <InlineCitation citation={Criterion} />
       benchmarking library.
     </p>
     <br />
     <p>
       The shown algorithms were implemented in Rust. The entire source code can
-      be found on GitHub at{" "}
-      <a
-        href="https://github.com/kelmich/practical_work"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        https://github.com/kelmich/practical_work
-      </a>
-      .
+      be found on GitHub <InlineCitation citation={Keller2025} />.
     </p>
   </>
 );

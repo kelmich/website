@@ -1,0 +1,11 @@
+# Input: Query node q, distance budget b
+# Output: Set of listings within distance b of query node q
+
+result = []
+for (l, dist) in LookupTable[q]:
+    if dist ≤ b:
+        result.append(l)
+    else:
+        break
+
+return result

@@ -1,0 +1,10 @@
+# Input: Graph G = (V, E), Listings L
+# Output: LookupTable[v] = distance from listing l to vertex v
+
+parallel for each listing l in L:
+    distance_map = Dijkstra(G, source=l)
+    for each vertex v in V:
+        LookupTable[v].append((l, distance_map[v]))
+
+for each vertex v in V:
+    sort LookupTable[v] by distance ascending

@@ -55,3 +55,24 @@ export const Dial1969: JournalCitation = {
   doi: "10.1145/363269.363610",
   url: "https://doi.org/10.1145/363269.363610",
 };
+
+export const Dimacs9thChallenge: WebCitation = {
+  type: "web",
+  id: "Dimacs9thChallenge",
+  url: "http://www.diag.uniroma1.it/challenge9/",
+  lastAccessed: new Date("2025-08-02"),
+};
+
+export const Criterion: WebCitation = {
+  type: "web",
+  id: "Criterion",
+  url: "https://docs.rs/criterion/latest/criterion/",
+  lastAccessed: new Date("2025-08-02"),
+};
+
+export const Keller2025: WebCitation = {
+  type: "web",
+  id: "Keller2025",
+  url: "https://github.com/kelmich/practical_work",
+  lastAccessed: new Date("2025-08-02"),
+};

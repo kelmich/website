@@ -1,59 +1,109 @@
 import { InlineMath } from "@/app/components/Math";
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
 import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
+import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 
 export default async function Home() {
   return (
     <>
       <h1>Chapter 4</h1>
-      <h2>Precomputing Everything</h2>
+      <h2>Complete Precomputation</h2>
 
       <p>
-        What we are really after at the end of the day is raw query performance.
-        When it comes to query performance, you can&apos;t do better than simply
-        precomputing everything.
+        In pursuit of optimal query performance, one approach stands out for its
+        speed at query time: complete precomputation of all possible query
+        results. This method ensures that the answer to any valid query can be
+        retrieved in optimal time via a simple lookup. Although the approach
+        demands considerable computational and memory resources during the setup
+        phase, its query-time performance is exceptional.
       </p>
 
       <p>
-        What is somewhat nice about precomputing everything for our problem is
-        that much of the work is parallelizable. We can run a (this time
-        regular/ forward) Dijkstra from every listing in parallel and store the
-        results in a lookup table of dimension{" "}
-        <InlineMath math="\mathcal{O}(P \cdot V)" />, so number of listings{" "}
-        <InlineMath math="P" /> times number of vertices <InlineMath math="V" />
+        A significant advantage of this approach is the inherent parallelism in
+        the setup process. Specifically, we can execute a forward Dijkstra
+        search from each listing node in parallel, storing the shortest path
+        distances to all other nodes in a lookup table of size{" "}
+        <InlineMath math="\mathcal{O}(L \cdot V)" />, where{" "}
+        <InlineMath math="L" /> denotes the number of listings and{" "}
+        <InlineMath math="V" /> is the total number of vertices in the graph.
+      </p>
+
+      <h3>Formal Algorithm Description</h3>
+      <p>
+        The setup phase of the FullPrecompute approach computes the shortest
+        path distance from each listing to all reachable vertices in the graph.
+        These distances are stored in a lookup table. Once the table is
+        constructed, it is sorted in ascending order of the shortest path
+        distances.
+      </p>
+
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/4-full-precompute/full-precompute-setup-pseudocode.txt"
+      />
+
+      <p>
+        At query time, we read the lookup table until the travel time exceeds
+        the maximum allowed travel time.
+      </p>
+
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/4-full-precompute/full-precompute-query-pseudocode.txt"
+      />
+
+      {/*<FullPrecomputeVisualizer />*/}
+
+      <h3>Time Complexity</h3>
+      <p>
+        The setup phase requires executing a shortest path algorithm from each
+        listing node. Assuming Dijkstra's algorithm is used with a binary heap,
+        the time complexity for one listing is{" "}
+        <InlineMath math="\mathcal{O}((V + E) \log V)" />, where{" "}
+        <InlineMath math="V" /> is the number of vertices and{" "}
+        <InlineMath math="E" /> is the number of edges. For{" "}
+        <InlineMath math="L" /> listings, the total setup time is{" "}
+        <InlineMath math="\mathcal{O}(L \cdot (V + E) \log V)" />. Note that
+        this step is highly parallelizable, and can be reduced by a factor of{" "}
+        <InlineMath math="\frac{1}{\text{num\_threads}}" />.
+      </p>
+
+      <p>
+        The query phase is output sensitive, meaning the time complexity depends
+        on the number of output listings. This is optimal, an algorithm must at
+        the very least output the result it computes. If <InlineMath math="R" />{" "}
+        denotes the result set, then the time complexity is{" "}
+        <InlineMath math="\mathcal{O}(R)" />.
+      </p>
+
+      <h3>Space Complexity</h3>
+      <p>
+        The primary space cost arises from storing the precomputed distances.
+        Each listing requires a table entry for every vertex in the graph,
+        resulting in a total space complexity of{" "}
+        <InlineMath math="\mathcal{O}(L \cdot V)" />. In addition to this, the
+        graph itself must also be stored in memory, which requires{" "}
+        <InlineMath math="\mathcal{O}(V + E)" /> space. Therefore, the overall
+        space requirement is <InlineMath math="\mathcal{O}(L \cdot V + E)" />.
+      </p>
+
+      <p>
+        To illustrate this with a real-world example, consider New York City,
+        where there are approximately 17,000 listings. The graph representing
+        the city occupies approximately 3.6MB of memory. Storing the shortest
+        path information for each listing yields a total memory requirement of{" "}
+        <InlineMath math="3.6\,\text{MB} \times 17{,}000 \approx 61{,}200\,\text{MB} \approx 60\,\text{GB}" />
         .
       </p>
 
-      <FullPrecomputeVisualizer />
-
+      <h3>Empirical Performance</h3>
       <p>
-        However, even if we run these shortest path algorithms in parallel, it
-        takes quite a while to start up and be ready for the first query. In the
-        real world this might be okay, we only need to compute this once and can
-        persist the results to disk later for faster startup times. There is
-        however also the issue that the memory requirements for scaling this
-        approach are non-trivial. Asymptotically it amounts to storing the
-        entire graph again for every listing we have.
-      </p>
-
-      <p>
-        Consider the following back of the envolope calculation for New York.
-        Zillow lists approximately 17000 listings for New York City. The Graph
-        of New York City we use for testing is 3.6MB large. So storing the
-        entire shortest path for every listing would mean needing 3.6MB * 17000
-        = 61&apos;200MB &asymp; 60GB.
-      </p>
-
-      <p>
-        Note that when running the FullPrecompute setup as a one off task it
-        would usually take around 5 minutes to complete. The benchmarking runs
-        the setup task 100 times and uses this to calculate the confidence
-        intervals. Most likely FullPrecompute was throttled at some point
-        (running the entire benchmark took around 24h, mostly due to the
-        FullPrecompute setup phase). So this may be somewhat unfair to
-        FullPrecompute, but in the end this is what the benchmarking gave us.
-        Even at 5min it will be the slowest to setup of all algorithms we will
-        examine.
+        In practice, the full precomputation setup takes approximately five
+        minutes to complete on our dataset. For benchmarking purposes, this
+        process was repeated 100 times to compute confidence intervals. During
+        testing, it is likely that FullPrecompute was throttled, leading to a
+        total benchmark runtime of approximately 24 hours, primarily due to the
+        setup overhead.
       </p>
 
       <FlatfalconBarChart
@@ -62,10 +112,9 @@ export default async function Home() {
       />
 
       <p>
-        What is really nice however is the query performance. We are around
-        1000x faster at query time in comparison to our Dial approach. So
-        depending on your needs and your tolarance for memory usage this
-        approach might very well be a viable option.
+        Despite its long setup time, FullPrecompute offers unparalleled query
+        performance. In our experiments, it was approximately 1,000 times faster
+        than the Dial algorithm at query time.
       </p>
 
       <FlatfalconBarChart
@@ -74,19 +123,18 @@ export default async function Home() {
       />
 
       <p>
-        Wether one needs this much fantastic query performance depends on the
-        specific use case. While there may be cases where this query is a
-        subroutine that is called often and needs to be this fast, our use case
-        that simply returns the results over a network does not require this
-        level of performance. Keep in mind that most round trip times from a
-        user to a server and back will take milliseconds anyway.
+        Whether such query performance is necessary depends on the application
+        context. In scenarios where queries are invoked frequently and response
+        time is critical, this approach may be justified. However, in our use
+        case, where query responses are transmitted over a network, the benefit
+        of such speed is diminished due to the dominance of network latency in
+        total response time.
       </p>
 
       <p>
-        For the use cases we have in mind we prefer to have more efficient
-        startup times and less memory usage. To this end we will explore an
-        alternative approach that is somewhat of a middle ground between no
-        precompute and full precompute.
+        Consequently, we seek alternative methods that offer a better balance
+        between setup time, memory usage, and query performance. The next
+        chapter introduces such a method.
       </p>
     </>
   );
