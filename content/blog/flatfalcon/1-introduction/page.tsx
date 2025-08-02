@@ -11,7 +11,7 @@ export default function ProjectProposal() {
         Online platforms for renting apartments or purchasing houses typically
         provide numerous filtering options based on criteria such as price,
         size, number of rooms, and location. However, one critical aspect often
-        overlooked is the ability to filter properties based on{" "}
+        overlooked is the ability to filter properties based on
         <b>commute time</b> to a specific location, such as a workplace or a
         university.
       </p>
@@ -37,14 +37,14 @@ export default function ProjectProposal() {
       </p>
       <ol className="space-y-6">
         <li>
-          <b>Radius Based Filtering:</b>{" "}
+          <b>Radius Based Filtering:</b>
           <a
             href="https://flatfox.ch"
             target="_blank"
             rel="noopener noreferrer"
           >
             Flatfox
-          </a>{" "}
+          </a>
           uses a radius-based approach to filter locations based on the user's
           desired radius of interest. A user sets a starting point and a radius,
           and the system filters locations within that radius. This method is
@@ -57,14 +57,14 @@ export default function ProjectProposal() {
           />
         </li>
         <li>
-          <b>Isochrone Maps:</b>{" "}
+          <b>Isochrone Maps:</b>
           <a
             href="https://newhome.ch"
             target="_blank"
             rel="noopener noreferrer"
           >
             Newhome
-          </a>{" "}
+          </a>
           precomputes all regions of the map that are reachable within a certain
           time from a given point. This method, commonly referred to as
           isochrone maps <InlineCitation citation={Allen2018} page={2} />, is
@@ -94,88 +94,85 @@ export default function ProjectProposal() {
         within the object's boundaries. Consider also that there may be holes
         within the object's boundaries.
       </p>
-      <h2>Problem Definition</h2>
-      <p>Given the following inputs:</p>
+      <h2>Problem Definition</h2> <p>Given the following inputs:</p>{" "}
       <ul>
+        {" "}
         <li>
-          A weighted graph <InlineMath math="G = (V, E, w)" /> defined as:
+          {" "}
+          A weighted graph <InlineMath math="G = (V, E, w)" /> defined as:{" "}
           <ul>
+            {" "}
             <li>
-              <InlineMath math="V" /> is the set of vertices, where each{" "}
-              <InlineMath math="v \in V \subset \mathbb{R}^2" /> represents the
-              coordinates of a road intersection or a valid address.
-            </li>
+              {" "}
+              <InlineMath math="V" /> is the set of vertices. Each{" "}
+              <InlineMath math="v \in V" /> represents one of the following:{" "}
+              <ul>
+                {" "}
+                <li>a road intersection,</li> <li>a dead end,</li>{" "}
+                <li>a listing location,</li> <li>or the query point.</li>{" "}
+              </ul>{" "}
+            </li>{" "}
             <li>
+              {" "}
               <InlineMath math="E" /> is the set of edges, where each{" "}
               <InlineMath math="e = (u, v) \in E" /> connects two vertices{" "}
-              <InlineMath math="u, v \in V" /> and represents a portion of road.
-            </li>
+              <InlineMath math="u, v \in V" /> and represents a road
+              segment.{" "}
+            </li>{" "}
             <li>
+              {" "}
               <InlineMath math="w: E \to \mathbb{N}_0" /> is a weight function
               where <InlineMath math="w(e)" /> denotes the travel time in
-              seconds to traverse edge <InlineMath math="e" />.
-            </li>
-          </ul>
-        </li>
+              seconds to traverse edge <InlineMath math="e" />.{" "}
+            </li>{" "}
+          </ul>{" "}
+        </li>{" "}
         <li>
-          A query point <InlineMath math="q \in \mathcal{G}" /> representing the
-          commute destination (e.g., workplace), where{" "}
-          <InlineMath math="\mathcal{G}" /> denotes the continuous set of points
-          lying either at vertices or along edges of the graph{" "}
-          <InlineMath math="G" />.
-        </li>
+          {" "}
+          A query point <InlineMath math="q \in V" /> representing the commute
+          destination (e.g., workplace).{" "}
+        </li>{" "}
         <li>
-          A finite set <InlineMath math="P \subseteq \mathcal{G}" />{" "}
-          representing the locations of apartments or houses on offer, where
-          each listing is located either exactly at a vertex or somewhere along
-          an edge.
-        </li>
+          {" "}
+          A finite set <InlineMath math="P \subseteq V" /> representing the
+          locations of apartments or houses on offer.{" "}
+        </li>{" "}
         <li>
+          {" "}
           A travel-time function{" "}
-          <InlineMath math="t: \mathcal{G} \times \mathcal{G} \to \mathbb{N}_0" />{" "}
-          defined as:
+          <InlineMath math="t: V \times V \to \mathbb{N}_0" /> defined as:{" "}
           <DisplayMath
-            math={`
-              \\begin{aligned}
-                &\\text{Define } u_x, v_x, u_y, v_y \\in V \\text{ as follows:} \\\\
-                &\\quad
-                \\begin{cases}
-                  u_x = v_x = x, & \\text{if } x \\in V \\\\
-                  u_x, v_x = \\text{vertices bounding the edge containing } x, & \\text{otherwise}
-                \\end{cases} \\\\
-                &\\quad \\text{and similarly for } y. \\\\[10pt]
-                &t(x,y) := \\min_{\\substack{
-                \\\\[1pt]
-                  u \\in \\{u_x, v_x\\} \\\\[3pt]
-                  v \\in \\{u_y, v_y\\} \\\\[3pt]
-                  r: u \\to v \\text{ is a path in } G
-                }}
-                \\left( \\sum_{e \\in r} w(e) + d(x,u) + d(y,v) \\right)
-              \\end{aligned}
-            `}
-          />
+            math={`t(x, y) := \\min_{r: x \\to y} \\sum_{e \\in r} w(e)`}
+          />{" "}
           <p>
-            Here, <InlineMath math="d(x,u)" /> and <InlineMath math="d(y,v)" />{" "}
-            denote the partial travel times along the edges containing{" "}
-            <InlineMath math="x" /> and <InlineMath math="y" /> to vertices{" "}
-            <InlineMath math="u" /> and <InlineMath math="v" />, respectively.
-          </p>
-        </li>
+            {" "}
+            where the minimum is taken over all paths <InlineMath math="r" />{" "}
+            from <InlineMath math="x" /> to <InlineMath math="y" /> in the graph{" "}
+            <InlineMath math="G" />.{" "}
+          </p>{" "}
+        </li>{" "}
         <li>
+          {" "}
           A time budget <InlineMath math="b \in \mathbb{N}_0" /> specifying the
-          maximum allowed commute time in seconds.
-        </li>
-      </ul>
-      <p>The goal is to compute the set of pairs:</p>
+          maximum allowed commute time in seconds.{" "}
+        </li>{" "}
+      </ul>{" "}
+      <p>The goal is to compute the set of pairs:</p>{" "}
       <DisplayMath
-        math={`S := \\left\\{ (p, t(q, p)) \\mid p \\in P,\\ t(q, p) \\leq b \\right\\}`}
+        math={`S := \\left\\{\\, (p,\\ t(p, q))\\; \\middle| \\;
+        \\begin{aligned}
+          &p \\in P, \\\\
+          &t(p, q) \\leq b
+        \\end{aligned}
+        \\right\\}`}
       />
       <p>
+        {" "}
         In other words: For each listing location <InlineMath math="p \in P" />{" "}
-        that can be reached from the commute destination <InlineMath math="q" />{" "}
-        within the time budget <InlineMath math="b" />, compute both the listing{" "}
+        that can reach the query point <InlineMath math="q" /> within the time
+        budget <InlineMath math="b" />, compute both the listing{" "}
         <InlineMath math="p" /> and the travel time{" "}
-        <InlineMath math="t(q, p)" />.
+        <InlineMath math="t(p, q)" />.{" "}
       </p>
     </>
   );

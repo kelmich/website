@@ -1,3 +1,4 @@
+import { InlineMath } from "@/app/components/Math";
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
 import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 
@@ -17,7 +18,10 @@ export default async function Home() {
         What is somewhat nice about precomputing everything for our problem is
         that much of the work is parallelizable. We can run a (this time
         regular/ forward) Dijkstra from every listing in parallel and store the
-        results in a lookup table of dimension #listings * #graphNodes.
+        results in a lookup table of dimension{" "}
+        <InlineMath math="\mathcal{O}(P \cdot V)" />, so number of listings{" "}
+        <InlineMath math="P" /> times number of vertices <InlineMath math="V" />
+        .
       </p>
 
       <FullPrecomputeVisualizer />
