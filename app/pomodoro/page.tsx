@@ -319,9 +319,9 @@ export default function Pomodoro() {
             ) : (
               <p>Slay. You&apos;re done for the day!</p>
             )}
-            <ul className="space-y-2">
+            <div className="space-y-2">
               {pomodoroState.tasks.map((task) => (
-                <li
+                <div
                   key={task.id}
                   className="flex justify-between items-center p-2 border bg-background text-background-foreground cursor-pointer"
                   onClick={() => updateState({ currentTaskId: task.id })}
@@ -340,9 +340,9 @@ export default function Pomodoro() {
                   >
                     Done
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
