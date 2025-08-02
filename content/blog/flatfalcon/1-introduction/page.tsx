@@ -11,9 +11,8 @@ export default function ProjectProposal() {
         Online platforms for renting apartments or purchasing houses typically
         provide numerous filtering options based on criteria such as price,
         size, number of rooms, and location. However, one critical aspect often
-        overlooked is the ability to filter properties based on
-        <b>commute time</b> to a specific location, such as a workplace or a
-        university.
+        overlooked is the ability to filter properties based on commute time to
+        a specific location, such as a workplace or a university.
       </p>
       <p>
         For many individuals, commute time is a decisive factor in choosing a
@@ -44,7 +43,7 @@ export default function ProjectProposal() {
             rel="noopener noreferrer"
           >
             Flatfox
-          </a>
+          </a>{" "}
           uses a radius-based approach to filter locations based on the user's
           desired radius of interest. A user sets a starting point and a radius,
           and the system filters locations within that radius. This method is
@@ -64,7 +63,7 @@ export default function ProjectProposal() {
             rel="noopener noreferrer"
           >
             Newhome
-          </a>
+          </a>{" "}
           precomputes all regions of the map that are reachable within a certain
           time from a given point. This method, commonly referred to as
           isochrone maps <InlineCitation citation={Allen2018} page={2} />, is
@@ -153,7 +152,7 @@ export default function ProjectProposal() {
         </li>{" "}
         <li>
           {" "}
-          A time budget <InlineMath math="b \in \mathbb{N}_0" /> specifying the
+          A time budget <InlineMath math="B \in \mathbb{N}_0" /> specifying the
           maximum allowed commute time in seconds.{" "}
         </li>{" "}
       </ul>{" "}
@@ -162,7 +161,7 @@ export default function ProjectProposal() {
         math={`S := \\left\\{\\, (l,\\ t(l, q))\\; \\middle| \\;
         \\begin{aligned}
           &l \\in L, \\\\
-          &t(l, q) \\leq b
+          &t(l, q) \\leq B
         \\end{aligned}
         \\right\\}`}
       />
@@ -170,7 +169,7 @@ export default function ProjectProposal() {
         {" "}
         In other words: For each listing location <InlineMath math="l \in L" />{" "}
         that can reach the query point <InlineMath math="q" /> within the time
-        budget <InlineMath math="b" />, compute both the listing{" "}
+        budget <InlineMath math="B" />, compute both the listing{" "}
         <InlineMath math="l" /> and the travel time{" "}
         <InlineMath math="t(l, q)" />.{" "}
       </p>

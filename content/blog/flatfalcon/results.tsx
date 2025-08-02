@@ -89,7 +89,7 @@ const TestingMethodologyNotes = () => (
     <p>
       The three shown numbers per algorithm are the lower 95% confidence
       interval, mean execution time, and upper 95% confidence interval. These
-      values were calculated using the <InlineCitation citation={Criterion} />
+      values were calculated using the <InlineCitation citation={Criterion} />{" "}
       benchmarking library.
     </p>
     <br />

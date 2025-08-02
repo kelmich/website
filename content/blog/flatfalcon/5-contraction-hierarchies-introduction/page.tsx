@@ -2,127 +2,146 @@ import { ContractionVisualizer } from "@/content/blog/flatfalcon/5-contraction-h
 import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
 import { ContractionHierarchyVisualizer } from "./ContractionHierarchyVisualizer";
 import { ContractedGraph, ContractedUpDownGraph } from "./ContractedGraph";
+import { InlineMath, DisplayMath } from "@/app/components/Math";
+import { InlineCitation } from "@/app/components/Citation";
+import { FastPaths, Geisberger2008 } from "../references";
 
 export default async function Home() {
   return (
     <>
       <h1>Chapter 5</h1>
-      <h2>Contraction Hierarchies Introduction</h2>
-
+      <h2>Introduction to Contraction Hierarchies</h2>
       <p>
-        Our goal now is to keep query performance as close as possible to what
-        we have with full precompute, while reducing the startup and memory
-        overhead. One way to achieve this is with Contraction Hierarchies.
+        Our goal now is to achieve fast query performance comparable to our full
+        precompute approach, but with reduced startup time and memory overhead.
+        To this end, we introduce Contraction Hierarchies, a hierarchical
+        routing technique proposed by Geisberger et al.
+        <InlineCitation citation={Geisberger2008} page={[319, 320]} />.
       </p>
-
       <p>
-        Contraction Hierarchies are not as simple to explain as our previous
-        approaches. For this reason we will first look at their intended use
-        case of point to point routing and not our listing query problem.
+        We start by assigning an importance value to each node in the graph. The
+        idea is that nodes that appear more frequently in shortest paths are
+        assigned higher importance values. For instance, a suburban home would
+        likely have a lower importance than the entry of a major highway.
+        Computing these importance values is a crucial step in the preprocessing
+        phase, but can be computationally expensive. For now we will assume that
+        we are given good importance values. The next chapter will discuss how
+        to compute these values efficiently.
       </p>
-
       <p>
-        The high level idea is that we want to precompute commonly used
-        shortcuts in our graph. What are &quot;commonly used shortcuts&quot;
-        though? We will give this more theortical backing later, but for now
-        consider the following: Usually when you use a road network you go from
-        a vertex that isn&apos;t contained in many shortest paths (e.g. your
-        house), to a vertex that is contained in many shortest paths (e.g. entry
-        to a highway), to a vertex that isn&apos;t contained in many shortest
-        paths again (e.g. your workplace). By precomputing a shortcut from your
-        house to the highway entry point, and from the highway entry point to
-        your workplace, we can significantly reduce the number of edges we need
-        to traverse during a query.
+        The key idea of Contraction Hierarchies is to precompute additional
+        edges called shortcuts, which represent shortest paths that pass through
+        less important nodes. These shortcuts allow us to answer shortest path
+        queries efficiently by navigating only through more important nodes.
       </p>
-
       <p>
-        Assume now that we created a total order of the nodes in our graph,
-        going from least important to most important. In our working example
-        this order will be alphabetical: A, B, C, D, and E.
+        Because this scheme is more involved than our previous schemes, we will
+        first only consider the original use case of the data structure:
+        point-to-point shortest path routing. How we can use Contraction
+        Hierarchies to solve our problem of interest efficiently will be
+        discussed in an upcoming chapter.
       </p>
-
+      <h3>Definition: Shortcut Edge</h3>
       <p>
-        We now have enough intuition to take a first look at the core part of
-        Contraction Hierarchies: The contraction process. It allows us to
-        precompute shortcuts in the graph for later use. Below you can find an
-        example where we contract a single node. This is the bilding block we
-        will use to create our efficient query datastructure.
+        Given two edges <InlineMath math="(u, v)" /> and{" "}
+        <InlineMath math="(v, w)" /> on a shortest path, if node{" "}
+        <InlineMath math="v" /> is removed, we add a shortcut edge{" "}
+        <InlineMath math="(u, w)" /> with weight{" "}
+        <InlineMath math="t(u, v) + t(v, w)" /> to preserve shortest path
+        distances.
       </p>
-
+      <h3>Algorithm Overview: Contracting a Node</h3>
+      <p>
+        Contracting a node means removing it from the graph, but before we do
+        so, we need to make sure that all shortest paths that previously passed
+        through this node are still preserved. To achieve this, we add new edges
+        called shortcuts between the neighbors of the node being removed. These
+        shortcuts directly connect pairs of nodes that were previously only (or
+        most efficiently) connected via <InlineMath math="v" />. This way, even
+        after <InlineMath math="v" /> is gone, the shortest path distances
+        remain unchanged. This entire process is called &quot;contracting node{" "}
+        <InlineMath math="v" />
+        &quot;.
+      </p>
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contract-pseudocode.txt"
+      />
+      <p>Below we show an example of contracting a single node (C).</p>
       <CodeBlock
         lang="ts"
         filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contractor.ts"
+        defaultCollapsed
       />
-
-      <p>Below you can see the result of contracting the vertex C.</p>
-
       <ContractionVisualizer />
-
+      <h3>Algorithm Overview: Contraction Hierarchy Construction</h3>
+      <p>We now iteratively contract all nodes from least to most important.</p>
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/full-contract-pseudocode.txt"
+      />
       <p>
-        Alright, but how does this contraction process help us? What we could do
-        is iteratively contract the nodes from least to most important. Remember
-        that in our example Graph we said this order is alphabetical: A, B, C,
-        D, E.
+        In our example, the contraction order is alphabetical: A, B, C, D, E.
       </p>
-
       <ContractionHierarchyVisualizer />
-
-      <p>
-        Once the contraction process completes we have an empty graph. This by
-        itself is not very helpful. Let&apos;s however take a look at the
-        original graph alongside the additional shortcut edges that were
-        created.
-      </p>
-
+      <p>Below, we show the original graph with the added shortcuts.</p>
       <ContractedGraph />
-
-      <p>The observant reader will notice the following key facts:</p>
+      <h3>Resulting Key Properties</h3>
       <ol>
         <li>
-          We can travel to any higher ranked node by visiting only{" "}
-          <b>increasingly higher ranked nodes</b> at the same optimal travel
-          time as in the graph without shortcuts.
+          For any pair of nodes <InlineMath math="s, t \in V" />, the shortest
+          path from
+          <InlineMath math="s" /> to <InlineMath math="t" /> can be expressed as
+          a path that first visits nodes in strictly increasing importance
+          order, up to a highest-ranked node <InlineMath math="v^*" />, followed
+          by nodes in strictly decreasing importance order.
         </li>
         <li>
-          We can travel to any lower ranked node by visiting only{" "}
-          <b>increasingly lower ranked nodes</b> at the same optimal travel time
-          as in the graph without shortcuts.
+          The upward edges (from less to more important nodes) form a directed
+          acyclic graph (DAG), called the <b>upward graph</b>. Likewise, the
+          downward edges (from more to less important nodes) form the{" "}
+          <b>downward graph</b>, which is also a DAG.
         </li>
       </ol>
       <p>
-        The core statement here is that we can optimally travel between any two
-        vertices by first only visiting increasingly important vertices and then
-        decreasingly less important vertices. We can even split our graph into
-        an up DAG and a down DAG.
+        These properties allow us to restrict shortest path search to upward and
+        downward graphs, enabling efficient bidirectional search.
       </p>
-
       <ContractedUpDownGraph />
-
+      <h3>Querying with Contraction Hierarchies</h3>
       <p>
-        To navigate between any two vertices optimally we can now run any
-        shortest path finding algorithm from the source (using outgoing edges)
-        in the up graph and the target (using incoming edges) in the down graph.
-        When the two processes meet we have found a shortest path. Note that the
-        processes must meet at some point, because some node on the shortest
-        path must have the highest assigned importance in our order.
+        To find the shortest path between source <InlineMath math="s" /> and
+        target <InlineMath math="t" />:
       </p>
-
-      <p>
-        Using this technique point to point shortest path queries can take{" "}
-        <a
-          href="https://github.com/easbar/fast_paths/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          as little as 0.026ms
-        </a>{" "}
-        on average in our New York City graph.
-      </p>
-
-      <p>Now two questions remain:</p>
       <ol>
-        <li>How do we determine a good order to contract our nodes?</li>
-        <li>How can we use this method for our Listing Query problem?</li>
+        <li>
+          Perform a forward search from <InlineMath math="s" /> in the upward
+          graph.
+        </li>
+        <li>
+          Perform a backward search from <InlineMath math="t" /> in the downward
+          graph.
+        </li>
+        <li>
+          The two searches meet at the highest-ranked node on the shortest path.
+        </li>
+      </ol>
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/query-pseudocode.txt"
+      />
+      <p>
+        This bidirectional search technique allows for extremely fast point to
+        point queries. In our experiments on the New York City graph, queries
+        take on average <b>0.026ms</b> <InlineCitation citation={FastPaths} />.
+      </p>
+      <h3>Next Steps</h3>
+      <p>Two key questions remain:</p>
+      <ol>
+        <li>How do we determine a good contraction order?</li>
+        <li>
+          How can we apply contraction hierarchies to our Listing Query problem?
+        </li>
       </ol>
     </>
   );

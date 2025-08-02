@@ -1,0 +1,9 @@
+# Input: Graph G = (V, E), node v to contract
+# Output: Modified G with shortcuts added and v removed
+
+for each neighbor u of v:
+    for each neighbor w of v:
+        if (u != w) and ((u, w) not in E or t(u, w) > t(u, v) + t(v, w)):
+            add shortcut edge (u, w) with weight t(u, v) + t(v, w)
+
+remove node v and all its incident edges

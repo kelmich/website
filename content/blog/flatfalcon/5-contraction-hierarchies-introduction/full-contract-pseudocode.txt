@@ -1,0 +1,5 @@
+# Input: Graph G = (V, E), node importance order [v1, v2, ..., vn]
+# Output: G with all nodes contracted and shortcuts added
+
+for each node v in order [v1, v2, ..., vn]:
+    contract_node(G, v)

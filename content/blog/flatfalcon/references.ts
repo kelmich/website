@@ -56,6 +56,19 @@ export const Dial1969: JournalCitation = {
   url: "https://doi.org/10.1145/363269.363610",
 };
 
+export const Geisberger2008: BookCitation = {
+  type: "book",
+  id: "Geisberger2008",
+  author:
+    "Geisberger, Robert and Sanders, Peter and Schultes, Dominik and Delling, Daniel",
+  title:
+    "Contraction Hierarchies: Faster and Simpler Hierarchical Routing in Road Networks",
+  publisher: "Springer Berlin Heidelberg",
+  year: 2008,
+  isbn: "978-3-540-68552-4",
+  url: "https://link.springer.com/chapter/10.1007/978-3-540-68552-4_24",
+};
+
 export const Dimacs9thChallenge: WebCitation = {
   type: "web",
   id: "Dimacs9thChallenge",
@@ -67,6 +80,13 @@ export const Criterion: WebCitation = {
   type: "web",
   id: "Criterion",
   url: "https://docs.rs/criterion/latest/criterion/",
+  lastAccessed: new Date("2025-08-02"),
+};
+
+export const FastPaths: WebCitation = {
+  type: "web",
+  id: "FastPaths",
+  url: "https://github.com/easbar/fast_paths",
   lastAccessed: new Date("2025-08-02"),
 };
 

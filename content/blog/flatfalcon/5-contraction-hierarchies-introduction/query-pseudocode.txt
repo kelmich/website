@@ -1,0 +1,29 @@
+# Input: Upward graph G_up, downward graph G_down, source s, target t
+# Output: Shortest path distance from s to t
+
+initialize distance maps d_up[v] = ∞, d_down[v] = ∞ for all v
+initialize priority queues Q_up, Q_down
+
+d_up[s] = 0
+Q_up.insert(s, priority=0)
+
+d_down[t] = 0
+Q_down.insert(t, priority=0)
+
+while Q_up and Q_down not empty:
+    u = Q_up.extract_min()
+    for each neighbor v in G_up[u]:
+        if d_up[v] > d_up[u] + t(u, v):
+            d_up[v] = d_up[u] + t(u, v)
+            Q_up.insert_or_update(v, priority=d_up[v])
+
+    w = Q_down.extract_min()
+    for each neighbor v in G_down[w]:
+        if d_down[v] > d_down[w] + t(w, v):
+            d_down[v] = d_down[w] + t(w, v)
+            Q_down.insert_or_update(v, priority=d_down[v])
+
+    if any node v has been visited in both searches:
+        update best path estimate through v
+
+return shortest path via best meeting node

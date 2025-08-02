@@ -20,7 +20,7 @@ export default async function Home() {
         to explore <b>incoming</b> edges.
       </p>
 
-      <h3>Formal Algorithm Description</h3>
+      <h3>Algorithm Description</h3>
       <p>
         The algorithm <InlineCitation citation={Dijkstra1959} page={270} />{" "}
         maintains a priority queue of nodes ordered by their tentative distance

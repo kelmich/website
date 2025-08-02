@@ -28,7 +28,7 @@ export default async function Home() {
         <InlineMath math="V" /> is the total number of vertices in the graph.
       </p>
 
-      <h3>Formal Algorithm Description</h3>
+      <h3>Algorithm Description</h3>
       <p>
         The setup phase of the FullPrecompute approach computes the shortest
         path distance from each listing to all reachable vertices in the graph.

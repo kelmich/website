@@ -17,22 +17,22 @@ export default async function Home() {
         each possible distance value up to a maximum budget{" "}
         <InlineCitation citation={Dial1969} page={632} />. This results in a
         significant performance gain in both theoretical and practical terms
-        when the query budget <InlineMath math="b" /> is small.
+        when the query budget <InlineMath math="B" /> is small.
       </p>
       <p>
         In our setting, we are interested in shortest paths <b>to</b> the query
         point from all possible listing locations, but only up to a fixed
-        maximum travel time budget <InlineMath math="b" />. Dial&apos;s
+        maximum travel time budget <InlineMath math="B" />. Dial&apos;s
         algorithm is well-suited for this scenario because we do not need to
         explore beyond this travel time, and the use of buckets allows for fast
         access to the next node to visit.
       </p>
-      <h3>Formal Algorithm Description</h3>
+      <h3>Algorithm Description</h3>
       <p>
         The algorithm maintains an array of buckets indexed by distance. Each
         bucket stores nodes whose tentative distance to the query point equals
         that index. We iterate through the buckets in increasing order, visiting
-        nodes in the current bucket and exploring their <b>incoming edges</b>.
+        nodes in the current bucket and exploring their incoming edges.
       </p>
       <CodeBlock
         lang="py"
@@ -40,15 +40,14 @@ export default async function Home() {
       />
       <p>
         As in the adapted Dijkstra&apos;s algorithm, note that we explore{" "}
-        <b>incoming edges</b> at each step, to find shortest paths to the query
-        point.
+        incoming edges at each step, to find shortest paths to the query point.
       </p>
       <h3>Time Complexity</h3>
       <p>
         The time complexity of Dial&apos;s algorithm is{" "}
-        <InlineMath math="\mathcal{O}(V + E + b)" />, where{" "}
+        <InlineMath math="\mathcal{O}(V + E + B)" />, where{" "}
         <InlineMath math="E" /> is the number of edges, <InlineMath math="V" />{" "}
-        is the number of vertices, and <InlineMath math="b" /> is the maximum
+        is the number of vertices, and <InlineMath math="B" /> is the maximum
         distance budget.
       </p>
       <p>
@@ -58,25 +57,25 @@ export default async function Home() {
         <InlineMath math="\mathcal{O}((E + V)\log V)" /> complexity when using
         standard binary heaps{" "}
         <InlineCitation citation={Cormen2009} page={506} />, assuming a low{" "}
-        <InlineMath math="b" />.
+        <InlineMath math="B" />.
       </p>
       <p>
         Importantly, this improvement hinges on the assumption that edge weights
-        and the budget <InlineMath math="b" /> are reasonably small, which holds
+        and the budget <InlineMath math="B" /> are reasonably small, which holds
         in our real-world application. For unbounded edge weights or unbounded
-        time budgets <InlineMath math="b" />, Dial&apos;s algorithm is not
+        time budgets <InlineMath math="B" />, Dial&apos;s algorithm is not
         applicable.
       </p>
       <h3>Space Complexity</h3>{" "}
       <p>
         The space complexity of Dial&apos;s algorithm arises from three main
         components: the bucket array, the graph representation, and the visited
-        node map. The bucket array contains <InlineMath math="b + 1" /> buckets,
-        where <InlineMath math="b" /> is the maximum distance budget. In the
+        node map. The bucket array contains <InlineMath math="B + 1" /> buckets,
+        where <InlineMath math="B" /> is the maximum distance budget. In the
         worst case, each edge can cause its target vertex to be placed in a
         bucket, leading to <InlineMath math="\mathcal{O}(E)" /> total bucket
         entries. Thus, the bucket array requires{" "}
-        <InlineMath math="\mathcal{O}(E + b)" /> space.{" "}
+        <InlineMath math="\mathcal{O}(E + B)" /> space.{" "}
       </p>
       <p>
         The graph, stored in adjacency list form, uses{" "}
@@ -87,7 +86,7 @@ export default async function Home() {
       </p>
       <p>
         Summing all components, the overall space complexity of Dial&apos;s
-        algorithm is <InlineMath math="\mathcal{O}(V + E + b)" />.
+        algorithm is <InlineMath math="\mathcal{O}(V + E + B)" />.
       </p>
       <h2>Visualization and Implementation</h2>
       <p>
