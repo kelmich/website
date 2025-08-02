@@ -38,7 +38,7 @@ export default async function Home() {
         edges.
       </p>
 
-      <h3>Complexity</h3>
+      <h3>Time Complexity</h3>
       <p>
         The overall time complexity of this algorithm depends on the priority
         queue used. Overall we perform <InlineMath math="\mathcal{O}(E)" />{" "}
@@ -64,8 +64,22 @@ export default async function Home() {
         <InlineCitation citation={Cormen2009} page={507} />.
       </p>
       <p>
-        In this work, we use a binary heap, yielding overall time complexity{" "}
-        <InlineMath math="\mathcal{O}((E + V) \log V)" />.
+        In this work, we use a binary heap, yielding overall algorithm time
+        complexity of <InlineMath math="\mathcal{O}((E + V) \log V)" />.
+      </p>
+
+      <h3>Space Complexity</h3>
+      <p>
+        The space complexity of Dijkstra&apos;s algorithm depends primarily on
+        the data structures used to store distances, the priority queue, and the
+        graph itself. Storing the distance map requires{" "}
+        <InlineMath math="\mathcal{O}(V)" /> space, as we maintain one distance
+        per vertex. The priority queue contains at most{" "}
+        <InlineMath math="\mathcal{O}(V)" /> elements, which also requires{" "}
+        <InlineMath math="\mathcal{O}(V)" /> space. Additionally, storing the
+        graph in adjacency list representation requires{" "}
+        <InlineMath math="\mathcal{O}(V + E)" /> space. Therefore, the overall
+        space complexity is <InlineMath math="\mathcal{O}(V + E)" />.{" "}
       </p>
 
       <h2>Visualization and Implementation</h2>

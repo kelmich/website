@@ -14,7 +14,7 @@ export function CodeBlockClient({ html, defaultCollapsed = false }: Props) {
       {defaultCollapsed && (
         <div
           onClick={() => setCollapsed(!collapsed)}
-          className="cursor-pointer bg-background px-4 py-2 text-sm text-background-foreground hover:bg-muted"
+          className="cursor-pointer bg-background px-4 py-2 text-sm text-background-foreground hover:bg-muted hover:text-muted-foreground"
         >
           {collapsed ? "Show code" : "Hide code"}
         </div>

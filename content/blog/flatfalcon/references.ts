@@ -42,3 +42,16 @@ export const Cormen2009: BookCitation = {
   publisher: "The MIT Press",
   edition: "3rd",
 };
+
+export const Dial1969: JournalCitation = {
+  type: "journal",
+  id: "Dial1969",
+  author: "Dial, Robert B.",
+  title: "Algorithm 360: shortest-path forest with topological ordering [H]",
+  journal: "Communications of the ACM",
+  volume: "12",
+  number: "11",
+  year: 1969,
+  doi: "10.1145/363269.363610",
+  url: "https://doi.org/10.1145/363269.363610",
+};
