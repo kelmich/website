@@ -2,11 +2,6 @@
 import katex from "katex";
 import React from "react";
 
-type MathProps = {
-  math: string;
-  block?: boolean;
-};
-
 export const InlineMath: React.FC<{ math: string }> = ({ math }) => {
   const html = katex.renderToString(math, {
     throwOnError: false,
