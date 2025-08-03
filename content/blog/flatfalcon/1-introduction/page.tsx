@@ -156,7 +156,9 @@ export default function ProjectProposal() {
           maximum allowed commute time in seconds.{" "}
         </li>{" "}
       </ul>{" "}
-      <p>The goal is to compute the set of pairs:</p>{" "}
+      <p>
+        The goal is to compute the set of pairs <InlineMath math="S" />, where:
+      </p>{" "}
       <DisplayMath
         math={`S := \\left\\{\\, (l,\\ t(l, q))\\; \\middle| \\;
         \\begin{aligned}
