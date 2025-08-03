@@ -1,7 +1,9 @@
+import { InlineCitation } from "@/app/components/Citation";
 import {
   ContractionDream,
   ContractionNightmare,
 } from "./ContractionHierarchyVisualizer";
+import { Abraham2016 } from "../references";
 
 export default async function Page() {
   return (
@@ -9,24 +11,33 @@ export default async function Page() {
       <h1>Chapter 6</h1>
       <h2>Contraction Hierarchy Theory</h2>
       <p>
-        We will now discuss the interesting topic of picking a good contraction
-        order for the nodes in our graph. What even is a good order? The issue
-        we want to avoid is an exploding amount of shortcut edges. Consider the
-        following example:
+        We will now discuss the topic of picking a good contraction order for
+        the nodes in our graph. What even is a good order? The issue we want to
+        avoid is an exploding amount of shortcut edges. The more shortcut edges
+        we create, the more edges our routing algorithms have to process.
+        Additionally we would like to keep memory usage low, ideally linear in
+        the size of our graph.
       </p>
+      <h3>Worked Example</h3>
+      <p>
+        Consider the following example. The same graph but contracted with two
+        different orders. Our first order is E, D, C, B, A.
+      </p>
+
       <ContractionNightmare />
       <p>
         By picking E as our lowest priority node we created 12 additional
         shortcut edges. If we by contrast pick E as the last vertex to contract
-        (i.e. highest priority) we add zero additional edges.
+        (i.e. highest priority) we add zero additional edges. Now our
+        contraction order is A, B, C, D, E.
       </p>
       <ContractionDream />
-      <p>
-        While creating shortcuts is not a bad thing, we need to ensure there are
-        not too many of them. Otherwise our routing algorithms will have to
-        process so many edges that they would be inefficient even if the routing
-        were done in linear time.
-      </p>
+      <h3>Highway Dimension Definition</h3>
+      <p>Move stuff here</p>
+      <h3>Contraction Hierarchy on graph with low highway dimension</h3>
+      <p>Move stuff here</p>
+      <h3>Using Contraction Hierarchies in practice</h3>
+      <p>Move stuff here</p>
       <p>
         The core problem we have for theoretical bounds essentially boils down
         to this: What if we have the complete graph? Most optimizations one
@@ -35,14 +46,8 @@ export default async function Page() {
         the types of graphs we consider, the effects of our optimizations that
         we also see in the real world become visible in the theoretical bounds.
         We will assume a hypothesis introduced by{" "}
-        <a
-          href="https://www.microsoft.com/en-us/research/wp-content/uploads/2013/09/tr-msr-2013-91-rev.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Abraham, Delling, Fiat, Goldberg, and Werneck
-        </a>
-        . They define the concept of Highway Dimension:
+        <InlineCitation citation={Abraham2016} page={0} />. They define the
+        concept of Highway Dimension:
       </p>
       <p>
         Formally, a graph has highway dimension h if, for every radius r and

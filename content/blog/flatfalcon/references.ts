@@ -56,6 +56,20 @@ export const Dial1969: JournalCitation = {
   url: "https://doi.org/10.1145/363269.363610",
 };
 
+export const Abraham2016: JournalCitation = {
+  type: "journal",
+  id: "Abraham2016",
+  author:
+    "Abraham, Ittai and Delling, Daniel and Fiat, Amos and Goldberg, Andrew V. and Werneck, Renato F.",
+  title: "Highway Dimension and Provably Efficient Shortest Path Algorithms",
+  journal: "Journal of the ACM",
+  volume: "63",
+  number: "5",
+  year: 2016,
+  url: "https://doi.org/10.1145/2985473",
+  doi: "10.1145/2985473",
+};
+
 export const Geisberger2008: BookCitation = {
   type: "book",
   id: "Geisberger2008",
