@@ -1,0 +1,28 @@
+# Input: Directed graph G_down = (V, E_down), set of listings L ⊆ V
+#        Time budget b
+# Output: down_labels[v] = {listing: time_to_listing} for all v ∈ V
+
+
+for v in V:
+    down_labels[v] = {}  # Initialize empty label for each vertex
+
+for listing in parallel(listings):
+    for v in V:
+        d[v] = ∞
+    d[listing] = 0
+
+    queue = PriorityQueue()
+    queue.insert(listing, priority=0)
+
+    while not queue.is_empty():
+        u = queue.extract_min()
+
+        # Add listing to reachable node u if within budget
+        if d[u] <= b:
+            down_labels[u][listing] = d[u]
+
+            for (u, w) in E_down:
+                if d[u] + t(u, w) < d[w]:
+                    d[w] = d[u] + t(u, w)
+                    if d[w] <= b:
+                        queue.insert(w, priority=d[w])

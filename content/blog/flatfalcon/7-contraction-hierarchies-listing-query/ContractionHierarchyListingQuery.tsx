@@ -123,6 +123,7 @@ export const ContractionHierarchyListingQueryVisualizer = () => {
             }
           };
           // kelmich-highlight-end
+          result.current = {};
           return new DAGShortestPath(initialGraph, "C", false, visit);
         }}
         onStep={setStepData}
