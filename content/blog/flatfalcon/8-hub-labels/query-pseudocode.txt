@@ -1,0 +1,10 @@
+# Input: Query node q, maximum time budget b
+# Output: Set S of reachable listings within time b
+
+S = dict()
+for h in L_up(q):
+    for l in L_down(h):
+        d = t(q, h) + t(h, l)
+        if d <= b:
+            if l not in S or d < S[l]:
+                S[l] = d

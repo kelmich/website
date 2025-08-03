@@ -3,6 +3,9 @@ import { ContractionHierarchyListingSetupVisualizer } from "../7-contraction-hie
 import { FlatfalconBarChart } from "../results";
 import { ContractionHierarchyListingUpSetupVisualizer } from "./ContractionHierarchyListingUpSetup";
 import { HubLabelVisualizer } from "./HubLabelVisualizer";
+import { InlineMath } from "@/app/components/Math";
+import { InlineCitation } from "@/app/components/Citation";
+import { Abraham2016 } from "../references";
 
 export default async function Home() {
   return (
@@ -10,48 +13,107 @@ export default async function Home() {
       <h1>Chapter 8</h1>
       <h2>Hub Labels</h2>
       <p>
-        There is one more way we can improve upon the contraction hierarchies
-        method. We can use it to bootstrap a hub label approach. In essence both
-        methods are similar, hub labelling in our case is simply eliminating the
-        query time forward dijkstra search in favor of a precomputed hub label
-        assignment.
+        We now present a final optimization based on the Contraction Hierarchies
+        method: hub labeling. This approach uses the precomputed CH structure to
+        completely eliminate Dijkstra searches at query time, replacing them
+        with fast memory lookups over precomputed hub labels.
       </p>
-      <p>Recall that we computed labels for each node in the down DAG.</p>
-      <ContractionHierarchyListingSetupVisualizer />
+      <h3>Algorithm Description</h3>
       <p>
-        We can now do the same for the up DAG, but we store all vertices in the
-        label that are reachable in our maximum time budget.
-      </p>
-      <ContractionHierarchyListingUpSetupVisualizer />
-      <p>
-        Now our query time algorithm simply has to go do memory lookups. First
-        we check all hub nodes that are within our time budget in the up label,
-        then for each of those we go look at the listings stored in the down
-        label.
+        In the contraction hierarchies method, each node maintains a label of
+        reachable listings in the downward DAG. We extend this idea by computing
+        a corresponding label in the upward DAG, which contains all hub vertices
+        reachable from the query node within a maximum time budget{" "}
+        <InlineMath math="B" />.
       </p>
       <CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/8-hub-labels/hubLabel.ts"
+        lang="py"
+        filepath="./content/blog/flatfalcon/8-hub-labels/construction-pseudocode.txt"
       />
       <p>
-        The process for finding listings from Vertex B would look as follows.
+        Here is an example of how the down labels can be computed in parallel
       </p>
+      <ContractionHierarchyListingSetupVisualizer />
+      <p>Here is an example of how a single up label can be computed</p>
+      <ContractionHierarchyListingUpSetupVisualizer />
+      <p>The query algorithm proceeds as follows:</p>
+      <CodeBlock
+        lang="py"
+        filepath="./content/blog/flatfalcon/8-hub-labels/query-pseudocode.txt"
+      />
+      <p>and might look like this on a small example graph</p>
       <HubLabelVisualizer />
+      <h3>Real World Implementations</h3>
       <p>
-        While we pay a bit more to set this data structure up, it is still very
-        much a managable price. Note that we would expect the number of vertices
-        we need to store for each node to remain approximately constant no
-        matter the size of the graph. This is because we do not need to store
-        vertices that are further away than our maximum time budget, because any
-        listings we would find by going through those far away vertices would
-        also be too far away to be of interest. This means storage is
-        Asymptotically linear in the number of vertices. Query time is
-        Asymptotically the square of the maximum label size in the system.
+        An added benefit is that hub labels naturally fit relational databases—
+        queries can be implemented using SQL JOIN operations.
+      </p>
+      <h3>Time Complexity</h3>
+      <p>
+        We assume we are given a contraction hierarchy and are now computing the
+        hub labels from it.
       </p>
       <p>
-        Another nice advantage of this data structure is that it can be
-        implemented very nicely in most SQL databases using joins.
+        To construct all hub labels, we must run Dijkstra from every vertex in
+        the contraction hierarchy. This yields an overall construction time of{" "}
+        <InlineMath math="\mathcal{O}(V \cdot (V + E) \cdot \log V)" />. At
+        query time we need to perform a join operation between the up and down
+        labels for each query. Given the maximum label sizes this is done in{" "}
+        <InlineMath math="\mathcal{O}(V \cdot L)" /> time.
       </p>
+      <p>
+        In the worst case, the construction of the hub labels will amount to
+        running Dijkstra from every vertex, which yields a time complexity of{" "}
+        <InlineMath math="\mathcal{O}(V \cdot (V + E) \cdot \log V)" />. As the
+        worst case up label size is <InlineMath math="V" /> and the worst case
+        down label size is <InlineMath math="L" />, we get a worst case query
+        time of <InlineMath math="\mathcal{O}(L \cdot V)" />.
+      </p>
+      <p>
+        By contract for graphs with low highway dimension{" "}
+        <InlineMath math="h" /> that are constructed using the methods from our
+        previous chapter we compute
+      </p>
+      <ul>
+        <li>
+          The up labels for each vertex in{" "}
+          <InlineMath math="\mathcal{O}(V \cdot (h \cdot \log h \cdot \log D)^2)" />{" "}
+          time
+        </li>
+        <li>
+          The down labels for each listing in{" "}
+          <InlineMath math="\mathcal{O}(L \cdot (h \cdot \log h \cdot \log D)^2)" />{" "}
+          time
+        </li>
+      </ul>
+      <p>
+        Which yields a combined{" "}
+        <InlineMath math="\mathcal{O}(V \cdot (h \cdot \log h \cdot \log D)^2)" />{" "}
+        construction time. At query time, queries are answered by intersecting
+        the up and down labels of the source and target nodes. As the maximum
+        label size is{" "}
+        <InlineMath math="\mathcal{O}(h \cdot \log h \cdot \log D)" />{" "}
+        <InlineCitation citation={Abraham2016} page={16} />, the query time is{" "}
+        <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2)" /> .
+      </p>
+      <h3>Space Complexity</h3>
+      <p>
+        In the worst case (e.g., a complete graph where all edges have weight
+        1), the storage complexity can be <InlineMath math="\mathcal{O}(V^2)" />
+        , as every vertex stores all other vertices in its label.
+      </p>
+      <p>
+        For graphs with low highway dimension <InlineMath math="h" /> that are
+        constructed using the methods from our previous chapter, the space
+        required for hub labels is much lower. Each up label has size at most{" "}
+        <InlineMath math="\mathcal{O}(h \cdot \log h \cdot \log D)" />{" "}
+        <InlineCitation citation={Abraham2016} page={16} />. Additionally we
+        store each listing at up to{" "}
+        <InlineMath math="\mathcal{O}(h \cdot \log h \cdot \log D)" /> hubs.
+        This leads to a total space complexity of{" "}
+        <InlineMath math="\mathcal{O}(V \cdot h \cdot \log h \cdot \log D)" />.
+      </p>
+      <h3>Empirical Results</h3>
       <FlatfalconBarChart
         dataType="Setup"
         algorithms={[

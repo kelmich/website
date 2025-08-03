@@ -1,0 +1,26 @@
+# Input: Graph G = (V, E), time budget b
+# CH_down: Downward DAG from contraction hierarchy
+# CH_up: Upward DAG from contraction hierarchy
+# Listings: Set of listing nodes L ⊆ V
+# Output:
+#   L_down[v] = list of (listing, distance) pairs for all v ∈ V
+#   L_up[v] = list of (hub, distance) pairs for all v ∈ V
+
+# Initialize labels for all nodes
+for v in V:
+    L_down[v] = []     # List of (listing, distance) tuples
+    L_up[v] = []       # List of (hub, distance) tuples
+
+# Step 1: Build down labels by propagating listings through CH_down
+for listing in Listings:
+    # Run Dijkstra from listing over CH_down (reverse direction)
+    for (node, time) in Dijkstra(listing, CH_down):
+        if time ≤ b:
+            L_down[node].append((listing, time))
+
+# Step 2: Build up labels by forward search from each node over CH_up
+for v in V:
+    # Run Dijkstra from v over CH_up
+    for (hub, time) in Dijkstra(v, CH_up):
+        if time ≤ b:
+            L_up[v].append((hub, time))
