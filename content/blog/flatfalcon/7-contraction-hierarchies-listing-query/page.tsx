@@ -105,10 +105,31 @@ export default async function Home() {
       <p>
         If we assume a worst case scenario and that the heuristic did not do a
         good job, then the storage complexity can be{" "}
-        <InlineMath math="V \cdot L" /> in the worst case, i.e. we store all
-        listings at all nodes, as in the full precompute approach.
+        <InlineMath math="\mathcal{O}(V \cdot L)" /> in the worst case, i.e. we
+        store all listings at all nodes, as in the full precompute approach.
       </p>
-      <p>Todo</p>
+      <p>
+        Suppose we have built a contraction hierarchy as described earlier, and
+        the graph has a low highway dimension <InlineMath math="h" />.
+      </p>
+      <ul>
+        <li>
+          Vertex storage: We need to store information for each vertex, which
+          takes <InlineMath math="\mathcal{O}(V)" /> space.
+        </li>
+        <li>
+          Label storage: For each listing (there are <InlineMath math="L" />{" "}
+          listings), we propagate its label through the contraction hierarchy.
+          Due to the structure of the hierarchy, each label is stored at up to{" "}
+          <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2)" />{" "}
+          vertices, where <InlineMath math="D" /> is the diameter of the graph.
+        </li>
+      </ul>
+      <p>
+        Therefore, the overall space complexity is{" "}
+        <InlineMath math="\mathcal{O}(V + L \cdot (h \cdot \log h \cdot \log D)^2)" />
+        .
+      </p>
       <h3>Empirical Performance</h3>
       <p>
         The empirical performance gains are substantial, despite relying on a
