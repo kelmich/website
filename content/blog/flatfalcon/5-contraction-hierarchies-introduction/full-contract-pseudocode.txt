@@ -1,5 +1,10 @@
 # Input: Graph G = (V, E), node importance order [v1, v2, ..., vn]
 # Output: G with all nodes contracted and shortcuts added
 
+shortcuts = []
+G_clone = G.clone()
 for each node v in order [v1, v2, ..., vn]:
-    contract_node(G, v)
+    contract_node(G_clone, v, shortcuts)
+
+for (u, v, weight) in shortcuts:
+    G.add_edge(u, v, weight)

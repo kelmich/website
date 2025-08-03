@@ -1,9 +1,12 @@
 # Input: Graph G = (V, E), node v to contract
-# Output: Modified G with shortcuts added and v removed
+# Output: Modified G with shortcuts added and v removed, list of shortcuts
 
-for each neighbor u of v:
-    for each neighbor w of v:
-        if (u != w) and ((u, w) not in E or t(u, w) > t(u, v) + t(v, w)):
-            add shortcut edge (u, w) with weight t(u, v) + t(v, w)
+def contract_node(G, v, shortcuts):
+    for u in G.neighbors(v):
+        for w in G.neighbors(v):
+            if u != w and shortestPathViaContractNode(u, w, v):
+                weight = t(u, v) + t(v, w)
+                G.add_edge(u, w, weight=weight)
+                shortcuts.append((u, w, weight))
 
-remove node v and all its incident edges
+    G.remove_node(v)
