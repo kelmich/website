@@ -3,7 +3,8 @@ import {
   ContractionDream,
   ContractionNightmare,
 } from "./ContractionHierarchyVisualizer";
-import { Abraham2016 } from "../references";
+import { Abraham2016, FastPaths } from "../references";
+import { InlineMath } from "@/app/components/Math";
 
 export default async function Page() {
   return (
@@ -11,101 +12,127 @@ export default async function Page() {
       <h1>Chapter 6</h1>
       <h2>Contraction Hierarchy Theory</h2>
       <p>
-        We will now discuss the topic of picking a good contraction order for
-        the nodes in our graph. What even is a good order? The issue we want to
-        avoid is an exploding amount of shortcut edges. The more shortcut edges
-        we create, the more edges our routing algorithms have to process.
-        Additionally we would like to keep memory usage low, ideally linear in
-        the size of our graph.
-      </p>
-      <h3>Worked Example</h3>
-      <p>
-        Consider the following example. The same graph but contracted with two
-        different orders. Our first order is E, D, C, B, A.
+        In this chapter, we examine how to determine an effective contraction
+        order for the nodes of a graph. A well chosen order minimizes the number
+        of shortcut edges introduced during contraction, which in turn reduces
+        both query time and memory usage. Excessive shortcut edges increase the
+        size of the contracted graph and slow down routing queries, so our goal
+        is to keep the number of such edges as small as possible ideally
+        maintaining memory usage that is linear in the size of the input graph.
       </p>
 
+      <h3>Worked Example</h3>
+      <p>
+        The example below illustrates how the contraction order impacts the
+        number of shortcut edges. First, consider contracting the graph in the
+        order E, D, C, B, A.
+      </p>
       <ContractionNightmare />
       <p>
-        By picking E as our lowest priority node we created 12 additional
-        shortcut edges. If we by contrast pick E as the last vertex to contract
-        (i.e. highest priority) we add zero additional edges. Now our
-        contraction order is A, B, C, D, E.
+        Contracting node E first leads to the creation of 12 shortcut edges. In
+        contrast, reversing the order—contracting A, B, C, D, E, adds no
+        shortcuts at all.
       </p>
       <ContractionDream />
-      <h3>Highway Dimension Definition</h3>
-      <p>Move stuff here</p>
-      <h3>Contraction Hierarchy on graph with low highway dimension</h3>
-      <p>Move stuff here</p>
-      <h3>Using Contraction Hierarchies in practice</h3>
-      <p>Move stuff here</p>
+
+      <h3>Highway Dimension</h3>
       <p>
-        The core problem we have for theoretical bounds essentially boils down
-        to this: What if we have the complete graph? Most optimizations one
-        tries will not outperform classic routing algorithms from a theoretical
-        perspective in that case. However: If we introduce some constraints on
-        the types of graphs we consider, the effects of our optimizations that
-        we also see in the real world become visible in the theoretical bounds.
-        We will assume a hypothesis introduced by{" "}
-        <InlineCitation citation={Abraham2016} page={0} />. They define the
-        concept of Highway Dimension:
+        From a theoretical perspective, analyzing the efficiency of Contraction
+        Hierarchies is much more interesting when some limited assumptions about
+        the graph can be made. For instance, contraction hierarchies provides no
+        asymptotic improvement over classical routing algorithms on dense graphs
+        such as the complete graph. However, real-world road networks exhibit
+        special structure that contraction hierarchies can exploit. One
+        formalization of this structure is the concept of Highway Dimension,
+        introduced by <InlineCitation citation={Abraham2016} page={6} />.
       </p>
       <p>
-        Formally, a graph has highway dimension h if, for every radius r and
-        every vertex v, all long shortest paths within distance 2r of v (but
-        longer than r) pass through at most h &quot;access vertices.&quot; These
-        access vertices effectively &quot;hit&quot; all those paths.
+        A graph has highway dimension <InlineMath math="h" /> if, for every
+        radius <InlineMath math="r" /> and every vertex <InlineMath math="v" />,
+        all shortest paths of length between <InlineMath math="r" /> and{" "}
+        <InlineMath math="2r" /> that pass through the ball of radius{" "}
+        <InlineMath math="2r" /> centered at <InlineMath math="v" /> can be
+        intersected by at most <InlineMath math="h" /> access vertices. These
+        access vertices &quot;hit&quot; all such long paths, ensuring coverage
+        with a small, localized set.
+      </p>
+
+      <h3>
+        Theoretical Results for contraction hierarchies with Low Highway
+        Dimension
+      </h3>
+      <p>
+        Assuming that the input graph has small highway dimension{" "}
+        <InlineMath math="h" />,{" "}
+        <InlineCitation citation={Abraham2016} page={12} /> propose a method for
+        constructing contraction hierarchies with provable efficiency. They
+        introduce sparse path hitting sets (SPHS) at multiple scales. For each
+        scale <InlineMath math="r = 2^i" />, a small set of nodes is chosen to
+        cover all long paths in their vicinity. These sets are organized into
+        hierarchical levels <InlineMath math="Q_i" />, where lower levels
+        contain less important nodes that are contracted first.
       </p>
       <p>
-        If we assume that our road network has a small highway dimension h, then
-        our contraction hierarchies algorithm can achieve significant speedups
-        over classic routing algorithms.
-      </p>
-      <p>
-        The paper shows that if a graph has low highway dimension, one can use
-        it to derive a multiscale hierarchy of important nodes, from which you
-        can build an ordering for contraction hierarchies. The authors define a
-        construct called a multiscale sparse path hitting set (SPHS). At each
-        scale r=2^i, they select a small set of nodes that &quot;cover&quot; all
-        long paths nearby. By stacking these sets from coarsest to finest
-        scales, they define levels Q_i, and order the nodes so that lower-level
-        (less important) nodes are contracted before higher-level ones. The
-        result:
+        This construction yields the following theoretical guarantees{" "}
+        <InlineCitation citation={Abraham2016} page={12} />. Let{" "}
+        <InlineMath math="h" /> be the highway dimension of the input graph,{" "}
+        <InlineMath math="V" /> be the number of vertices and{" "}
+        <InlineMath math="D" /> the diameter of the graph.
       </p>
       <ol>
         <li>
-          The number of shortcuts added is provably small: 𝑂(n * h * log D),
-          where D is the graph diameter.
+          The total number of edges in the contraction hierarchy is bounded by{" "}
+          <InlineMath math="\mathcal{O}(V \cdot h \cdot \log D)" />
         </li>
-        <li>The maximum degree in the final augmented graph is bounded.</li>
-        <li>CH queries on such a graph run in O((h * log D)^2) time.</li>
+        <li>
+          The degree of any vertex in the contraction hierarchy is bounded by{" "}
+          <InlineMath math="h + h \cdot \log D" />.
+        </li>
+        <li>
+          Query time for shortest paths using the contraction hierarchy is{" "}
+          <InlineMath math="\mathcal{O}((h \cdot \log D)^2)" />.
+        </li>
       </ol>
       <p>
-        This is a provable guarantee that CH will be fast—assuming low highway
-        dimension.
+        These results show that, for graphs with small highway dimension,
+        contraction hierarchies with efficient overall size exist.
       </p>
       <p>
-        Unfortunately constructing the hierarchy in this manner is
-        computationally quite expensive (however still polynomial in the graph
-        size). So expensive in fact that our previous &quot;Precomputing
-        Everything&quot; approach is more efficient. For this reason most
-        implementations use heuristics and forego the theoretical guarantees of
-        the algorithm. However, the theorem provides a solid foundation for
-        understanding why Contraction Hierarchies are so effective.
+        Note however that the above bounds rely on being able to compute sparse
+        path hitting sets, which is not currently known to be computable in
+        polynomial time. If one uses an appaoximation instead (in order to
+        compute the contraction hierarchy in polynomial time) the factors change
+        as follows <InlineCitation citation={Abraham2016} page={[16, 17]} />:
+      </p>
+      <ol>
+        <li>
+          The total number of edges in the contraction hierarchy is bounded by{" "}
+          <InlineMath math="\mathcal{O}(V \cdot h \cdot \log h \cdot \log D)" />
+        </li>
+        <li>
+          The degree of any vertex in the contraction hierarchy is bounded by{" "}
+          <InlineMath math="h \cdot \log h \cdot \log D" />.
+        </li>
+        <li>
+          Query time for shortest paths using the contraction hierarchy is{" "}
+          <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2)" />.
+        </li>
+      </ol>
+
+      <h3>Practical Considerations</h3>
+      <p>
+        While theoretically sound, constructing SPHS hierarchies is
+        computationally expensive, albeit polynomial in <InlineMath math="V" />.
+        In practice, heuristic methods are preferred for their efficiency, even
+        though they may lack provable guarantees.
       </p>
       <p>
-        We will build on the contraction hierarchy from{" "}
-        <a
-          href="https://github.com/easbar/fast_paths"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          https://github.com/easbar/fast_paths
-        </a>{" "}
-        . They use a heuristic approach to construct the hierarchy, which is
-        more efficient than the theoretical construction but may not provide the
-        same guarantees. The heuristic approach computes an importance score for
-        each vertex and uses this score to guide the construction of the
-        hierarchy.
+        Our implementation is based on the{" "}
+        <InlineCitation citation={FastPaths} /> library, which uses a heuristic
+        approach. It assigns each vertex an importance score based on local
+        graph structure and connectivity. This method achieves high performance
+        in practice and aligns with the observed efficiency of contraction
+        hierarchies in real-world road networks.
       </p>
     </>
   );
