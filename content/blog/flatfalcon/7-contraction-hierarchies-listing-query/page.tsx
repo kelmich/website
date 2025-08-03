@@ -10,7 +10,6 @@ export default async function Home() {
     <>
       <h1>Chapter 7</h1>
       <h2>Contraction Hierarchies for Listing Queries</h2>
-
       <p>
         With a solid understanding of contraction hierarchies, we now explore
         how to adapt them for our specific problem: efficiently finding all
@@ -18,9 +17,7 @@ export default async function Home() {
         graph into two directed acyclic graphs (DAGs): the upward and downward
         graphs, with shortcut edges added during node contraction.
       </p>
-
       <ContractedUpDownGraph />
-
       <h3>Algorithm Description</h3>
       <p>
         For a standard point-to-point shortest path, we perform a bidirectional
@@ -41,7 +38,6 @@ export default async function Home() {
         time-bounded search from each listing. This setup is embarrassingly
         parallel, as each listing's traversal can be computed independently.
       </p>
-
       <CodeBlock
         lang="py"
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/setup-pseudocode.txt"
@@ -52,66 +48,74 @@ export default async function Home() {
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/dagShortestPath.ts"
         defaultCollapsed
       />*/}
-
       <ContractionHierarchyListingSetupVisualizer />
-
       <p>
         After preprocessing, we perform a standard CH query. However, during
         traversal of the upward graph, we now accumulate results using each
         visited vertex’s precomputed label. This allows us to efficiently
         aggregate reachable listings.
       </p>
-
       <CodeBlock
         lang="py"
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/query-pseudocode.txt"
       />
-
       <p>
         This would work as follows on our small example graph starting from
         vertex C.
       </p>
-
       <CodeBlock
         lang="ts"
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx"
         defaultCollapsed
       />
-
       <ContractionHierarchyListingQueryVisualizer />
-
       <h3>Time Complexity</h3>
-      <ul>
-        <li>
-          <strong>Preprocessing:</strong> Let <InlineMath math="L" /> be the
-          number of listings. Each listing triggers a bounded search over the
-          downward DAG. If the average number of vertices reachable within the
-          time budget is <InlineMath math="r" />, total preprocessing time is{" "}
-          <InlineMath math="O(L \cdot r)" />.
-        </li>
-        <li>
-          <strong>Query:</strong> The query runs in <InlineMath math="O(k)" />{" "}
-          time, where <InlineMath math="k" /> is the number of vertices visited
-          in the upward DAG. Label lookups and result aggregation are
-          constant-time per vertex.
-        </li>
-      </ul>
+      <p>
+        Because we use a heuristic when constructing the contraction hierarchy,
+        the theoretical bounds are not very exciting. Similarly to the full
+        precompute method, the construction time is{" "}
+        <InlineMath math="\mathcal{O}(L \cdot (V + E) \cdot \log V)" />, we run{" "}
+        Dijkstra <InlineMath math="L" /> times. At query time we run another
+        Dijkstra in <InlineMath math="\mathcal{O}((V + E) \cdot \log V)" />{" "}
+        time.
+      </p>
+      <p>
+        Suppose we have built a contraction hierarchy as described in the
+        previous chapter, and the graph has a low highway dimension{" "}
+        <InlineMath math="h" />. In this case, the time to compute all the
+        labels is
+        <InlineMath math="\mathcal{O}(L \cdot (h \cdot \log h \cdot \log D)^2)" />
+        , where <InlineMath math="L" /> is the number of listings,{" "}
+        <InlineMath math="h" /> is the highway dimension, and{" "}
+        <InlineMath math="D" /> is the diameter of the graph. For a query, the
+        time required is{" "}
+        <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2 + R^2)" />
+        , where <InlineMath math="R" /> is the number of listings returned by
+        the query. The first term,{" "}
+        <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2)" />, is
+        the time to perform the shortest path search using the contraction
+        hierarchy. The second term, <InlineMath math="R^2" />, accounts for the
+        time needed to update or merge the result set as listings are found
+        during the search. In summary: with low highway dimension and an
+        appropriate contraction hierarchy, the time complexity is much more
+        attractive.
+      </p>
 
       <h3>Space Complexity</h3>
       <p>
-        Each vertex in the upward DAG stores a list of reachable listings. Let{" "}
-        <InlineMath math="n" /> be the number of vertices and{" "}
-        <InlineMath math="\ell" /> be the average number of listings per vertex
-        label. Total space complexity is <InlineMath math="O(n \cdot \ell)" />.
+        If we assume a worst case scenario and that the heuristic did not do a
+        good job, then the storage complexity can be{" "}
+        <InlineMath math="V \cdot L" /> in the worst case, i.e. we store all
+        listings at all nodes, as in the full precompute approach.
       </p>
-
+      <p>Todo</p>
       <h3>Empirical Performance</h3>
       <p>
-        The performance gains are substantial. Preprocessing completes in
-        seconds, not minutes, and query latency is negligible compared to
-        network overheads.
+        The empirical performance gains are substantial, despite relying on a
+        heuristic for computing the contraction hierarchy. Preprocessing
+        completes in seconds, not minutes, and query latency is negligible
+        compared to network overheads.
       </p>
-
       <FlatfalconBarChart
         dataType="Setup"
         algorithms={[
@@ -121,7 +125,6 @@ export default async function Home() {
           "ContractionHierarchy",
         ]}
       />
-
       <FlatfalconBarChart
         dataType="Query"
         algorithms={[
