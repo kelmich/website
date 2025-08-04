@@ -42,6 +42,16 @@ export default async function Home() {
         As in the adapted Dijkstra&apos;s algorithm, note that we explore{" "}
         incoming edges at each step, to find shortest paths to the query point.
       </p>
+      <p>
+        Below is an interactive visualization that demonstrates how it operates
+        on a small graph.
+      </p>
+      {/*<CodeBlock
+        lang="ts"
+        filepath="./content/blog/flatfalcon/3-dial/dial.ts"
+        defaultCollapsed
+      />*/}
+      <DialVisualizer />
       <h3>Time Complexity</h3>
       <p>
         The time complexity of Dial&apos;s algorithm is{" "}
@@ -88,18 +98,6 @@ export default async function Home() {
         Summing all components, the overall space complexity of Dial&apos;s
         algorithm is <InlineMath math="\mathcal{O}(V + E + B)" />.
       </p>
-      <h2>Visualization and Implementation</h2>
-      <p>
-        Below is a sample TypeScript implementation of Dial&apos;s algorithm,
-        and an interactive visualization that demonstrates how it operates on a
-        small graph.
-      </p>
-      <CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/3-dial/dial.ts"
-        defaultCollapsed
-      />
-      <DialVisualizer />
       <h2>Empirical Performance</h2>
       <p>
         In practice, Dial&apos;s algorithm significantly reduces query time

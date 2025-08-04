@@ -105,11 +105,11 @@ h1 {
 }
 
 h2 {
-    @apply text-2xl font-semibold my-3;
+    @apply text-2xl font-semibold mt-8 mb-2;
 }
 
 h3 {
-    @apply text-xl font-semibold my-3;
+    @apply text-xl font-semibold mt-8 mb-2;
 }
 
 button {

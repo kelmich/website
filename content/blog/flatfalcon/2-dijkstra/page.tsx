@@ -38,6 +38,19 @@ export default async function Home() {
         edges.
       </p>
 
+      <p>
+        Below is an interactive visualization that demonstrates how it operates
+        on a small graph.
+      </p>
+
+      {/*<CodeBlock
+        lang="ts"
+        filepath="./content/blog/flatfalcon/2-dijkstra/dijkstra.ts"
+        defaultCollapsed
+      />*/}
+
+      <DijkstraVisualizer />
+
       <h3>Time Complexity</h3>
       <p>
         The overall time complexity of this algorithm depends on the priority
@@ -81,21 +94,6 @@ export default async function Home() {
         <InlineMath math="\mathcal{O}(V + E)" /> space. Therefore, the overall
         space complexity is <InlineMath math="\mathcal{O}(V + E)" />.{" "}
       </p>
-
-      <h2>Visualization and Implementation</h2>
-      <p>
-        Below is a sample TypeScript implementation of the adapted Dijkstra’s
-        algorithm, and an interactive visualization that demonstrates how it
-        operates on a small graph.
-      </p>
-
-      <CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/2-dijkstra/dijkstra.ts"
-        defaultCollapsed
-      />
-
-      <DijkstraVisualizer />
 
       <h2>Empirical Performance</h2>
       <p>

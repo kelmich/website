@@ -63,11 +63,11 @@ export default async function Home() {
         This would work as follows on our small example graph starting from
         vertex C.
       </p>
-      <CodeBlock
+      {/*<CodeBlock
         lang="ts"
         filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx"
         defaultCollapsed
-      />
+      />*/}
       <ContractionHierarchyListingQueryVisualizer />
       <h3>Time Complexity</h3>
       <p>

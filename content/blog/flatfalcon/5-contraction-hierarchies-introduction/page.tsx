@@ -46,59 +46,16 @@ export default async function Home() {
         lang="py"
         filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contract-pseudocode.txt"
       />
-      <h3>Time Complexity</h3>
-      <p>The time complexity depends on multiple factors:</p>
-      <ol>
-        <li>The structure of the Graph</li>
-        <li>The order of contraction</li>
-        <li>The implementation of shortestPathViaContractNode</li>
-      </ol>
-      <p>
-        We will discuss how graph structure and contraction order affects the
-        construction time complexity in the next chapter. When it comes to the
-        choice of implementation shortestPathViaContractNode, there is a
-        tradeoff to be made between fewer added shortcuts and faster
-        computation. We could simply check if a direct edge exists between{" "}
-        <InlineMath math="u \to w" /> and only add the shortcut if that direct
-        edge does not already exist (or update the weight if it does).
-      </p>
-      <p>
-        Alternatively, we could run Dijkstra and determine if a shortest path
-        between <InlineMath math="u \to w" /> does indeed go through the
-        contracted node. Running Dijkstra is much more expensive than checking
-        for a direct edge, but it may lead to fewer shortcuts being added (which
-        is good for our query time performance). One might also consider a
-        middle ground approximation of some sort.
-      </p>
-      <p>
-        In the worst case however, where we are constructing a Contraction
-        Hierarchy on a complete graph where every node is most efficiently
-        connected to every other node by a single edge, the construction time
-        complexity is{" "}
-        <InlineMath math="\mathcal{O}(V^3 \cdot shortestPathViaContractNode)" />
-        , where <InlineMath math="\mathcal{O}(shortestPathViaContractNode)" />{" "}
-        is <InlineMath math="\mathcal{O}(1)" /> for the simple edge check vs{" "}
-        <InlineMath math="\mathcal{O}((V + E) \log V)" /> for Dijkstra.
-      </p>
-      <h3>Space Complexity</h3>
-      <p>
-        The space complexity also depends strongly on the number of shortcuts
-        added during the contraction process. In the worst case where we end up
-        storing a complete graph with every node connected to every other node,
-        the space complexity is <InlineMath math="\mathcal{O}(V^2)" />.
-      </p>
-      <h3>Node Contraction Example</h3>
       <p>
         Below is an example of contracting a single node (C) and the shortcuts
         added as a result:
       </p>
-      <CodeBlock
+      {/*<CodeBlock
         lang="ts"
         filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contractor.ts"
         defaultCollapsed
-      />
+      />*/}
       <ContractionVisualizer />
-      <h3>Contraction Hierarchy Construction Example</h3>
       <p>
         This contraction process is repeated for all nodes in increasing order
         of importance. In our example, nodes are contracted in alphabetical
@@ -167,6 +124,47 @@ export default async function Home() {
         point-to-point routing here, as point-to-point shortest path queries are
         not our main interest. However, most of the analysis is similar to what
         we will discuss in the next section for our problem of interest.
+      </p>
+      <h3>Time Complexity</h3>
+      <p>The time complexity depends on multiple factors:</p>
+      <ol>
+        <li>The structure of the Graph</li>
+        <li>The order of contraction</li>
+        <li>The implementation of shortestPathViaContractNode</li>
+      </ol>
+      <p>
+        We will discuss how graph structure and contraction order affects the
+        construction time complexity in the next chapter. When it comes to the
+        choice of implementation shortestPathViaContractNode, there is a
+        tradeoff to be made between fewer added shortcuts and faster
+        computation. We could simply check if a direct edge exists between{" "}
+        <InlineMath math="u \to w" /> and only add the shortcut if that direct
+        edge does not already exist (or update the weight if it does).
+      </p>
+      <p>
+        Alternatively, we could run Dijkstra and determine if a shortest path
+        between <InlineMath math="u \to w" /> does indeed go through the
+        contracted node. Running Dijkstra is much more expensive than checking
+        for a direct edge, but it may lead to fewer shortcuts being added (which
+        is good for our query time performance). One might also consider a
+        middle ground approximation of some sort.
+      </p>
+      <p>
+        In the worst case however, where we are constructing a Contraction
+        Hierarchy on a complete graph where every node is most efficiently
+        connected to every other node by a single edge, the construction time
+        complexity is{" "}
+        <InlineMath math="\mathcal{O}(V^3 \cdot shortestPathViaContractNode)" />
+        , where <InlineMath math="\mathcal{O}(shortestPathViaContractNode)" />{" "}
+        is <InlineMath math="\mathcal{O}(1)" /> for the simple edge check vs{" "}
+        <InlineMath math="\mathcal{O}((V + E) \log V)" /> for Dijkstra.
+      </p>
+      <h3>Space Complexity</h3>
+      <p>
+        The space complexity also depends strongly on the number of shortcuts
+        added during the contraction process. In the worst case where we end up
+        storing a complete graph with every node connected to every other node,
+        the space complexity is <InlineMath math="\mathcal{O}(V^2)" />.
       </p>
       <h3>Next Steps</h3>
       <p>Two questions remain:</p>
