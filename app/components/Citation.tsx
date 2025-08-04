@@ -69,44 +69,108 @@ export const Bibliography: React.FC<BibliographyProps> = ({
   highlightedCitationId,
 }) => {
   const renderCitationContent = (citation: Citation) => {
-    if (citation.type === "web") {
-      // WebCitation
-      return (
-        <>
-          URL:{" "}
-          <a href={citation.url} target="_blank" rel="noopener noreferrer">
-            {citation.url}
-          </a>
-          <br />
-          Last Accessed: {citation.lastAccessed.toLocaleDateString()}
-        </>
-      );
-    } else if (citation.type === "journal") {
-      // BookCitation
-      return (
-        <>
-          Author: {citation.author}
-          <br />
-          Title: {citation.title}
-          <br />
-          Publisher: {citation.journal}
-          <br />
-          Year: {citation.year}
-        </>
-      );
-    } else if (citation.type === "book") {
-      // BookCitation
-      return (
-        <>
-          Author: {citation.author}
-          <br />
-          Title: {citation.title}
-          <br />
-          Publisher: {citation.publisher}
-          <br />
-          Year: {citation.year}
-        </>
-      );
+    switch (citation.type) {
+      case "web":
+        return (
+          <>
+            <div>
+              <strong>URL:</strong>{" "}
+              <a href={citation.url} target="_blank" rel="noopener noreferrer">
+                {citation.url}
+              </a>
+            </div>
+            <div>
+              <strong>Last Accessed:</strong>{" "}
+              {citation.lastAccessed.toLocaleDateString()}
+            </div>
+          </>
+        );
+
+      case "journal":
+        return (
+          <>
+            <div>
+              <strong>Author:</strong> {citation.author}
+            </div>
+            <div>
+              <strong>Title:</strong> {citation.title}
+            </div>
+            <div>
+              <strong>Journal:</strong> {citation.journal}
+            </div>
+            <div>
+              <strong>Volume:</strong> {citation.volume}
+              {citation.number && `, Number: ${citation.number}`}
+            </div>
+            <div>
+              <strong>Year:</strong> {citation.year}
+            </div>
+            {citation.doi && (
+              <div>
+                <strong>DOI:</strong>{" "}
+                <a
+                  href={`https://doi.org/${citation.doi}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {citation.doi}
+                </a>
+              </div>
+            )}
+            {citation.url && (
+              <div>
+                <strong>URL:</strong>{" "}
+                <a
+                  href={citation.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {citation.url}
+                </a>
+              </div>
+            )}
+          </>
+        );
+
+      case "book":
+        return (
+          <>
+            <div>
+              <strong>Author:</strong> {citation.author}
+            </div>
+            <div>
+              <strong>Title:</strong> {citation.title}
+            </div>
+            <div>
+              <strong>Publisher:</strong> {citation.publisher}
+            </div>
+            {citation.edition && (
+              <div>
+                <strong>Edition:</strong> {citation.edition}
+              </div>
+            )}
+            <div>
+              <strong>Year:</strong> {citation.year}
+            </div>
+            {citation.isbn && (
+              <div>
+                <strong>ISBN:</strong> {citation.isbn}
+              </div>
+            )}
+            {citation.url && (
+              <div>
+                <strong>URL:</strong>{" "}
+                <a
+                  href={citation.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {citation.url}
+                </a>
+              </div>
+            )}
+          </>
+        );
     }
   };
 

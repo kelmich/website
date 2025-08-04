@@ -107,8 +107,10 @@ export default function ProjectProposal() {
               <InlineMath math="v \in V" /> represents one of the following:{" "}
               <ul>
                 {" "}
-                <li>a road intersection,</li> <li>a dead end,</li>{" "}
-                <li>a listing location,</li> <li>or the query point.</li>{" "}
+                <li>a road intersection,</li>
+                {/*<li>a dead end,</li>*/}
+                <li>a listing location,</li>
+                <li>or the query point.</li>{" "}
               </ul>{" "}
             </li>{" "}
             <li>
