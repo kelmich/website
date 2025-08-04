@@ -8,19 +8,21 @@
 
 # Initialize labels for all nodes
 for v in V:
-    L_down[v] = []     # List of (listing, distance) tuples
-    L_up[v] = []       # List of (hub, distance) tuples
+    L_down[v] = []
+    L_up[v] = []
 
-# Step 1: Build down labels by propagating listings through CH_down
+
 for listing in Listings:
-    # Run Dijkstra from listing over CH_down (reverse direction)
     for (node, time) in Dijkstra(listing, CH_down):
         if time ≤ b:
             L_down[node].append((listing, time))
 
-# Step 2: Build up labels by forward search from each node over CH_up
+
 for v in V:
-    # Run Dijkstra from v over CH_up
     for (hub, time) in Dijkstra(v, CH_up):
         if time ≤ b:
             L_up[v].append((hub, time))
+
+for v in V:
+    L_down[v].sort_ascending(attribute=time)
+    L_up[v].sort_ascending(attribute=time)

@@ -8,3 +8,5 @@ for h in L_up(q):
         if d <= b:
             if l not in S or d < S[l]:
                 S[l] = d
+        else:
+            break

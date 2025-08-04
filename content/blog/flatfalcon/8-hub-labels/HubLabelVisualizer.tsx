@@ -74,10 +74,10 @@ export const HubLabelVisualizer = () => {
   const upLabels: Record<string, Record<string, number>> = {
     A: {
       A: 0,
-      B: 5,
       C: 1,
       D: 3,
       E: 4,
+      B: 5,
     },
     B: {
       B: 0,

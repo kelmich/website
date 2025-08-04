@@ -54,16 +54,10 @@ export default async function Home() {
         hub labels from it.
       </p>
       <p>
-        To construct all hub labels, we must run Dijkstra from every vertex in
-        the contraction hierarchy. This yields an overall construction time of{" "}
-        <InlineMath math="\mathcal{O}(V \cdot (V + E) \cdot \log V)" />. At
-        query time we need to perform a join operation between the up and down
-        labels for each query. Given the maximum label sizes this is done in{" "}
-        <InlineMath math="\mathcal{O}(V \cdot L)" /> time.
-      </p>
-      <p>
-        In the worst case, the construction of the hub labels will amount to
-        running Dijkstra from every vertex, which yields a time complexity of{" "}
+        In the worst case, the contraction hierarchy we get could be equivalent
+        to the graph (e.g. a complete graph where all edges have weight 1). Then
+        the construction of the hub labels will amount to running Dijkstra from
+        every vertex on the entire graph, which yields a time complexity of{" "}
         <InlineMath math="\mathcal{O}(V \cdot (V + E) \cdot \log V)" />. As the
         worst case up label size is <InlineMath math="V" /> and the worst case
         down label size is <InlineMath math="L" />, we get a worst case query
@@ -72,7 +66,9 @@ export default async function Home() {
       <p>
         By contract for graphs with low highway dimension{" "}
         <InlineMath math="h" /> that are constructed using the methods from our
-        previous chapter we compute
+        previous chapter we compute (using our shortest path algorithm that runs
+        in <InlineMath math="\mathcal{O}((h \cdot \log h \cdot \log D)^2)" />{" "}
+        time from the previous chapter)
       </p>
       <ul>
         <li>
@@ -114,6 +110,10 @@ export default async function Home() {
         <InlineMath math="\mathcal{O}(V \cdot h \cdot \log h \cdot \log D)" />.
       </p>
       <h3>Empirical Results</h3>
+      <p>
+        While we do pay about a 2x price in setup time compared to contraction
+        hierarchies, we get an approximate 3x speedup in query time.
+      </p>
       <FlatfalconBarChart
         dataType="Setup"
         algorithms={[
