@@ -6,6 +6,27 @@ export default function ProjectProposal() {
   return (
     <>
       <h1>Chapter 1</h1>
+      <h2>Abstract</h2>
+      <p>
+        Commute time is a critical but underrepresented factor in online real
+        estate search platforms. While existing systems offer location-based
+        filtering via radius constraints or isochrone maps, they fail to provide
+        exact travel times for individual listings. We address this gap by
+        introducing efficient algorithms to compute and filter real estate
+        listings based on exact commute times to a given destination within a
+        specified time budget. Formally, we model the road network as a weighted
+        graph and aim to compute, for a query point and time budget, all
+        listings that are reachable along the fastest paths, along with their
+        precise travel times. We adapt and evaluate a range of shortest path
+        algorithms: Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full
+        precomputation, Contraction Hierarchies, and Hub Labeling, to this use
+        case. Each method is analyzed both theoretically in terms of runtime and
+        memory requirements, and empirically through real-world benchmarks on
+        urban road network data. Our results highlight trade-offs between
+        preprocessing time, query efficiency, and memory usage, and demonstrate
+        practical strategies for enabling commute time based filtering at
+        interactive speeds in real estate platforms.
+      </p>
       <h2>Motivation</h2>
       <p>
         Online platforms for renting apartments or purchasing houses typically
@@ -109,8 +130,7 @@ export default function ProjectProposal() {
                 {" "}
                 <li>a road intersection,</li>
                 {/*<li>a dead end,</li>*/}
-                <li>a listing location,</li>
-                <li>or the query point.</li>{" "}
+                <li>or a listing location,</li>
               </ul>{" "}
             </li>{" "}
             <li>
