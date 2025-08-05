@@ -34,9 +34,9 @@ export default async function Home() {
       </p>
       <p>
         Since each listing’s position is fixed, we can precompute the reachable
-        listings from each vertex by traversing the downward graph in a
-        time-bounded search from each listing. This setup is embarrassingly
-        parallel, as each listing's traversal can be computed independently.
+        listings from each vertex by traversing the downward graph in a time
+        bounded search from each listing. This setup is embarrassingly parallel,
+        as each listing's traversal can be computed independently.
       </p>
       <CodeBlock
         lang="py"

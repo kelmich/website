@@ -9,7 +9,7 @@ export default function ProjectProposal() {
       <h2>Abstract</h2>
       <p>
         Commute time is a critical but underrepresented factor in online real
-        estate search platforms. While existing systems offer location-based
+        estate search platforms. While existing systems offer location based
         filtering via radius constraints or isochrone maps, they fail to provide
         exact travel times for individual listings. We address this gap by
         introducing efficient algorithms to compute and filter real estate
@@ -21,8 +21,8 @@ export default function ProjectProposal() {
         algorithms: Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full
         precomputation, Contraction Hierarchies, and Hub Labeling, to this use
         case. Each method is analyzed both theoretically in terms of runtime and
-        memory requirements, and empirically through real-world benchmarks on
-        urban road network data. Our results highlight trade-offs between
+        memory requirements, and empirically through real world benchmarks on
+        urban road network data. Our results highlight tradeoffs between
         preprocessing time, query efficiency, and memory usage, and demonstrate
         practical strategies for enabling commute time based filtering at
         interactive speeds in real estate platforms.
@@ -39,12 +39,12 @@ export default function ProjectProposal() {
         For many individuals, commute time is a decisive factor in choosing a
         residence. The absence of this feature forces users to manually estimate
         or calculate commute times for each property, which is both inefficient
-        and error-prone.
+        and error prone.
       </p>
       <p>
         Given the increasing availability of geospatial and transportation data,
-        incorporating commute-time-based filtering could greatly enhance user
-        experience and decision-making. Despite its clear utility, no satisfying
+        incorporating commute time based filtering could greatly enhance user
+        experience and decision making. Despite its clear utility, no satisfying
         solution exists that supports efficient filtering by commute time in an
         online setting.
       </p>
@@ -65,7 +65,7 @@ export default function ProjectProposal() {
           >
             Flatfox
           </a>{" "}
-          uses a radius-based approach to filter locations based on the user's
+          uses a radius based approach to filter locations based on the user's
           desired radius of interest. A user sets a starting point and a radius,
           and the system filters locations within that radius. This method is
           intuitive and easy to use, but as can be seen by the next method, it
@@ -88,10 +88,10 @@ export default function ProjectProposal() {
           precomputes all regions of the map that are reachable within a certain
           time from a given point. This method, commonly referred to as
           isochrone maps <InlineCitation citation={Allen2018} page={2} />, is
-          more accurate than radius-based filtering, as it takes into account
+          more accurate than radius based filtering, as it takes into account
           the actual travel time between locations. As can be seen in the image
           below, the isochrone map provides a more accurate representation of
-          the reachable areas compared to the radius-based filtering.
+          the reachable areas compared to the radius based filtering.
           <img
             src="/flatfalcon/1/newhome-location-filtering.png"
             alt="Newhome Isochrone Map based location filtering"
@@ -160,7 +160,7 @@ export default function ProjectProposal() {
         </li>{" "}
         <li>
           {" "}
-          A travel-time function{" "}
+          A travel time function{" "}
           <InlineMath math="t: V \times V \to \mathbb{N}_0" /> defined as:{" "}
           <DisplayMath
             math={`t(x, y) := \\min_{r: x \\to y} \\sum_{e \\in r} w(e)`}

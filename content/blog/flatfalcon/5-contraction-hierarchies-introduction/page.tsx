@@ -74,7 +74,7 @@ export default async function Home() {
           Any shortest path from <InlineMath math="s" /> to{" "}
           <InlineMath math="t" /> can be represented as a sequence of edges
           where node importance first increases to a peak node{" "}
-          <InlineMath math="v^*" />, then decreases—forming a “hill-shaped” path
+          <InlineMath math="v^*" />, then decreases—forming a “hill shaped” path
           in the hierarchy.
         </li>
         <li>
@@ -107,7 +107,7 @@ export default async function Home() {
           only downward edges.
         </li>
         <li>
-          The searches meet at the highest-ranked node along the shortest path.
+          The searches meet at the highest ranked node along the shortest path.
         </li>
       </ol>
       <CodeBlock

@@ -33,9 +33,9 @@ export const ContractedGraph = () => {
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
 
-          { from: "B", to: "C", weight: 6, data: { variant: "primary" } },
-          { from: "E", to: "C", weight: 7, data: { variant: "primary" } },
-          { from: "E", to: "D", weight: 9, data: { variant: "primary" } },
+          { from: "E", to: "A", weight: 6, data: { variant: "primary" } },
+          { from: "A", to: "D", weight: 3, data: { variant: "primary" } },
+          { from: "D", to: "A", weight: 9, data: { variant: "primary" } },
         ],
         () => {
           return { variant: "secondary" };
@@ -49,7 +49,6 @@ export const ContractedGraph = () => {
       <GraphVisualizer
         graph={initialGraph}
         id="contractedGraphWithAddedEdges"
-        edgeBendAmount={0.15}
       />
     </div>
   );

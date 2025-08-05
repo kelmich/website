@@ -41,7 +41,7 @@ export default async function Page() {
         Hierarchies is much more interesting when some limited assumptions about
         the graph can be made. For instance, contraction hierarchies provides no
         asymptotic improvement over classical routing algorithms on dense graphs
-        such as the complete graph. However, real-world road networks exhibit
+        such as the complete graph. However, real world road networks exhibit
         special structure that contraction hierarchies can exploit. One
         formalization of this structure is the concept of Highway Dimension,
         introduced by <InlineCitation citation={Abraham2016} page={6} />.
@@ -132,7 +132,7 @@ export default async function Page() {
         approach. It assigns each vertex an importance score based on local
         graph structure and connectivity. This method achieves high performance
         in practice and aligns with the observed efficiency of contraction
-        hierarchies in real-world road networks.
+        hierarchies in real world road networks.
       </p>
     </>
   );

@@ -15,7 +15,7 @@ export default async function Home() {
         results. This method ensures that the answer to any valid query can be
         retrieved in optimal time via a simple lookup. Although the approach
         demands considerable computational and memory resources during the setup
-        phase, its query-time performance is exceptional.
+        phase, its query time performance is exceptional.
       </p>
 
       <p>
@@ -88,7 +88,7 @@ export default async function Home() {
       </p>
 
       <p>
-        To illustrate this with a real-world example, consider New York City,
+        To illustrate this with a real world example, consider New York City,
         where there are approximately 17,000 listings. The graph representing
         the city occupies approximately 3.6MB of memory. Storing the shortest
         path information for each listing yields a total memory requirement of{" "}

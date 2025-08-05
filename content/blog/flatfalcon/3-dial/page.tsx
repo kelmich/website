@@ -23,7 +23,7 @@ export default async function Home() {
         In our setting, we are interested in shortest paths <b>to</b> the query
         point from all possible listing locations, but only up to a fixed
         maximum travel time budget <InlineMath math="B" />. Dial&apos;s
-        algorithm is well-suited for this scenario because we do not need to
+        algorithm is well suited for this scenario because we do not need to
         explore beyond this travel time, and the use of buckets allows for fast
         access to the next node to visit.
       </p>
@@ -72,7 +72,7 @@ export default async function Home() {
       <p>
         Importantly, this improvement hinges on the assumption that edge weights
         and the budget <InlineMath math="B" /> are reasonably small, which holds
-        in our real-world application. For unbounded edge weights or unbounded
+        in our real world application. For unbounded edge weights or unbounded
         time budgets <InlineMath math="B" />, Dial&apos;s algorithm is not
         applicable.
       </p>

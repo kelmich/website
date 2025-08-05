@@ -14,7 +14,7 @@ export default async function Home() {
       <p>
         A natural starting point is to use Dijkstra&apos;s algorithm, which
         computes the shortest paths from a source node to all other nodes in a
-        graph with non-negative edge weights. In our setting, we are interested
+        graph with non negative edge weights. In our setting, we are interested
         in the shortest paths <b>to</b> the query point from all possible
         listing locations. To achieve this, we adapt Dijkstra&apos;s algorithm
         to explore <b>incoming</b> edges.
