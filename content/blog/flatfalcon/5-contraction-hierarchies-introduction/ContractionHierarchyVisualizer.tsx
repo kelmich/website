@@ -15,16 +15,16 @@ export const ContractionHierarchyVisualizer = () => {
     () =>
       new Graph<VisualizationNodeData, VisualizationEdgeData>(
         [
-          { id: "A", data: { x: 0, y: 0, variant: "primary" } },
+          { id: "A", data: { x: -50, y: -50, variant: "secondary" } },
           {
             id: "B",
-            data: { x: 150, y: 0, variant: "secondary" },
+            data: { x: 200, y: -50, variant: "secondary" },
           },
-          { id: "C", data: { x: 0, y: 200, variant: "secondary" } },
-          { id: "D", data: { x: 150, y: 200, variant: "secondary" } },
+          { id: "C", data: { x: -50, y: 250, variant: "secondary" } },
+          { id: "D", data: { x: 200, y: 250, variant: "secondary" } },
           {
             id: "E",
-            data: { x: 300, y: 100, variant: "secondary" },
+            data: { x: 400, y: 100, variant: "secondary" },
           },
         ],
         [

@@ -4,7 +4,7 @@
 result = []
 for (l, dist) in LookupTable[q]:
     if dist ≤ b:
-        result.append(l)
+        result.append((l, dist))
     else:
         break
 

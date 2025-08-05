@@ -6,7 +6,7 @@
 for v in V:
     down_labels[v] = {}  # Initialize empty label for each vertex
 
-for listing in parallel(listings):
+parallel for listing in listings:
     for v in V:
         d[v] = ∞
     d[listing] = 0

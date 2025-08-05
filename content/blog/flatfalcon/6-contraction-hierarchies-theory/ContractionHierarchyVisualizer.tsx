@@ -89,7 +89,7 @@ export const ContractionNightmare = () => {
       <div className="flex flex-col">
         <GraphVisualizer
           graph={graph}
-          id="contractionHierarchy"
+          id="contractionHierarchyNighmare"
           edgeBendAmount={0.1}
         />
       </div>
@@ -175,7 +175,7 @@ export const ContractionDream = () => {
       <div className="flex flex-col">
         <GraphVisualizer
           graph={graph}
-          id="contractionHierarchy"
+          id="contractionHierarchyDream"
           edgeBendAmount={0.1}
         />
       </div>

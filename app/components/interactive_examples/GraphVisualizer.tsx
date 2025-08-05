@@ -143,8 +143,12 @@ const GraphVisualizer: React.FC<
             const mx = (x1 + x2) / 2;
             const my = (y1 + y2) / 2;
 
-            const cx = mx - dy * edgeBendAmount;
-            const cy = my + dx * edgeBendAmount;
+            const length = Math.hypot(dx, dy);
+            const offsetX = (-dy / length) * edgeBendAmount * length;
+            const offsetY = (dx / length) * edgeBendAmount * length;
+
+            const cx = mx + offsetX;
+            const cy = my + offsetY;
 
             const dx1 = 2 * (cx - x1);
             const dy1 = 2 * (cy - y1);

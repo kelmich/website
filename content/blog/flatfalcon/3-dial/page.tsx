@@ -19,14 +19,6 @@ export default async function Home() {
         significant performance gain in both theoretical and practical terms
         when the query budget <InlineMath math="B" /> is small.
       </p>
-      <p>
-        In our setting, we are interested in shortest paths <b>to</b> the query
-        point from all possible listing locations, but only up to a fixed
-        maximum travel time budget <InlineMath math="B" />. Dial&apos;s
-        algorithm is well suited for this scenario because we do not need to
-        explore beyond this travel time, and the use of buckets allows for fast
-        access to the next node to visit.
-      </p>
       <h3>Algorithm Description</h3>
       <p>
         The algorithm maintains an array of buckets indexed by distance. Each

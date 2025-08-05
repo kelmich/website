@@ -24,7 +24,10 @@ export default async function Home() {
       <p>
         The algorithm <InlineCitation citation={Dijkstra1959} page={270} />{" "}
         maintains a priority queue of nodes ordered by their tentative distance
-        to the query point. The key steps are:
+        to the query point. It iteratively selects the node with the smallest
+        tentative distance and updates its neighbors if a shorter path is found.
+        This approach guarantees that each node is settled exactly once with its
+        shortest path distance from the query node. The key steps are:
       </p>
 
       <CodeBlock
@@ -35,7 +38,8 @@ export default async function Home() {
       <p>
         Note that this version explores <b>incoming edges</b> at each step,
         which differs from the standard formulation that explores outgoing
-        edges.
+        edges. We do this because we are interested in the time it takes to
+        navigate from a listing to our query point.
       </p>
 
       <p>

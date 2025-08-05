@@ -10,13 +10,12 @@ export default async function Home() {
       <h2>Complete Precomputation</h2>
 
       <p>
-        In pursuit of optimal query performance, one approach stands out for its
-        speed at query time: complete precomputation of all possible query
-        results. This method ensures that the answer to any valid query can be
-        retrieved in optimal time via a simple lookup. Although the approach
-        demands considerable computational and memory resources during the setup
-        phase, its query time performance is exceptional.
+        One approach to achieving fast query times is complete precomputation of
+        all possible query results. With this method, answers to valid queries
+        can be retrieved efficiently through simple lookups.
       </p>
+
+      <h3>Algorithm Description</h3>
 
       <p>
         A significant advantage of this approach is the inherent parallelism in
@@ -28,7 +27,6 @@ export default async function Home() {
         <InlineMath math="V" /> is the total number of vertices in the graph.
       </p>
 
-      <h3>Algorithm Description</h3>
       <p>
         The setup phase of the FullPrecompute approach computes the shortest
         path distance from each listing to all reachable vertices in the graph.
@@ -61,11 +59,13 @@ export default async function Home() {
         the time complexity for one listing is{" "}
         <InlineMath math="\mathcal{O}((V + E) \log V)" />, where{" "}
         <InlineMath math="V" /> is the number of vertices and{" "}
-        <InlineMath math="E" /> is the number of edges. For{" "}
-        <InlineMath math="L" /> listings, the total setup time is{" "}
-        <InlineMath math="\mathcal{O}(L \cdot (V + E) \log V)" />. Note that
-        this step is highly parallelizable, and can be reduced by a factor of{" "}
-        <InlineMath math="\frac{1}{\text{num\_threads}}" />.
+        <InlineMath math="E" /> is the number of edges. The sorting of the
+        results table takes <InlineMath math="\mathcal{O}(L \cdot \log L)" />
+        . For <InlineMath math="L" /> listings, the total setup time is{" "}
+        <InlineMath math="\mathcal{O}(L \cdot (V + E) \log V)" /> (remember that{" "}
+        <InlineMath math="L \subseteq V" />
+        ). Note that this step is highly parallelizable, and can be reduced by a
+        factor of <InlineMath math="\frac{1}{\text{num\_threads}}" />.
       </p>
 
       <p>

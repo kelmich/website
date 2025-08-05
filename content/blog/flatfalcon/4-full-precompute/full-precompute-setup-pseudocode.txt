@@ -6,5 +6,5 @@ parallel for each listing l in L:
     for each vertex v in V:
         LookupTable[v].append((l, distance_map[v]))
 
-for each vertex v in V:
+parallel for each vertex v in V:
     sort LookupTable[v] by distance ascending

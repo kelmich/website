@@ -36,7 +36,14 @@ export default async function Home() {
       <ContractionHierarchyListingSetupVisualizer />
       <p>Here is an example of how a single up label can be computed</p>
       <ContractionHierarchyListingUpSetupVisualizer />
-      <p>The query algorithm proceeds as follows:</p>
+      <p>
+        Once the hub labels have been precomputed, queries can be answered
+        efficiently by intersecting the upward label of the query node with the
+        downward labels of the hubs it reaches. This process leverages the
+        triangle inequality and the cover property of hub labels, which
+        guarantees that for any source-target pair, there exists at least one
+        common hub on a shortest path between them.
+      </p>
       <CodeBlock
         lang="py"
         filepath="./content/blog/flatfalcon/8-hub-labels/query-pseudocode.txt"

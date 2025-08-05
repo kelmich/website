@@ -82,8 +82,7 @@ export default async function Home() {
       <p>
         Suppose we have built a contraction hierarchy as described in the
         previous chapter, and the graph has a low highway dimension{" "}
-        <InlineMath math="h" />. In this case, the time to compute all the
-        labels is
+        <InlineMath math="h" />. In this case, the time to compute labels is{" "}
         <InlineMath math="\mathcal{O}(L \cdot (h \cdot \log h \cdot \log D)^2)" />
         , where <InlineMath math="L" /> is the number of listings,{" "}
         <InlineMath math="h" /> is the highway dimension, and{" "}
