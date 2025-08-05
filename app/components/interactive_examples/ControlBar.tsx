@@ -7,7 +7,11 @@ interface Props<T> {
 }
 
 export const ControlBar = <T,>(props: Props<T>) => {
-  const generatorRef = useRef(props.executorFactory().run());
+  const generatorRef = useRef<Generator<
+    AlgorithmStep<T>,
+    void,
+    unknown
+  > | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const [isRunning, setIsRunning] = useState(false);
@@ -16,14 +20,16 @@ export const ControlBar = <T,>(props: Props<T>) => {
   const { executorFactory, onStep } = props;
 
   const handleStep = useCallback(() => {
-    const step = generatorRef.current.next();
-    if (!step.done) {
-      onStep(step.value);
-    }
-
-    if (step.done || step.value.completed) {
-      setIsRunning(false);
-      setHasFinished(true);
+    // should not be null
+    if (generatorRef.current !== null) {
+      const step = generatorRef.current.next();
+      if (!step.done) {
+        onStep(step.value);
+      }
+      if (step.done || step.value.completed) {
+        setIsRunning(false);
+        setHasFinished(true);
+      }
     }
   }, [onStep]);
 
@@ -58,6 +64,7 @@ export const ControlBar = <T,>(props: Props<T>) => {
   }, [isRunning, handleStep]);
 
   useEffect(() => {
+    generatorRef.current = props.executorFactory().run();
     handleReset(); // Initial reset
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
