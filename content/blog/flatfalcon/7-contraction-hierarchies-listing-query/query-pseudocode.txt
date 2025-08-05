@@ -15,7 +15,6 @@ queue.insert(s, priority=0)
 while not queue.is_empty():
     v = queue.extract_min()
 
-    # Visit function: update listing times using down_labels[v]
     for (listing, t_v_l) in down_labels[v]:
         time_via_v = d[v] + t_v_l
         if listing not in result or time_via_v < result[listing]:
