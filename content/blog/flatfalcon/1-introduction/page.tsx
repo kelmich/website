@@ -9,7 +9,7 @@ export default function ProjectProposal() {
       <h2>Abstract</h2>
       <p>
         Commute time is a critical but underrepresented factor in online real
-        estate search platforms. While existing systems offer location based
+        estate search platforms. While existing systems offer location-based
         filtering via radius constraints or isochrone maps, they fail to provide
         exact travel times for individual listings. We address this gap by
         introducing efficient algorithms to compute and filter real estate
@@ -17,15 +17,15 @@ export default function ProjectProposal() {
         specified time budget. Formally, we model the road network as a weighted
         graph and aim to compute, for a query point and time budget, all
         listings that are reachable along the fastest paths, along with their
-        precise travel times. We adapt and evaluate a range of shortest path
-        algorithms: Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full
-        precomputation, Contraction Hierarchies, and Hub Labeling, to this use
-        case. Each method is analyzed both theoretically in terms of runtime and
-        memory requirements, and empirically through real world benchmarks on
-        urban road network data. Our results highlight tradeoffs between
-        preprocessing time, query efficiency, and memory usage, and demonstrate
-        practical strategies for enabling commute time based filtering at
-        interactive speeds in real estate platforms.
+        precise travel times. Our contributions are both theoretical and
+        practical: we adapt and evaluate a range of shortest path algorithms:
+        Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full precomputation,
+        Contraction Hierarchies, and Hub Labeling, to support queries returning
+        travel times from any listing to a fixed query location. Our results
+        highlight both theoretical and practical trade-offs between
+        preprocessing time, query efficiency, and memory usage, and provide
+        concrete guidance for achieving fast queries in real estate platforms
+        while balancing preprocessing cost and memory footprint.
       </p>
       <h2>Related Work</h2>
       <p>
