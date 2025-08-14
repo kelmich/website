@@ -12,20 +12,24 @@ export default function ProjectProposal() {
         estate search platforms. While existing systems offer location-based
         filtering via radius constraints or isochrone maps, they fail to provide
         exact travel times for individual listings. We address this gap by
-        introducing efficient algorithms to compute and filter real estate
+        developing efficient algorithms that compute and filter real estate
         listings based on exact commute times to a given destination within a
         specified time budget. Formally, we model the road network as a weighted
-        graph and aim to compute, for a query point and time budget, all
-        listings that are reachable along the fastest paths, along with their
-        precise travel times. Our contributions are both theoretical and
-        practical: we adapt and evaluate a range of shortest path algorithms:
-        Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full precomputation,
-        Contraction Hierarchies, and Hub Labeling, to support queries returning
-        travel times from any listing to a fixed query location. Our results
-        highlight both theoretical and practical trade-offs between
-        preprocessing time, query efficiency, and memory usage, and provide
-        concrete guidance for achieving fast queries in real estate platforms
-        while balancing preprocessing cost and memory footprint.
+        graph and compute, for a query point and time budget, all listings that
+        can reach the query point and their precise travel times. Our work makes
+        several key contributions: we extend and adapt classical shortest path
+        algorithms: Dijkstra&apos;s algorithm, Dial&apos;s algorithm, full
+        precomputation, Contraction Hierarchies, and Hub Labeling, to
+        efficiently handle queries that return travel times from any listing to
+        a fixed destination, accounting for both preprocessing constraints and
+        memory usage. We also provide a rigorous theoretical analysis of each
+        method, assessing runtime and memory requirements in the context of
+        commute-time queries. In addition, we present a detailed experimental
+        evaluation on large real world urban networks, revealing practical
+        trade-offs between preprocessing time, query speed, and memory
+        footprint. These insights demonstrate how exact commute time filtering
+        can be integrated into interactive real estate platforms while achieving
+        fast, scalable performance.
       </p>
       <h2>Related Work</h2>
       <p>
