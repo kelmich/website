@@ -1,6 +1,11 @@
 import { InlineCitation } from "@/app/components/Citation";
 import { InlineMath, DisplayMath } from "@/app/components/Math";
-import { Allen2018 } from "../references";
+import {
+  Allen2018,
+  Criterion,
+  Dimacs9thChallenge,
+  Keller2025,
+} from "../references";
 
 export default function ProjectProposal() {
   return (
@@ -165,6 +170,36 @@ export default function ProjectProposal() {
         <InlineMath math="l" /> and the travel time{" "}
         <InlineMath math="t(l, q)" />.{" "}
       </p>
+      <h2>About the Benchmarks</h2>
+      <>
+        <p>
+          The experiments were conducted using a detailed road network graph of
+          New York City provided by the{" "}
+          <InlineCitation citation={Dimacs9thChallenge} />, consisting of
+          264,346 vertices and 733,846 edges. Each vertex represents either a
+          road intersection or a potential listing location, and each edge
+          corresponds to a road segment with an associated travel time in
+          seconds.
+        </p>
+        <p>
+          For benchmarking, we designate 1% of the vertices (2,643 locations) as
+          apartment or house listings. Random vertices in the graph are selected
+          as query destinations, and each algorithm is tasked with finding all
+          listings reachable within a 60-minute commute. This setup reflects
+          realistic scenarios for commute-time based filtering in urban real
+          estate platforms.
+        </p>
+        <p>
+          For each algorithm, we report the lower 95% confidence interval, mean
+          execution time, and upper 95% confidence interval of the queries. The
+          results were calculated using the{" "}
+          <InlineCitation citation={Criterion} /> benchmarking library.
+        </p>
+        <p>
+          All algorithms were implemented in Rust, and the complete source code
+          is available on GitHub <InlineCitation citation={Keller2025} />.
+        </p>
+      </>
     </>
   );
 }
