@@ -1,0 +1,12 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G = (V, E), L                                                \\
+	 & \textbf{Output:} \;\; \text{LookupTable}[v] = \text{distance from listings to } v \\[1mm]
+
+	 & \textbf{parallel for each } l \in L:                                              \\
+	 & \quad distance\_map \gets \text{Dijkstra}(G, \text{source}=l)                     \\
+	 & \quad \textbf{for each } v \in V:                                                 \\
+	 & \quad\quad \text{append } (l, distance\_map[v]) \text{ to LookupTable}[v]         \\[1mm]
+
+	 & \textbf{parallel for each } v \in V:                                              \\
+	 & \quad \text{sort LookupTable}[v] \text{ by distance ascending}
+\end{aligned}

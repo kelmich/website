@@ -27,8 +27,16 @@ export default async function Home() {
         nodes in the current bucket and exploring their incoming edges.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/3-dial/dial-pseudocode.txt"
+        files={[
+          {
+            filepath: "./content/blog/flatfalcon/3-dial/dial.ts",
+            language: "typescript",
+          },
+          {
+            filepath: "./content/blog/flatfalcon/3-dial/dial.tex",
+            language: "latex-rendered",
+          },
+        ]}
       />
       <p>
         As in the adapted Dijkstra&apos;s algorithm, note that we explore{" "}

@@ -1,0 +1,28 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G_{\text{up}}, G_{\text{down}}, s, t                                                   \\
+	 & \textbf{Output:} \;\; \text{Shortest path distance from } s \text{ to } t                                   \\[1mm]
+
+	 & \textbf{initialize } d_{\text{up}}[v] \gets \infty, \; d_{\text{down}}[v] \gets \infty \;\; \forall v \in V \\
+	 & \textbf{initialize priority queues } Q_{\text{up}}, Q_{\text{down}}                                         \\[0.5mm]
+
+	 & d_{\text{up}}[s] \gets 0 \quad;\quad Q_{\text{up}}.\text{insert}(s, 0)                                      \\
+	 & d_{\text{down}}[t] \gets 0 \quad;\quad Q_{\text{down}}.\text{insert}(t, 0)                                  \\[1mm]
+
+	 & \textbf{while } Q_{\text{up}} \text{ and } Q_{\text{down}} \text{ not empty:}                               \\
+	 & \quad u \gets Q_{\text{up}}.\text{extract\_min}()                                                           \\
+	 & \quad \textbf{for each } v \in G_{\text{up}}[u]:                                                            \\
+	 & \quad\quad \textbf{if } d_{\text{up}}[v] > d_{\text{up}}[u] + t(u,v):                                       \\
+	 & \quad\quad\quad d_{\text{up}}[v] \gets d_{\text{up}}[u] + t(u,v)                                            \\
+	 & \quad\quad\quad Q_{\text{up}}.\text{insert\_or\_update}(v, d_{\text{up}}[v])                                \\[0.5mm]
+
+	 & \quad w \gets Q_{\text{down}}.\text{extract\_min}()                                                         \\
+	 & \quad \textbf{for each } v \in G_{\text{down}}[w]:                                                          \\
+	 & \quad\quad \textbf{if } d_{\text{down}}[v] > d_{\text{down}}[w] + t(w,v):                                   \\
+	 & \quad\quad\quad d_{\text{down}}[v] \gets d_{\text{down}}[w] + t(w,v)                                        \\
+	 & \quad\quad\quad Q_{\text{down}}.\text{insert\_or\_update}(v, d_{\text{down}}[v])                            \\[0.5mm]
+
+	 & \quad \textbf{if any node } v \text{ visited in both searches:}                                             \\
+	 & \quad\quad \text{update best path estimate via } v                                                          \\[1mm]
+
+	 & \textbf{return } \text{shortest path via best meeting node}
+\end{aligned}

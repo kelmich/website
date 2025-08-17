@@ -1,0 +1,17 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; q \text{ (query node)}, \; b \text{ (time budget)}          \\
+	 & \textbf{Output:} \;\; S = \{ (\ell, d) \;\;|\;\; \ell \in L, \; d \le b \}       \\[1mm]
+
+	 & S \gets []                                                                       \\[0.5mm]
+
+	 & \textbf{for each } (h, d_{q,h}) \in L_{\text{up}}[q]:                            \\
+	 & \quad \textbf{for each } (\ell, d_{h,\ell}) \in L_{\text{down}}[h]:              \\
+	 & \quad\quad distance \gets d_{q,h} + d_{h,\ell}                                   \\
+	 & \quad\quad \textbf{if } distance \le b:                                          \\
+	 & \quad\quad\quad \textbf{if } \ell \notin S \;\; \textbf{or } distance < S[\ell]: \\
+	 & \quad\quad\quad\quad S.\text{append}((\ell, distance))                           \\
+	 & \quad\quad \textbf{else:}                                                        \\
+	 & \quad\quad\quad \textbf{break}                                                   \\[1mm]
+
+	 & \textbf{return } S
+\end{aligned}

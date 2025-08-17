@@ -39,15 +39,20 @@ export default async function Home() {
         as each listing's traversal can be computed independently.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/setup-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath:
+              "./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/setup.tex",
+          },
+          {
+            language: "typescript",
+            filepath:
+              "./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/dagShortestPath.ts",
+          },
+        ]}
       />
       <p>Below is a small example to demonstrate the process.</p>
-      {/*<CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/dagShortestPath.ts"
-        defaultCollapsed
-      />*/}
       <ContractionHierarchyListingSetupVisualizer />
       <p>
         After preprocessing, we perform a standard CH query. However, during
@@ -56,18 +61,23 @@ export default async function Home() {
         aggregate reachable listings.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/query-pseudocode.txt"
+        files={[
+          {
+            filepath:
+              "./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/query.tex",
+            language: "latex-rendered",
+          },
+          {
+            filepath:
+              "./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx",
+            language: "typescript",
+          },
+        ]}
       />
       <p>
         This would work as follows on our small example graph starting from
         vertex C.
       </p>
-      {/*<CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/7-contraction-hierarchies-listing-query/ContractionHierarchyListingQuery.tsx"
-        defaultCollapsed
-      />*/}
       <ContractionHierarchyListingQueryVisualizer />
       <h3>Time Complexity</h3>
       <p>

@@ -1,0 +1,28 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G_{\text{up}} = (V, E_{\text{up}}), \; s \text{ (source)}                                   \\
+	 & \qquad \text{down\_labels}[v] = \{ (\text{listing}, \; \text{time\_to\_listing}) \} \;\; \forall v \in V         \\
+	 & \textbf{Output:} \;\; result[\text{listing}] = \text{shortest time from } s \text{ to listing via some } v \in V \\[1mm]
+
+	 & \textbf{for each } v \in V: \quad d[v] \gets \infty                                                              \\
+	 & d[s] \gets 0                                                                                                     \\[0.5mm]
+
+	 & result \gets \{\} \quad \text{(\;map: listing } \to \text{ shortest time\;)}                                     \\[0.5mm]
+
+	 & queue \gets \text{PriorityQueue}()                                                                               \\
+	 & queue.\text{insert}(s, 0)                                                                                        \\[1mm]
+
+	 & \textbf{while not } queue.\text{is\_empty}():                                                                    \\
+	 & \quad v \gets queue.\text{extract\_min}()                                                                        \\[0.5mm]
+
+	 & \quad \textbf{for each } (\text{listing}, \; t_{v,l}) \in \text{down\_labels}[v]:                                \\
+	 & \quad\quad time\_via\_v \gets d[v] + t_{v,l}                                                                     \\
+	 & \quad\quad \textbf{if } \text{listing} \notin result \;\; \textbf{or } time\_via\_v < result[\text{listing}]:    \\
+	 & \quad\quad\quad result[\text{listing}] \gets time\_via\_v                                                        \\[0.5mm]
+
+	 & \quad \textbf{for each } (v,w) \in E_{\text{up}}:                                                                \\
+	 & \quad\quad \textbf{if } d[v] + t(v,w) < d[w]:                                                                    \\
+	 & \quad\quad\quad d[w] \gets d[v] + t(v,w)                                                                         \\
+	 & \quad\quad\quad queue.\text{insert}(w, d[w])                                                                     \\[1mm]
+
+	 & \textbf{return } result
+\end{aligned}

@@ -2,11 +2,15 @@ import type { BundledLanguage } from "shiki";
 import { codeToHtml } from "shiki";
 import { readFileSync } from "fs";
 import { CodeBlockClient } from "./CodeBlock.client";
+import katex from "katex";
+
+export interface CodeFile {
+  filepath: string;
+  language: BundledLanguage | "latex-rendered";
+}
 
 interface Props {
-  filepath: string;
-  lang: BundledLanguage;
-  defaultCollapsed?: boolean;
+  files: CodeFile[];
 }
 
 function extractInterestingCode(content: string): string {
@@ -38,19 +42,36 @@ function removeLeadingWhitespace(code: string): string {
     .trim();
 }
 
-export async function CodeBlock({
-  filepath,
-  lang,
-  defaultCollapsed = false,
-}: Props) {
-  const fileContent = readFileSync(filepath, "utf8");
-  const interestingPart = extractInterestingCode(fileContent);
-  const cleanedCode = removeLeadingWhitespace(interestingPart);
+export async function CodeBlock({ files }: Props) {
+  const renderedCodeFiles = await Promise.all(
+    files.map(async ({ filepath, language }) => {
+      const fileContent = readFileSync(filepath, "utf8");
+      const interestingPart = extractInterestingCode(fileContent);
+      const cleanedCode = removeLeadingWhitespace(interestingPart);
 
-  const html = await codeToHtml(cleanedCode, {
-    lang,
-    theme: "github-light",
-  });
+      let html;
+      switch (language) {
+        case "latex-rendered":
+          html = katex.renderToString(cleanedCode, {
+            throwOnError: false,
+            displayMode: false,
+          });
+          break;
+        default:
+          html = await codeToHtml(cleanedCode, {
+            lang: language,
+            theme: "github-light",
+          });
+          break;
+      }
 
-  return <CodeBlockClient html={html} defaultCollapsed={defaultCollapsed} />;
+      return {
+        filepath,
+        language,
+        html,
+      };
+    }),
+  );
+
+  return <CodeBlockClient renderedCodeFiles={renderedCodeFiles} />;
 }

@@ -36,9 +36,21 @@ export default async function Home() {
       </p>
 
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/4-full-precompute/full-precompute-setup-pseudocode.txt"
+        files={[
+          {
+            filepath:
+              "./content/blog/flatfalcon/4-full-precompute/FullPrecomputeVisualizer.tsx",
+            language: "typescript",
+          },
+          {
+            filepath:
+              "./content/blog/flatfalcon/4-full-precompute/full-precompute-setup.tex",
+            language: "latex-rendered",
+          },
+        ]}
       />
+
+      <FullPrecomputeVisualizer />
 
       <p>
         At query time, we read the lookup table until the travel time exceeds
@@ -46,11 +58,14 @@ export default async function Home() {
       </p>
 
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/4-full-precompute/full-precompute-query-pseudocode.txt"
+        files={[
+          {
+            filepath:
+              "./content/blog/flatfalcon/4-full-precompute/full-precompute-query.tex",
+            language: "latex-rendered",
+          },
+        ]}
       />
-
-      {/*<FullPrecomputeVisualizer />*/}
 
       <h3>Time Complexity</h3>
       <p>

@@ -1,30 +1,59 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CodeFile } from "./CodeBlock";
+import clsx from "clsx";
+import { BundledLanguage } from "shiki";
 
-interface Props {
+interface RenderedCodeFile extends CodeFile {
   html: string;
-  defaultCollapsed?: boolean;
 }
 
-export function CodeBlockClient({ html, defaultCollapsed = false }: Props) {
-  const [collapsed, setCollapsed] = useState(defaultCollapsed);
+interface Props {
+  renderedCodeFiles: RenderedCodeFile[];
+}
+
+export function CodeBlockClient({ renderedCodeFiles }: Props) {
+  const [chosenFile, setChosenFile] = useState<RenderedCodeFile | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("codeblock-mode");
+    const foundFile =
+      saved && renderedCodeFiles.find((file) => file.language === saved);
+    setChosenFile(foundFile || renderedCodeFiles[0] || null);
+  }, [renderedCodeFiles]);
+
+  useEffect(() => {
+    if (chosenFile) {
+      localStorage.setItem("codeblock-mode", chosenFile.language);
+    }
+  }, [chosenFile]);
 
   return (
-    <div className="border divide-y">
-      {defaultCollapsed && (
-        <div
-          onClick={() => setCollapsed(!collapsed)}
-          className="cursor-pointer bg-background px-4 py-2 text-sm text-background-foreground hover:bg-muted hover:text-muted-foreground"
-        >
-          {collapsed ? "Show code" : "Hide code"}
+    <div className="border divide-y bg-background">
+      {renderedCodeFiles.length > 1 && (
+        <div className="flex flex-row p-4 space-x-4">
+          {renderedCodeFiles.map((file) => {
+            return (
+              <button
+                key={file.filepath}
+                className={clsx(
+                  "button",
+                  file.language !== chosenFile?.language && "secondary",
+                )}
+                onClick={() => setChosenFile(file)}
+              >
+                {file.language !== "latex-rendered"
+                  ? file.language
+                  : "pseudocode"}
+              </button>
+            );
+          })}
         </div>
       )}
-      {!collapsed && (
-        <div
-          dangerouslySetInnerHTML={{ __html: html }}
-          className="p-4 overflow-auto bg-background"
-        />
-      )}
+      <div
+        dangerouslySetInnerHTML={{ __html: chosenFile?.html || "" }}
+        className="p-4 overflow-auto"
+      />
     </div>
   );
 }

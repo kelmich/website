@@ -31,8 +31,16 @@ export default async function Home() {
       </p>
 
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/2-dijkstra/dijkstra-pseudocode.txt"
+        files={[
+          {
+            filepath: "./content/blog/flatfalcon/2-dijkstra/dijkstra.ts",
+            language: "typescript",
+          },
+          {
+            filepath: "./content/blog/flatfalcon/2-dijkstra/dijkstra.tex",
+            language: "latex-rendered",
+          },
+        ]}
       />
 
       <p>

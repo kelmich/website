@@ -82,7 +82,7 @@ export const ControlBar = <T,>(props: Props<T>) => {
             </button>
           </>
         ) : (
-          <p>Reset to run again.</p>
+          <div>Reset to run again.</div>
         )}
       </div>
       <div className="flex flex-row items-center space-x-4">

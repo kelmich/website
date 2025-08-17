@@ -97,7 +97,7 @@ ul {
 }
 
 p {
-    @apply text-base leading-relaxed;
+    @apply text-base leading-relaxed mb-8;
 }
 
 h1 {
@@ -105,15 +105,19 @@ h1 {
 }
 
 h2 {
-    @apply text-2xl font-semibold mt-8 mb-2;
+    @apply text-2xl font-semibold my-2;
 }
 
 h3 {
-    @apply text-xl font-semibold mt-8 mb-2;
+    @apply text-xl font-semibold my-2;
 }
 
 button {
     @apply bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90 transition-colors hover:cursor-pointer;
+}
+
+button.secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90;
 }
 
 input {

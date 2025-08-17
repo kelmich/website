@@ -39,22 +39,32 @@ export default async function Home() {
         <InlineMath math="t(u, v) + t(v, w)" />.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/full-contract-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath:
+              "./content/blog/flatfalcon/5-contraction-hierarchies-introduction/full-contract.tex",
+          },
+        ]}
       />
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contract-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath:
+              "./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contract.tex",
+          },
+          {
+            language: "typescript",
+            filepath:
+              "./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contractor.ts",
+          },
+        ]}
       />
       <p>
         Below is an example of contracting a single node (C) and the shortcuts
         added as a result:
       </p>
-      {/*<CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/contractor.ts"
-        defaultCollapsed
-      />*/}
       <ContractionVisualizer />
       <p>
         This contraction process is repeated for all nodes in increasing order
@@ -111,8 +121,13 @@ export default async function Home() {
         </li>
       </ol>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/5-contraction-hierarchies-introduction/query-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath:
+              "./content/blog/flatfalcon/5-contraction-hierarchies-introduction/query.tex",
+          },
+        ]}
       />
       <p>
         This bidirectional search over the contracted graph is extremely fast.

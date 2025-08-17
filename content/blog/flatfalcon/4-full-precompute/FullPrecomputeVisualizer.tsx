@@ -46,9 +46,9 @@ export const FullPrecomputeVisualizer = () => {
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
-        ]
+        ],
       ),
-    []
+    [],
   );
   const initialGraphB = useMemo(
     () =>
@@ -78,17 +78,17 @@ export const FullPrecomputeVisualizer = () => {
 
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
-        ]
+        ],
       ),
-    []
+    [],
   );
   const [graphA, setGraphA] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(
-      initialGraphA
+      initialGraphA,
     );
   const [graphB, setGraphB] =
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(
-      initialGraphB
+      initialGraphB,
     );
   const [stepData, setStepData] = useState<AlgorithmStep<
     [DijkstraState, DijkstraState]
@@ -141,10 +141,12 @@ export const FullPrecomputeVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
+          // kelmich-highlight-start
           return new ConcurrentVisualizer<DijkstraState, DijkstraState>(
             new Dijkstra(initialGraphA, "B", false),
-            new Dijkstra(initialGraphB, "E", false)
+            new Dijkstra(initialGraphB, "E", false),
           );
+          // kelmich-highlight-end
         }}
         onStep={setStepData}
       />

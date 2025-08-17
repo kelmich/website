@@ -27,8 +27,12 @@ export default async function Home() {
         <InlineMath math="B" />.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/8-hub-labels/construction-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath: "./content/blog/flatfalcon/8-hub-labels/construction.tex",
+          },
+        ]}
       />
       <p>
         Here is an example of how the down labels can be computed in parallel
@@ -45,8 +49,12 @@ export default async function Home() {
         common hub on a shortest path between them.
       </p>
       <CodeBlock
-        lang="py"
-        filepath="./content/blog/flatfalcon/8-hub-labels/query-pseudocode.txt"
+        files={[
+          {
+            language: "latex-rendered",
+            filepath: "./content/blog/flatfalcon/8-hub-labels/query.tex",
+          },
+        ]}
       />
       <p>and might look like this on a small example graph</p>
       <HubLabelVisualizer />
