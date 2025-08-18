@@ -98,7 +98,7 @@ export default async function Home() {
         Summing all components, the overall space complexity of Dial&apos;s
         algorithm is <InlineMath math="\mathcal{O}(V + E + B)" />.
       </p>
-      <h2>Empirical Performance</h2>
+      <h3>Empirical Performance</h3>
       <p>
         In practice, Dial&apos;s algorithm significantly reduces query time
         compared to Dijkstra&apos;s algorithm. The bar chart below shows the

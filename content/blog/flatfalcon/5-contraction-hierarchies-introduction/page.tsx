@@ -79,6 +79,7 @@ export default async function Home() {
       </p>
       <ContractedGraph />
       <h3>Key Properties of the Contracted Graph</h3>
+      <p>We have:</p>
       <ol>
         <li>
           Any shortest path from <InlineMath math="s" /> to{" "}

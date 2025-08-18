@@ -35,6 +35,10 @@ export class MinHeap<T extends { id: string; weight: number }> {
     return this.heap.length;
   }
 
+  convertToList(): void {
+    return;
+  }
+
   private bubbleUp() {
     let i = this.heap.length - 1;
     while (i > 0) {

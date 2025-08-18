@@ -2,6 +2,7 @@ import { InlineMath } from "@/app/components/Math";
 import { FullPrecomputeVisualizer } from "./FullPrecomputeVisualizer";
 import { FlatfalconBarChart } from "@/content/blog/flatfalcon/results";
 import { CodeBlock } from "@/app/components/code_renderer/CodeBlock";
+import { FullPrecomputeQueryVisualizer } from "./FullPrecomputeQueryVisualizer";
 
 export default async function Home() {
   return (
@@ -61,11 +62,18 @@ export default async function Home() {
         files={[
           {
             filepath:
+              "./content/blog/flatfalcon/4-full-precompute/full-precompute-query.ts",
+            language: "typescript",
+          },
+          {
+            filepath:
               "./content/blog/flatfalcon/4-full-precompute/full-precompute-query.tex",
             language: "latex-rendered",
           },
         ]}
       />
+
+      <FullPrecomputeQueryVisualizer />
 
       <h3>Time Complexity</h3>
       <p>

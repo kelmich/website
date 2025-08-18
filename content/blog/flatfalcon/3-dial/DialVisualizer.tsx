@@ -39,9 +39,9 @@ export const DialVisualizer = () => {
           { from: "D", to: "C", weight: 2, data: { variant: "secondary" } },
           { from: "E", to: "B", weight: 1, data: { variant: "secondary" } },
           { from: "D", to: "E", weight: 1, data: { variant: "secondary" } },
-        ]
+        ],
       ),
-    []
+    [],
   );
 
   const listingNodes = initialGraph.nodes
@@ -52,7 +52,7 @@ export const DialVisualizer = () => {
     useState<Graph<VisualizationNodeData, VisualizationEdgeData>>(initialGraph);
 
   const [stepData, setStepData] = useState<AlgorithmStep<DialsState> | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -97,18 +97,18 @@ export const DialVisualizer = () => {
     <div className="flex flex-col border divide-y">
       <ControlBar
         executorFactory={() => {
-          // adjust maxDistance here if needed
           return new Dials(initialGraph, "A", 7);
         }}
         onStep={setStepData}
       />
-      <div className="flex flex-row divide-x">
+
+      <div className="flex flex-col sm:flex-row divide-y sm:divide-x sm:divide-y-0">
         <div className="flex-1 overflow-auto">
           <GraphVisualizer graph={graph} />
           <GraphLegend />
         </div>
 
-        <div className="w-[200px] overflow-auto divide-y">
+        <div className="w-full sm:w-[200px] overflow-auto divide-y">
           {stepData?.state.buckets && (
             <div className="h-8/12">
               <BucketsVisualizer

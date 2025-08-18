@@ -102,13 +102,13 @@ export const DijkstraVisualizer = () => {
         }}
         onStep={setStepData}
       />
-      <div className="flex flex-row divide-x">
+      <div className="flex flex-col sm:flex-row divide-y sm:divide-x sm:divide-y-0">
         <div className="flex-1 overflow-auto">
           <GraphVisualizer graph={graph} />
           <GraphLegend />
         </div>
 
-        <div className="w-[200px] overflow-auto divide-y">
+        <div className="w-full sm:w-[200px] overflow-auto divide-y">
           {stepData?.state.minHeap && (
             <div className="h-1/2">
               <ResultVisualizer
@@ -135,6 +135,7 @@ export const DijkstraVisualizer = () => {
           )}
         </div>
       </div>
+
       {stepData?.message && <MessageRenderer message={stepData.message} />}
     </div>
   );

@@ -8,7 +8,7 @@ import { ControlBar } from "@/app/components/interactive_examples/ControlBar";
 import { Graph } from "@/app/algorithms/graph";
 import {
   AlgorithmStep,
-  ConcurrentVisualizer,
+  ConcurrentVisualizer as Parallel,
 } from "@/app/components/interactive_examples/AlgorithmVisualizer";
 import {
   Dijkstra,
@@ -16,6 +16,7 @@ import {
 } from "@/content/blog/flatfalcon/2-dijkstra/dijkstra";
 import { GraphLegend } from "@/app/components/interactive_examples/GraphLegend";
 import { MessageRenderer } from "@/app/components/interactive_examples/MessageRenderer";
+import { MinHeap } from "@/app/algorithms/minheap";
 
 export const FullPrecomputeVisualizer = () => {
   const initialGraphA = useMemo(
@@ -142,67 +143,72 @@ export const FullPrecomputeVisualizer = () => {
       <ControlBar
         executorFactory={() => {
           // kelmich-highlight-start
-          return new ConcurrentVisualizer<DijkstraState, DijkstraState>(
-            new Dijkstra(initialGraphA, "B", false),
-            new Dijkstra(initialGraphB, "E", false),
+          const minHeaps = Object.fromEntries(
+            [...initialGraphA.nodes].map((node) => [node.id, new MinHeap()]),
           );
+          const distances = new Parallel<DijkstraState, DijkstraState>(
+            new Dijkstra(initialGraphA, "B", false, (node, weight) => {
+              minHeaps[node].insert({ id: "B", weight });
+            }),
+            new Dijkstra(initialGraphB, "E", false, (node, weight) => {
+              minHeaps[node].insert({ id: "E", weight });
+            }),
+          );
+          for (const minHeap of Object.values(minHeaps)) {
+            minHeap.convertToList();
+          }
           // kelmich-highlight-end
+          return distances;
         }}
         onStep={setStepData}
       />
       <div className="flex flex-col divide-y">
         <div className="flex-1 overflow-auto">
-          <div className="flex flex-row">
+          <div className="flex flex-col sm:flex-row">
             <GraphVisualizer graph={graphA} id="graphA" />
             <GraphVisualizer graph={graphB} id="graphB" />
           </div>
           <GraphLegend />
         </div>
-        <div className="w-full overflow-auto bg-background text-background-foreground">
-          <table className="min-w-full text-sm divide-y table-fixed">
-            <thead>
-              <tr className="bg-muted divide-x">
-                <th className="px-2 py-1 text-left w-20">From \ To</th>
-                {Array.from(initialGraphA.nodes).map((node) => (
-                  <th key={node.id} className="px-2 py-1 text-center w-20">
+        <div className="w-full overflow-auto bg-background text-background-foreground px-4 pb-4">
+          <div className="flex flex-wrap gap-6">
+            {Array.from(initialGraphA.nodes).map((node) => {
+              // Gather distances from both sources
+              const distanceFromB = stepData?.state[0].visited[node.id]?.[0];
+              const distanceFromE = stepData?.state[1].visited[node.id]?.[0];
+
+              // Create sorted list of distances
+              const distances = [
+                { source: "B", distance: distanceFromB },
+                { source: "E", distance: distanceFromE },
+              ]
+                .filter((item) => item.distance !== undefined)
+                .sort(
+                  (a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity),
+                );
+
+              return (
+                <div key={node.id} className="min-w-[120px]">
+                  <h3 className="font-bold text-center pb-8 text-lg">
                     {node.id}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              <tr className="odd:bg-background even:bg-muted divide-x">
-                <td className="px-2 py-1 font-bold">B</td>
-                {Array.from(initialGraphA.nodes).map((node) => {
-                  const weightA =
-                    stepData?.state[0].visited[node.id]?.[0] ?? "∞";
-                  return (
-                    <td
-                      key={node.id}
-                      className="px-2 py-1 text-center font-mono w-20"
-                    >
-                      {weightA}
-                    </td>
-                  );
-                })}
-              </tr>
-              <tr className="odd:bg-background even:bg-muted divide-x">
-                <td className="px-2 py-1 font-bold">E</td>
-                {Array.from(initialGraphA.nodes).map((node) => {
-                  const weightB =
-                    stepData?.state[1].visited[node.id]?.[0] ?? "∞";
-                  return (
-                    <td
-                      key={node.id}
-                      className="px-2 py-1 text-center font-mono w-20"
-                    >
-                      {weightB}
-                    </td>
-                  );
-                })}
-              </tr>
-            </tbody>
-          </table>
+                  </h3>
+                  {distances.length > 0 && (
+                    <div className="border divide-y">
+                      {distances.map((item, idx) => (
+                        <div
+                          key={idx}
+                          className="px-3 py-1.5 flex justify-between items-center"
+                        >
+                          <span className="font-medium">{item.source}:</span>
+                          <span className="font-mono">{item.distance}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
       {stepData?.message && <MessageRenderer message={stepData.message} />}

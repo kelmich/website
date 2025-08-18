@@ -13,6 +13,7 @@ export type DijkstraState = {
     parent?: string;
   }>;
   currentNode?: string;
+  startNode: string;
 };
 
 export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
@@ -26,11 +27,13 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
   private currentNode?: string;
   private startNodeId: string;
   private incoming: boolean;
+  private visitor?: (node: string, weight: number, parent?: string) => void;
 
   constructor(
     graph: Graph<unknown, unknown>,
     startNodeId: string,
     incoming: boolean,
+    visitor?: (node: string, weight: number, parent?: string) => void,
   ) {
     super();
     this.graph = graph.clone();
@@ -42,6 +45,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       parent?: string;
     }>();
     this.incoming = incoming;
+    this.visitor = visitor;
   }
 
   public getState(): DijkstraState {
@@ -49,6 +53,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
       visited: { ...this.visited },
       minHeap: this.minHeap.clone(),
       currentNode: this.currentNode,
+      startNode: this.startNodeId,
     };
   }
 
@@ -66,6 +71,7 @@ export class Dijkstra extends AlgorithmVisualizer<DijkstraState> {
 
       this.currentNode = id;
       this.visited[id] = [weight, parent];
+      this.visitor?.(id, weight, parent);
 
       for (const edge of this.graph.neighbors(id, this.incoming)) {
         const sourceId = this.incoming ? edge.to : edge.from;

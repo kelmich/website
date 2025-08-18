@@ -22,12 +22,6 @@ export function CodeBlockClient({ renderedCodeFiles }: Props) {
     setChosenFile(foundFile || renderedCodeFiles[0] || null);
   }, [renderedCodeFiles]);
 
-  useEffect(() => {
-    if (chosenFile) {
-      localStorage.setItem("codeblock-mode", chosenFile.language);
-    }
-  }, [chosenFile]);
-
   return (
     <div className="border divide-y bg-background">
       {renderedCodeFiles.length > 1 && (
@@ -40,7 +34,10 @@ export function CodeBlockClient({ renderedCodeFiles }: Props) {
                   "button",
                   file.language !== chosenFile?.language && "secondary",
                 )}
-                onClick={() => setChosenFile(file)}
+                onClick={() => {
+                  setChosenFile(file);
+                  localStorage.setItem("codeblock-mode", file.language);
+                }}
               >
                 {file.language !== "latex-rendered"
                   ? file.language

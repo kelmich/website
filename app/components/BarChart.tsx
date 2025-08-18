@@ -46,7 +46,7 @@ export default function BarChart(props: Props) {
 
   return (
     <div className="p-6 bg-background text-background-foreground border">
-      <h2 className="text-xl font-bold mb-4">{props.title}</h2>
+      <h2 className="!mt-0 text-xl font-bold pb-8">{props.title}</h2>
       <div className="space-y-4">
         {props.bars.map((b) => {
           const unit = chooseUnit(b.times.mean);

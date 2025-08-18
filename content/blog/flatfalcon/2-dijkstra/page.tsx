@@ -55,12 +55,6 @@ export default async function Home() {
         on a small graph.
       </p>
 
-      {/*<CodeBlock
-        lang="ts"
-        filepath="./content/blog/flatfalcon/2-dijkstra/dijkstra.ts"
-        defaultCollapsed
-      />*/}
-
       <DijkstraVisualizer />
 
       <h3>Time Complexity</h3>
@@ -107,7 +101,7 @@ export default async function Home() {
         space complexity is <InlineMath math="\mathcal{O}(V + E)" />.{" "}
       </p>
 
-      <h2>Empirical Performance</h2>
+      <h3>Empirical Performance</h3>
       <p>
         We benchmark this approach in our experimental setting. The bar chart
         below shows the average query time using Dijkstra’s algorithm.

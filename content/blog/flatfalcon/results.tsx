@@ -77,7 +77,6 @@ const TestingMethodologyNotes = () => (
       The tests were run on a MacBook Pro with an M1 Pro Chip (6 performance and
       2 efficiency cores) and 32GB RAM.
     </p>
-    <br />
     <p>
       The benchmark consists of querying random vertices in a graph of New York
       City provided by the <InlineCitation citation={Dimacs9thChallenge} />
@@ -85,14 +84,12 @@ const TestingMethodologyNotes = () => (
       find all listings within 60min of the queried vertex. We pick 1% of the
       vertices in the graph to be listings (2643 for the NYC graph).
     </p>
-    <br />
     <p>
       The three shown numbers per algorithm are the lower 95% confidence
       interval, mean execution time, and upper 95% confidence interval. These
       values were calculated using the <InlineCitation citation={Criterion} />{" "}
       benchmarking library.
     </p>
-    <br />
     <p>
       The shown algorithms were implemented in Rust. The entire source code can
       be found on GitHub <InlineCitation citation={Keller2025} />.
