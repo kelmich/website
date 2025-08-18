@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { CodeFile } from "./CodeBlock";
 import clsx from "clsx";
-import { BundledLanguage } from "shiki";
 
 interface RenderedCodeFile extends CodeFile {
   html: string;

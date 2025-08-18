@@ -11,8 +11,14 @@ export default function Home() {
       <main className="flex-1 grid lg:grid-cols-2 grid-cols-1">
         <div className="relative border flex flex-col items-center justify-center p-12 bg-primary text-primary-foreground">
           <p className="absolute top-1 left-1">01</p>
-          <Image
+          {/*<Image
             src="/chatgpt4-no-bg.png"
+            alt="Picture of Michael Keller"
+            width={400}
+            height={400}
+          />*/}
+          <Image
+            src="/michaelkeller3.png"
             alt="Picture of Michael Keller"
             width={400}
             height={400}

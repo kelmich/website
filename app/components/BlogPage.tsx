@@ -18,7 +18,7 @@ export type Chapter = {
 export const BlogNavigation = ({
   chapters,
   currentChapter,
-  topic,
+  // topic,
 }: {
   chapters: Chapter[];
   currentChapter: string;
