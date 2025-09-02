@@ -1,0 +1,27 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G = (V, E), \; b \text{ (time budget)}                      \\
+	 & \quad CH_{\text{down}} \text{ (downward DAG from contraction hierarchy)}         \\
+	 & \quad CH_{\text{up}} \text{ (upward DAG from contraction hierarchy)}             \\
+	 & \quad L \subseteq V \text{ (set of listings)}                                    \\[1mm]
+
+	 & \textbf{Output:} \;\; L_{\text{down}}[v] = \{ (\ell, d) \} \;\; \forall v \in V  \\
+	 & \quad\quad\quad\;\;\;\;\;\; L_{\text{up}}[v] = \{ (h, d) \} \;\; \forall v \in V \\[1mm]
+
+	 & \textbf{for each } v \in V:                                                      \\
+	 & \quad L_{\text{down}}[v] \gets []                                                \\
+	 & \quad L_{\text{up}}[v] \gets []                                                  \\[1mm]
+
+	 & \textbf{for each listing } \ell \in L:                                           \\
+	 & \quad \textbf{for each } (u, t) \in \text{Dijkstra}(\ell, CH_{\text{down}}):     \\
+	 & \quad\quad \textbf{if } t \le b:                                                 \\
+	 & \quad\quad\quad L_{\text{down}}[u].\text{append}((\ell, t))                      \\[1mm]
+
+	 & \textbf{for each } v \in V:                                                      \\
+	 & \quad \textbf{for each } (h, t) \in \text{Dijkstra}(v, CH_{\text{up}}):          \\
+	 & \quad\quad \textbf{if } t \le b:                                                 \\
+	 & \quad\quad\quad L_{\text{up}}[v].\text{append}((h, t))                           \\[1mm]
+
+	 & \textbf{for each } v \in V:                                                      \\
+	 & \quad L_{\text{down}}[v].\text{sort\_ascending}(\text{by time})                  \\
+	 & \quad L_{\text{up}}[v].\text{sort\_ascending}(\text{by time})
+\end{aligned}

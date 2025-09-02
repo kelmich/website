@@ -1,0 +1,14 @@
+\begin{aligned}
+ & \textbf{Input:} \;\; G = (V, E), v \text{ to contract}                     \\
+ & \textbf{Output:} \;\; \text{Modified } G \text{ with shortcuts added, } \text{list of shortcuts} \\[1mm]
+
+ & \textbf{function } \text{contract\_node}(G, v, shortcuts):                  \\
+ & \quad \textbf{for each } u \in G.\text{neighbors}(v):                       \\
+ & \quad\quad \textbf{for each } w \in G.\text{neighbors}(v):                  \\
+ & \quad\quad\quad \textbf{if } u \neq w \textbf{ and } \text{shortestPathViaContractNode}(u, w, v): \\
+ & \quad\quad\quad\quad weight \gets t(u, v) + t(v, w)                        \\
+ & \quad\quad\quad\quad G.\text{add\_edge}(u, w, \text{weight}=weight)       \\
+ & \quad\quad\quad\quad \text{append } (u, w, weight) \text{ to shortcuts}    \\[0.5mm]
+
+ & \quad G.\text{remove\_node}(v)
+\end{aligned}

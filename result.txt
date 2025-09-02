@@ -1,0 +1,427 @@
+warning: unused import: `lazydijkstra::hub_labels_old::HubLabelSearcher as OldHubLabelSearcher`
+ --> benches/benchmark.rs:7:5
+  |
+7 | use lazydijkstra::hub_labels_old::HubLabelSearcher as OldHubLabelSearcher;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `lazydijkstra::sparse::SparseSearcher`
+  --> benches/benchmark.rs:10:5
+   |
+10 | use lazydijkstra::sparse::SparseSearcher;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused return value of `Instant::elapsed` that must be used
+  --> benches/benchmark.rs:32:5
+   |
+32 |     start.elapsed();
+   |     ^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_must_use)]` on by default
+help: use `let _ = ...` to ignore the resulting value
+   |
+32 |     let _ = start.elapsed();
+   |     +++++++
+
+warning: `lazydijkstra` (bench "benchmark") generated 4 warnings (run `cargo fix --bench "benchmark"` to apply 3 suggestions)
+    Finished `bench` profile [optimized] target(s) in 1.83s
+     Running unittests src/lib.rs (target/release/deps/lazydijkstra-a1a9d211d0fee4cd)
+
+running 15 tests
+test basic::tests::test_basic_searcher_manual ... ignored
+test contraction_hierarchies::tests::test_contraction_hierarchies_searcher_automatic ... ignored
+test contraction_hierarchies::tests::test_contraction_hierarchies_searcher_manual ... ignored
+test contraction_hub_labels::tests::test_contraction_hub_label_searcher_automatic ... ignored
+test contraction_hub_labels::tests::test_contraction_hub_label_searcher_manual ... ignored
+test dial::tests::test_dial_searcher_automatic ... ignored
+test dial::tests::test_dial_searcher_manual ... ignored
+test dijkstra::tests::test_early_stopping_dijkstra_searcher_automatic ... ignored
+test dijkstra::tests::test_early_stopping_dijkstra_searcher_manual ... ignored
+test hub_labels_old::tests::test_hub_label_searcher_automatic ... ignored
+test hub_labels_old::tests::test_hub_label_searcher_manual ... ignored
+test smart_stupid::tests::test_smart_stupid_searcher_automatic ... ignored
+test smart_stupid::tests::test_smart_stupid_searcher_manual ... ignored
+test sparse::tests::test_sparse_searcher_automatic ... ignored
+test sparse::tests::test_sparse_searcher_manual ... ignored
+
+test result: ok. 0 passed; 0 failed; 15 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/benchmark.rs (target/release/deps/benchmark-43493b28f2c8b1a8)
+Building Graph
+Graph loaded with 264346 nodes and 733846 edges.
+Graph Built
+Number of listings: 2643
+Construction Time: 2.69225ms
+DijkstraSearcher/DijkstraSearcher/query
+                        time:   [28.083 ms 28.242 ms 28.411 ms]
+                        change: [-19.083% -12.462% -7.0016%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 5 outliers among 100 measurements (5.00%)
+  5 (5.00%) high mild
+
+Construction Time: 1.368166ms
+DialSearcher/DialSearcher/query
+                        time:   [10.271 ms 10.310 ms 10.352 ms]
+                        change: [-5.7981% -4.9792% -4.1293%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 2 outliers among 100 measurements (2.00%)
+  1 (1.00%) high mild
+  1 (1.00%) high severe
+
+^C⏎                                                                                                                                                                                                                                                             michaelkeller@MBP-2 ~/s/p/lazydijkstra (main) [SIGINT]> clear
+
+michaelkeller@MBP-2 ~/s/p/lazydijkstra (main)> caffeinate -i cargo bench
+warning: unused variable: `n`
+   --> src/contraction_hierarchies.rs:146:13
+    |
+146 |         for n in graph.node_indices() {
+    |             ^ help: if this is intentional, prefix it with an underscore: `_n`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: fields `g`, `down_graph`, and `listing_nodes` are never read
+  --> src/contraction_hierarchies.rs:14:5
+   |
+13 | pub struct ContractionHierarchiesSearcher {
+   |            ------------------------------ fields in this struct
+14 |     g: DiGraph<NodeData, usize>,
+   |     ^
+15 |     down_graph: DiGraph<NodeData, usize>,
+   |     ^^^^^^^^^^
+16 |     up_graph: DiGraph<UpNodeData, usize>,
+17 |     listing_nodes: Vec<NodeIndex>,
+   |     ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `lazydijkstra` (lib) generated 2 warnings
+   Compiling lazydijkstra v0.1.0 (/Users/michaelkeller/school/practical_work/lazydijkstra)
+warning: `lazydijkstra` (lib test) generated 2 warnings (2 duplicates)
+warning: unused import: `lazydijkstra::basic::BasicSearcher`
+ --> benches/benchmark.rs:2:5
+  |
+2 | use lazydijkstra::basic::BasicSearcher;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `lazydijkstra::hub_labels_old::HubLabelSearcher as OldHubLabelSearcher`
+ --> benches/benchmark.rs:7:5
+  |
+7 | use lazydijkstra::hub_labels_old::HubLabelSearcher as OldHubLabelSearcher;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: unused import: `lazydijkstra::sparse::SparseSearcher`
+  --> benches/benchmark.rs:10:5
+   |
+10 | use lazydijkstra::sparse::SparseSearcher;
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: `lazydijkstra` (bench "benchmark") generated 3 warnings (run `cargo fix --bench "benchmark"` to apply 3 suggestions)
+    Finished `bench` profile [optimized] target(s) in 1.10s
+     Running unittests src/lib.rs (target/release/deps/lazydijkstra-a1a9d211d0fee4cd)
+
+running 15 tests
+test basic::tests::test_basic_searcher_manual ... ignored
+test contraction_hierarchies::tests::test_contraction_hierarchies_searcher_automatic ... ignored
+test contraction_hierarchies::tests::test_contraction_hierarchies_searcher_manual ... ignored
+test contraction_hub_labels::tests::test_contraction_hub_label_searcher_automatic ... ignored
+test contraction_hub_labels::tests::test_contraction_hub_label_searcher_manual ... ignored
+test dial::tests::test_dial_searcher_automatic ... ignored
+test dial::tests::test_dial_searcher_manual ... ignored
+test dijkstra::tests::test_early_stopping_dijkstra_searcher_automatic ... ignored
+test dijkstra::tests::test_early_stopping_dijkstra_searcher_manual ... ignored
+test hub_labels_old::tests::test_hub_label_searcher_automatic ... ignored
+test hub_labels_old::tests::test_hub_label_searcher_manual ... ignored
+test smart_stupid::tests::test_smart_stupid_searcher_automatic ... ignored
+test smart_stupid::tests::test_smart_stupid_searcher_manual ... ignored
+test sparse::tests::test_sparse_searcher_automatic ... ignored
+test sparse::tests::test_sparse_searcher_manual ... ignored
+
+test result: ok. 0 passed; 0 failed; 15 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running benches/benchmark.rs (target/release/deps/benchmark-43493b28f2c8b1a8)
+Building Graph
+Graph loaded with 264346 nodes and 733846 edges.
+Graph Built
+Number of listings: 2643
+Benchmarking DijkstraSearcher/DijkstraSearcher/construction: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.0s, enable flat sampling, or reduce sample count to 60.
+DijkstraSearcher/DijkstraSearcher/construction
+                        time:   [1.1889 ms 1.2044 ms 1.2251 ms]
+                        change: [-1.5544% -0.2682% +1.0508%] (p = 0.70 > 0.05)
+                        No change in performance detected.
+Found 7 outliers among 100 measurements (7.00%)
+  1 (1.00%) high mild
+  6 (6.00%) high severe
+DijkstraSearcher/DijkstraSearcher/query
+                        time:   [28.020 ms 28.143 ms 28.267 ms]
+                        change: [-1.0904% -0.3503% +0.3610%] (p = 0.36 > 0.05)
+                        No change in performance detected.
+
+Benchmarking DialSearcher/DialSearcher/construction: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 6.0s, enable flat sampling, or reduce sample count to 60.
+DialSearcher/DialSearcher/construction
+                        time:   [1.1911 ms 1.1923 ms 1.1936 ms]
+                        change: [-5.4463% -4.2338% -2.9809%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 9 outliers among 100 measurements (9.00%)
+  1 (1.00%) low mild
+  1 (1.00%) high mild
+  7 (7.00%) high severe
+DialSearcher/DialSearcher/query
+                        time:   [10.219 ms 10.262 ms 10.311 ms]
+                        change: [-1.0646% -0.4645% +0.1038%] (p = 0.13 > 0.05)
+                        No change in performance detected.
+Found 5 outliers among 100 measurements (5.00%)
+  3 (3.00%) high mild
+  2 (2.00%) high severe
+
+Benchmarking SmartStupidSearcher/SmartStupidSearcher/construction: Warming up for 3.0000 sDijkstra done
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 83111.5s, or reduce sample count to 10.
+Benchmarking SmartStupidSearcher/SmartStupidSearcher/construction: Collecting 100 samples in estimated  83111 s (100 iterations)Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+Dijkstra done
+SmartStupidSearcher/SmartStupidSearcher/construction
+                        time:   [887.59 s 918.77 s 949.23 s]
+Found 6 outliers among 100 measurements (6.00%)
+  5 (5.00%) low mild
+  1 (1.00%) high mild
+Dijkstra done
+SmartStupidSearcher/SmartStupidSearcher/query
+                        time:   [11.593 µs 11.931 µs 12.322 µs]
+Found 10 outliers among 100 measurements (10.00%)
+  3 (3.00%) high mild
+  7 (7.00%) high severe
+
+Benchmarking ContractionHierarchiesSearcher/ContractionHierarchiesSearcher/construction: Warming up for 3.0000 s
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 438.8s, or reduce sample count to 10.
+ContractionHierarchiesSearcher/ContractionHierarchiesSearcher/construction
+                        time:   [4.2352 s 4.2536 s 4.2740 s]
+                        change: [-6.1930% -5.3704% -4.5887%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 6 outliers among 100 measurements (6.00%)
+  4 (4.00%) high mild
+  2 (2.00%) high severe
+ContractionHierarchiesSearcher/ContractionHierarchiesSearcher/query
+                        time:   [632.89 µs 705.07 µs 768.86 µs]
+                        change: [-31.076% -24.638% -17.423%] (p = 0.00 < 0.05)
+                        Performance has improved.
+
+Benchmarking ContractionHubLabelSearcher/ContractionHubLabelSearcher/construction: Warming up for 3.0000 sAverage source label size 159.95461629833628
+
+Warning: Unable to complete 100 samples in 5.0s. You may wish to increase target time to 783.8s, or reduce sample count to 10.
+Benchmarking ContractionHubLabelSearcher/ContractionHubLabelSearcher/construction: Collecting 100 samples in estimated 783.84 s (100 iterations)Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+Average source label size 159.95461629833628
+ContractionHubLabelSearcher/ContractionHubLabelSearcher/construction
+                        time:   [7.6869 s 7.7041 s 7.7241 s]
+                        change: [-4.5392% -4.0598% -3.6007%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 16 outliers among 100 measurements (16.00%)
+  14 (14.00%) high mild
+  2 (2.00%) high severe
+Average source label size 159.95461629833628
+ContractionHubLabelSearcher/ContractionHubLabelSearcher/query
+                        time:   [273.19 µs 275.04 µs 277.49 µs]
+                        change: [-34.579% -29.255% -22.773%] (p = 0.00 < 0.05)
+                        Performance has improved.
+Found 17 outliers among 100 measurements (17.00%)
+  3 (3.00%) high mild
+  14 (14.00%) high severe
+
+michaelkeller@MBP-2 ~/s/p/lazydijkstra (main)>

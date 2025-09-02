@@ -1,0 +1,14 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; q, b                                                     \\
+	 & \textbf{Output:} \;\; \text{set of listings within distance } b \text{ of } q \\[1mm]
+
+	 & result \gets []                                                               \\[0.5mm]
+
+	 & \textbf{for each } (l, dist) \in \text{LookupTable}[q]:                       \\
+	 & \quad \textbf{if } dist \le b:                                                \\
+	 & \quad\quad \text{append } (l, dist) \text{ to result}                         \\
+	 & \quad \textbf{else:}                                                          \\
+	 & \quad\quad \textbf{break}                                                     \\[1mm]
+
+	 & \textbf{return } result
+\end{aligned}

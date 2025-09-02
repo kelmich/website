@@ -1,0 +1,25 @@
+\begin{aligned}
+ & \textbf{Input:} \;\; G_{\text{down}} = (V, E_{\text{down}}), \; L \subseteq V, \; b \text{ (time budget)} \\
+ & \textbf{Output:} \;\; \text{down\_labels}[v] = \{ (\text{listing}, \; \text{time\_to\_listing}) \} \quad \forall v \in V \\[1mm]
+
+ & \textbf{for each } v \in V: \quad \text{down\_labels}[v] \gets \{\} \\[1mm]
+
+ & \textbf{parallel for each } \ell \in L: \\
+ & \quad \textbf{for each } v \in V: \quad d[v] \gets \infty \\
+ & \quad d[\ell] \gets 0 \\[0.5mm]
+
+ & \quad queue \gets \text{PriorityQueue}() \\
+ & \quad queue.\text{insert}(\ell, 0) \\[1mm]
+
+ & \quad \textbf{while not } queue.\text{is\_empty}(): \\
+ & \quad\quad u \gets queue.\text{extract\_min}() \\[0.5mm]
+
+ & \quad\quad \textbf{if } d[u] \le b: \\
+ & \quad\quad\quad \text{down\_labels}[u][\ell] \gets d[u] \\[0.5mm]
+
+ & \quad\quad\quad \textbf{for each } (u,w) \in E_{\text{down}}: \\
+ & \quad\quad\quad\quad \textbf{if } d[u] + t(u,w) < d[w]: \\
+ & \quad\quad\quad\quad\quad d[w] \gets d[u] + t(u,w) \\
+ & \quad\quad\quad\quad\quad \textbf{if } d[w] \le b: \\
+ & \quad\quad\quad\quad\quad\quad queue.\text{insert}(w, d[w])
+\end{aligned}

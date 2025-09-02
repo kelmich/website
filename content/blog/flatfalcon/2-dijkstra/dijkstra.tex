@@ -1,0 +1,16 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G = (V, E), q                                             \\
+	 & \textbf{Output:} \;\; d[v] \text{ for all reachable } v \in V                  \\[1mm]
+
+	 & \textbf{for each } v \in V:                                                    \\
+	 & \quad d[v] \gets \infty                                                        \\
+	 & d[q] \gets 0                                                                   \\
+	 & \textbf{enqueue } q \text{ with priority } 0                                   \\[1mm]
+
+	 & \textbf{while} \text{ the queue is not empty:}                                 \\
+	 & \quad u \gets \text{extract node with minimum distance from queue}             \\
+	 & \quad \textbf{for each } v \text{ with an edge to } u:                         \\
+	 & \quad\quad \textbf{if } d[v] > d[u] + w(v,u):                                  \\
+	 & \quad\quad\quad d[v] \gets d[u] + w(v,u)                                       \\
+	 & \quad\quad\quad \text{add or update } v \text{ in the queue with new distance}
+\end{aligned}

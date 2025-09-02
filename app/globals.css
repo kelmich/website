@@ -1,33 +1,141 @@
 @import "tailwindcss";
 
-:root {
-    --background: #ffffff;
-    --foreground: #171717;
+/* Base theme variables (light mode default) */
+@theme {
+    --color-background: oklch(1 0 0);
+    /* pure white */
+    --color-background-foreground: oklch(32% 0.07 265);
+    /* dark navy blue */
+
+    --color-primary: oklch(32% 0.07 265);
+    /* dark navy blue */
+    --color-primary-foreground: oklch(96% 0.01 265);
+    /* light text on dark navy */
+
+    --color-secondary: oklch(88% 0.02 255);
+    /* soft, desaturated bluish gray */
+    --color-secondary-foreground: oklch(32% 0.07 265);
+    /* dark navy blue */
+
+    --color-muted: oklch(0.92 0 0);
+    --color-muted-foreground: oklch(0.48 0 0);
+
+    --color-accent: oklch(0.97 0 0);
+    --color-accent-foreground: oklch(0.205 0 0);
+
+    --color-border: oklch(32% 0.07 265);
+    /* match secondary-foreground for subtle borders */
+    --color-input: oklch(0.922 0 0);
+    --color-ring: oklch(0.708 0 0);
+    --color-link: oklch(45% 0.1 265);
+    /* lighter version of the navy for inline links */
+
+    /* --color-card: #ffffff;
+    --color-card-foreground: #0f172a;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #0f172a; */
 }
 
-@theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+/* Dark theme overrides when user prefers dark mode */
+/* @media (prefers-color-scheme: dark) {
+  @theme {
+    --color-background: #020617;
+    --color-foreground: #f8fafc;
+    --color-primary: #3b82f6;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #1e293b;
+    --color-secondary-foreground: #f8fafc;
+    --color-muted: #1e293b;
+    --color-muted-foreground: #94a3b8;
+    --color-accent: #1e293b;
+    --color-accent-foreground: #f8fafc;
+    --color-border: #1e293b;
+    --color-input: #1e293b;
+    --color-ring: #3b82f6;
+    --color-card: #020617;
+    --color-card-foreground: #f8fafc;
+    --color-popover: #020617;
+    --color-popover-foreground: #f8fafc;
+  }
+} */
+
+/* Optional: Custom color palette extensions */
+@theme {
+    --color-success: oklch(75% 0.1 180); /* soft teal */
+    --color-success-foreground: oklch(25% 0.05 180); /* dark teal */
+
+    --color-warning: #f59e0b;
+    --color-warning-foreground: #ffffff;
+    --color-error: #ef4444;
+    --color-error-foreground: #ffffff;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
+/* @media (prefers-color-scheme: dark) {
+    @theme {
+        --color-success: #059669;
+        --color-warning: #d97706;
+        --color-error: #dc2626;
+    }
+} */
+
+@layer base {
+    * {
+        border-color: var(--color-border);
     }
 }
 
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+a {
+    @apply text-link hover:underline;
 }
 
-body {
-    background: var(--background);
-    color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
+ol {
+    @apply list-decimal ml-10;
+}
+
+ul {
+    @apply list-disc ml-10;
+}
+
+p {
+    @apply text-base leading-relaxed;
+}
+
+h1 {
+    @apply text-4xl font-bold;
+}
+
+h2 {
+    @apply text-2xl font-semibold;
+}
+
+h3 {
+    @apply text-xl font-semibold;
+}
+
+.blog p {
+    @apply my-4;
+}
+
+.blog h1 {
+    @apply my-2;
+}
+
+.blog h2 {
+    @apply mt-6 -mb-3;
+}
+
+.blog h3 {
+    @apply mt-6 -mb-3;
+}
+
+button {
+    @apply bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90 transition-colors hover:cursor-pointer;
+}
+
+button.secondary {
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/90;
+}
+
+input {
+    @apply bg-background text-background-foreground border border-border px-3 py-2 focus:ring-2 focus:ring-ring focus:outline-none;
 }

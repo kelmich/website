@@ -1,0 +1,13 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G = (V, E), \text{node importance order } [v_1, v_2, \dots, v_n] \\
+	 & \textbf{Output:} \;\; G \text{ with all nodes contracted and shortcuts added}         \\[1mm]
+
+	 & shortcuts \gets []                                                                    \\
+	 & G\_clone \gets G.\text{clone}()                                                       \\[0.5mm]
+
+	 & \textbf{for each } v \text{ in order } [v_1, v_2, \dots, v_n]:                        \\
+	 & \quad \text{contract\_node}(G\_clone, v, shortcuts)                                   \\[0.5mm]
+
+	 & \textbf{for each } (u, v, weight) \in shortcuts:                                      \\
+	 & \quad G.\text{add\_edge}(u, v, \text{weight}=weight)
+\end{aligned}

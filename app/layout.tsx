@@ -6,6 +6,7 @@ const mono = IBM_Plex_Mono({
   weight: "400",
 });
 import "./globals.css";
+import "katex/dist/katex.min.css";
 
 export const metadata: Metadata = {
   title: "Michael Keller",

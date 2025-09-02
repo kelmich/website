@@ -1,0 +1,22 @@
+\begin{aligned}
+	 & \textbf{Input:} \;\; G = (V, E), s, b                                                      \\
+	 & \textbf{Output:} \;\; d[v] \text{ for all reachable } v \in V \text{ with distance } \le b \\[1mm]
+
+	 & \textbf{for each } v \in V:                                                                \\
+	 & \quad d[v] \gets \infty                                                                    \\
+	 & d[s] \gets 0                                                                               \\[1mm]
+
+	 & \textbf{initialize buckets }[0 \dots b] \text{ as empty lists}                             \\
+	 & \text{append } s \text{ to buckets}[0]                                                     \\[1mm]
+
+	 & \textbf{for } distance = 0 \textbf{ to } b:                                                \\
+	 & \quad \textbf{while } buckets[distance] \text{ is not empty:}                              \\
+	 & \quad\quad v \gets \text{pop from } buckets[distance]                                      \\
+	 & \quad\quad \textbf{if } d[v] < distance:                                                   \\
+	 & \quad\quad\quad \textbf{continue}                                                          \\
+	 & \quad\quad d[v] \gets distance                                                             \\
+	 & \quad\quad \textbf{for each } (u,v) \in \text{incoming\_edges}(E, v):                      \\
+	 & \quad\quad\quad new\_distance \gets d[v] + w(u,v)                                          \\
+	 & \quad\quad\quad \textbf{if } new\_distance \le b:                                          \\
+	 & \quad\quad\quad\quad \text{append } u \text{ to } buckets[new\_distance]
+\end{aligned}
