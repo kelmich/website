@@ -18,7 +18,7 @@ export default function Home() {
             height={400}
           />*/}
           <Image
-            src="/michaelkeller3.png"
+            src="/michaelkeller8.jpg"
             alt="Picture of Michael Keller"
             width={400}
             height={400}
